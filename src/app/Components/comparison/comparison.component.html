@@ -103,15 +103,16 @@
                   </p>
                   <div class="flex flex-col items-center">
                     <span class="text-xl font-bold text-[var(--color-primary)]">
-                      {{ product.productPrice | currency }}
+                      {{
+                        product.productPrice *
+                          (1 - (product.productSale ?? 0) / 100) | currency
+                      }}
                     </span>
                     <span
                       *ngIf="product.productSale"
                       class="text-xs text-[var(--color-gray)] line-through"
                     >
-                      {{
-                        product.productPrice + product.productSale | currency
-                      }}
+                      {{ product.productPrice | currency }}
                     </span>
                   </div>
                   <div class="text-xs text-[var(--color-gray)] mt-2">
@@ -138,6 +139,23 @@
               <div class="min-h-[40px] flex items-center justify-center">
                 {{
                   product.additionalInformation?.general?.salesPackage || "N/A"
+                }}
+              </div>
+            </td>
+          </tr>
+          <tr class="border-t border-[var(--color-gray-light)]">
+            <td
+              class="bg-[var(--color-gray-light)] text-[var(--color-gray)] font-medium p-4"
+            >
+              Model Number
+            </td>
+            <td
+              *ngFor="let product of comparisonProducts"
+              class="p-4 bg-white text-center border border-[var(--color-gray-light)]"
+            >
+              <div class="min-h-[40px] flex items-center justify-center">
+                {{
+                  product.additionalInformation?.general?.modelNumber || "N/A"
                 }}
               </div>
             </td>
@@ -176,6 +194,72 @@
               </div>
             </td>
           </tr>
+          <tr class="border-t border-[var(--color-gray-light)]">
+            <td
+              class="bg-[var(--color-gray-light)] text-[var(--color-gray)] font-medium p-4"
+            >
+              Height (cm)
+            </td>
+            <td
+              *ngFor="let product of comparisonProducts"
+              class="p-4 bg-white text-center border border-[var(--color-gray-light)]"
+            >
+              <div class="min-h-[40px] flex items-center justify-center">
+                {{ product.additionalInformation?.dimensions?.height || "N/A" }}
+              </div>
+            </td>
+          </tr>
+          <tr class="border-t border-[var(--color-gray-light)]">
+            <td
+              class="bg-[var(--color-gray-light)] text-[var(--color-gray)] font-medium p-4"
+            >
+              Depth (cm)
+            </td>
+            <td
+              *ngFor="let product of comparisonProducts"
+              class="p-4 bg-white text-center border border-[var(--color-gray-light)]"
+            >
+              <div class="min-h-[40px] flex items-center justify-center">
+                {{ product.additionalInformation?.dimensions?.depth || "N/A" }}
+              </div>
+            </td>
+          </tr>
+          <tr class="border-t border-[var(--color-gray-light)]">
+            <td
+              class="bg-[var(--color-gray-light)] text-[var(--color-gray)] font-medium p-4"
+            >
+              Finish Type
+            </td>
+            <td
+              *ngFor="let product of comparisonProducts"
+              class="p-4 bg-white text-center border border-[var(--color-gray-light)]"
+            >
+              <div class="min-h-[40px] flex items-center justify-center">
+                {{
+                  product.additionalInformation?.productDetails?.finishType ||
+                    "N/A"
+                }}
+              </div>
+            </td>
+          </tr>
+          <tr class="border-t border-[var(--color-gray-light)]">
+            <td
+              class="bg-[var(--color-gray-light)] text-[var(--color-gray)] font-medium p-4"
+            >
+              origin Of Manufacture
+            </td>
+            <td
+              *ngFor="let product of comparisonProducts"
+              class="p-4 bg-white text-center border border-[var(--color-gray-light)]"
+            >
+              <div class="min-h-[40px] flex items-center justify-center">
+                {{
+                  product.additionalInformation?.productDetails
+                    ?.originOfManufacture || "N/A"
+                }}
+              </div>
+            </td>
+          </tr>
 
           <tr class="border-t border-[var(--color-gray-light)]">
             <td
@@ -208,8 +292,26 @@
             >
               <div class="min-h-[40px] flex items-center justify-center">
                 {{
-                  product.additionalInformation?.specifications
+                  product.additionalInformation?.productDetails
                     ?.maximumLoadCapacity || "N/A"
+                }}
+              </div>
+            </td>
+          </tr>
+          <tr class="border-t border-[var(--color-gray-light)]">
+            <td
+              class="bg-[var(--color-gray-light)] text-[var(--color-gray)] font-medium p-4"
+            >
+              Filling Material (kg)
+            </td>
+            <td
+              *ngFor="let product of comparisonProducts"
+              class="p-4 bg-white text-center border border-[var(--color-gray-light)]"
+            >
+              <div class="min-h-[40px] flex items-center justify-center">
+                {{
+                  product.additionalInformation?.productDetails
+                    ?.fillingMaterial || "N/A"
                 }}
               </div>
             </td>
@@ -261,6 +363,83 @@
               </div>
             </td>
           </tr>
+          <tr class="border-t border-[var(--color-gray-light)]">
+            <td
+              class="bg-[var(--color-gray-light)] text-[var(--color-gray)] font-medium p-4"
+            >
+              Warranty Covered
+            </td>
+            <td
+              *ngFor="let product of comparisonProducts"
+              class="p-4 bg-white text-center border border-[var(--color-gray-light)]"
+            >
+              <div class="min-h-[40px] flex items-center justify-center">
+                {{ product.additionalInformation?.warranty?.covered || "N/A" }}
+              </div>
+            </td>
+          </tr>
+          <tr class="border-t border-[var(--color-gray-light)]">
+            <td
+              class="bg-[var(--color-gray-light)] text-[var(--color-gray)] font-medium p-4"
+            >
+              Warranty Not Covered
+            </td>
+            <td
+              *ngFor="let product of comparisonProducts"
+              class="p-4 bg-white text-center border border-[var(--color-gray-light)]"
+            >
+              <div class="min-h-[40px] flex items-center justify-center">
+                {{
+                  product.additionalInformation?.warranty?.notCovered || "N/A"
+                }}
+              </div>
+            </td>
+          </tr>
+          <tr class="border-t border-[var(--color-gray-light)]">
+            <td
+              class="bg-[var(--color-gray-light)] text-[var(--color-gray)] font-medium p-4"
+            >
+              Service Type
+            </td>
+            <td
+              *ngFor="let product of comparisonProducts"
+              class="p-4 bg-white text-center border border-[var(--color-gray-light)]"
+            >
+              <div class="min-h-[40px] flex items-center justify-center">
+                {{
+                  product.additionalInformation?.warranty?.serviceType || "N/A"
+                }}
+              </div>
+            </td>
+          </tr>
+          <tr class="border-t border-[var(--color-gray-light)]">
+            <td
+              class="bg-[var(--color-gray-light)] text-[var(--color-gray)] font-medium p-4"
+            >
+              Adjustable Headrest
+            </td>
+            <td
+              *ngFor="let product of comparisonProducts"
+              class="p-4 bg-white text-center border border-[var(--color-gray-light)]"
+            >
+              <div class="min-h-[40px] flex items-center justify-center">
+                <span
+                  class="px-3 py-1 rounded-full text-sm
+                  {{
+                    product.additionalInformation?.warranty?.domesticWarranty
+                      ? 'bg-green-100 text-green-800'
+                      : 'bg-red-100 text-red-800'
+                  }}"
+                >
+                  {{
+                    product.additionalInformation?.warranty?.domesticWarranty
+                      ? "Yes"
+                      : "No"
+                  }}
+                </span>
+              </div>
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -269,7 +448,7 @@
   <!-- Empty State -->
   <ng-template #emptyState>
     <div
-      class="text-center py-16 space-y-6 border-2 border-dashed border-[var(--color-gray-light)] rounded-xl"
+      class="text-center py-16 space-y-6 border-2 border-dashed border-[var(--color-primary)] rounded-xl"
     >
       <div class="space-y-2">
         <h3 class="text-2xl font-bold text-[var(--color-black)]">
