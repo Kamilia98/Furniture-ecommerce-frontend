@@ -107,6 +107,15 @@ export class ProductComponent implements OnInit {
         this.cdr.markForCheck();
       })
     );
+
+    this.subs.add(
+      this.favoriteService.favorites$.subscribe((favorites) => {
+        this.isFavoriteState = favorites.some(
+          (fav) => fav.id === this.product.id
+        );
+        this.cdr.markForCheck();
+      })
+    );
     this.loadProduct();
   }
 
