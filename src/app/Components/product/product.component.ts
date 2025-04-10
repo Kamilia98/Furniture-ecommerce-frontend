@@ -89,7 +89,7 @@ export class ProductComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.btnWidth = window.innerWidth < 640 ? '100%' : '155px';
+    this.btnWidth = window.innerWidth < 640 ? '340px' : '155px';
     this.routeSub = this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.loadProduct();
