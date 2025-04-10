@@ -111,7 +111,7 @@ export class ProductComponent implements OnInit {
     this.subs.add(
       this.favoriteService.favorites$.subscribe((favorites) => {
         this.isFavoriteState = favorites.some(
-          (fav) => fav.id === this.product.id
+          (fav) => fav.id === this.productId
         );
         this.cdr.markForCheck();
       })
