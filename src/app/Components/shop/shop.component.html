@@ -1,0 +1,160 @@
+@let products = (products$ | async) ?? []; @let productsMinPrice = (priceMin$ |
+async); @let productsMaxPrice = (priceMax$ | async);
+
+<app-header-banner
+  bannerTitle="Shop"
+  [bannerPath]="[{ title: 'shop', path: '/shop' }]"
+></app-header-banner>
+
+<div class="bg-secondary px-1 md:px-5 text-sm sm:text-base">
+  <div
+    class="flex items-center justify-between max-w-[1240px] m-auto gap-2 p-2 sm:p-4 lg:p-5"
+  >
+    <!-- Left Section: Filter & Results Info -->
+    <div class="flex gap-4 items-center">
+      <div
+        class="flex gap-2 cursor-pointer items-center"
+        (click)="toggleShowFilter()"
+      >
+        <img src="icons/filter.svg" alt="Filter Icon" />
+        <p>Filter</p>
+      </div>
+      <div class="hidden sm:block border border-gray-medium self-stretch"></div>
+      <p class="hidden sm:block">
+        {{ getDisplayedResultsRange() }}
+      </p>
+    </div>
+
+    <!-- Right Section: Sorting Dropdown -->
+    <div class="flex items-center gap-2">
+      <p>Sort By</p>
+      <div class="relative" #sortMenu>
+        <button
+          class="bg-white h-10 md:h-14 flex items-center px-5 cursor-pointer w-full min-w-40 md:min-w-48 border border-gray-medium rounded-md focus:outline-none"
+          (click)="toggleDropdown(true)"
+        >
+          <span
+            class="text-gray-dark overflow-ellipsis whitespace-nowrap overflow-hidden"
+            >{{ selectedSortValue$ | async }}</span
+          >
+        </button>
+        @if(showSortMenu && sortMenuItems.length > 0){
+        <app-dropdown
+          [items]="sortMenuItems"
+          (selectedValueChange)="onSortChange($event)"
+        ></app-dropdown>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Content -->
+<div #productsContainer class="p-5 sm:p-10 flex relative gap-5">
+  <!-- Overlay -->
+  @if (showFilters) {
+  <div
+    class="fixed lg:absolute top-0 left-0 w-full h-full bg-black-transparent z-[999] lg:hidden"
+    (click)="toggleShowFilter(false)"
+  ></div>
+  <div
+    class="fixed lg:relative top-0 left-0 w-full h-full lg:h-auto bg-white max-w-[300px] lg:max-w-auto lg:min-w-[300px] p-[25px] lg:pl-0 lg:pt-0 flex flex-col gap-[25px] z-[1000] lg:z-0 border-r border-gray-medium"
+    [@slideInOut]="showFilters ? 'in' : 'out'"
+  >
+    <app-search (onSelect)="goToProduct($event)"></app-search>
+    <app-filter-option title="Category">
+      <div class="flex flex-col gap-2">
+        <div
+          *ngFor="let category of categories$ | async"
+          class="flex gap-2 items-center"
+        >
+          <input
+            type="checkbox"
+            [id]="'category' + category.name"
+            [name]="'category' + category.name"
+            (change)="onCategoryChange(category, $event)"
+            class="w-[1.2em] h-[1.2em]"
+          />
+          <label [for]="'category' + category.name">{{
+            category.name | titlecase
+          }}</label>
+        </div>
+      </div>
+    </app-filter-option>
+
+    <app-filter-option title="Price Range">
+      <mat-slider [min]="productsMinPrice" [max]="productsMaxPrice">
+        <input
+          [value]="minPrice"
+          matSliderStartThumb
+          (change)="onPriceChange($event, true)"
+        />
+        <input
+          [value]="maxPrice"
+          matSliderEndThumb
+          (change)="onPriceChange($event, false)"
+        />
+      </mat-slider>
+
+      <div class="flex justify-between">
+        <span>{{ minPrice }}</span>
+        <span>{{ maxPrice }}</span>
+      </div>
+    </app-filter-option>
+  </div>
+  }
+
+  <!-- Product Grid -->
+  <div
+    class="w-full col-span-12 flex flex-col gap-5 justify-center"
+    [ngClass]="{ 'lg:col-span-9': showFilters }"
+  >
+    @if (!loading&&products.length>0) {
+    <div
+      class="grid gap-6 w-full h-full grid-cols-1 sm:grid-cols-2 md:grid-cols-3"
+      [ngClass]="{
+        'lg:grid-cols-3': showFilters,
+        'lg:grid-cols-4': !showFilters
+      }"
+    >
+      @for (item of (products$ | async) ?? []; track item?.id) {
+      <app-product-item [product]="item"></app-product-item>
+      }
+    </div>
+
+    <app-pagination
+      [(currentPage)]="currentPage"
+      [pagesCount]="pagesCount"
+      [container]="this.productsContainer"
+      (currentPageChange)="fetchProducts()"
+    ></app-pagination>
+    } @else if (loading) {
+
+    <div
+      class="grid gap-6 w-full h-full grid-cols-1 sm:grid-cols-2 md:grid-cols-3"
+      [ngClass]="{
+        'lg:grid-cols-3': showFilters,
+        'lg:grid-cols-4': !showFilters
+      }"
+    >
+      <div *ngFor="let item of skeletonArr">
+        <app-product-item-skeleton></app-product-item-skeleton>
+      </div>
+    </div>
+    <div class="flex justify-center py-3 gap-5">
+      <div *ngFor="let item of [1, 2, 3]">
+        <ngx-skeleton-loader [theme]="{ 'width.px': 60, 'height.px': 45 }" />
+      </div>
+    </div>
+
+    }@else {
+    <div
+      class="w-full h-full flex justify-center items-center text-center text-gray"
+    >
+      No products matches this filter.
+    </div>
+    }
+  </div>
+</div>
+
+<app-feature-banner></app-feature-banner>

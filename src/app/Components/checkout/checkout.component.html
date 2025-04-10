@@ -1,0 +1,236 @@
+<!--**** Header component ****-->
+<app-header-banner
+  bannerTitle="Checkout"
+  [bannerPath]="[
+    { title: 'cart', path: '/cart' },
+    { title: 'checkout', path: '/checkout' }
+  ]"
+></app-header-banner>
+
+<!--**** stepper component ****-->
+<app-stepper></app-stepper>
+
+<!--**** Checkout Section ****-->
+<section class="flex flex-col md:flex-row p-10 gap-10">
+  <!-- Billing Details Form -->
+  <div class="shadow p-6 rounded-lg flex-1 max-h-max flex flex-col gap-8">
+    <h2 class="text-3xl font-bold">Billing Details</h2>
+    <form
+      [formGroup]="checkoutForm"
+      (ngSubmit)="onSubmit()"
+      class="flex flex-col gap-4"
+    >
+      <!--*** First Name ***-->
+      <app-input
+        label="First Name *"
+        placeholder="First Name"
+        type="text"
+        bgC="secondary"
+        width="full"
+        [control]="checkoutForm.controls['firstName']"
+      ></app-input>
+
+      <!--*** Last Name ***-->
+      <app-input
+        label="Last Name *"
+        placeholder="Last Name"
+        type="text"
+        bgC="secondary"
+        width="full"
+        [control]="checkoutForm.controls['lastName']"
+      ></app-input>
+
+      <!--*** Company Name ***-->
+      <app-input
+        label="Company Name (Optional)"
+        placeholder="Company Name"
+        type="text"
+        bgC="secondary"
+        width="full"
+        [control]="checkoutForm.controls['companyName']"
+      ></app-input>
+
+      <!--*** Country ***-->
+      <app-input
+        label="Country / Region *"
+        placeholder="Select Country"
+        type="select"
+        bgC="secondary"
+        width="full"
+        [control]="checkoutForm.controls['country']"
+      >
+      </app-input>
+
+      <!--*** Address ***-->
+      <app-input
+        label="Street Address *"
+        placeholder="Address"
+        type="text"
+        bgC="secondary"
+        width="full"
+        [control]="checkoutForm.controls['address']"
+      ></app-input>
+
+      <!--*** City ***-->
+      <app-input
+        label="Town / City *"
+        placeholder="City"
+        type="text"
+        bgC="secondary"
+        width="full"
+        [control]="checkoutForm.controls['city']"
+      ></app-input>
+
+      <!--*** Zip Code ***-->
+      <app-input
+        label="Zip Code *"
+        placeholder="Zip Code"
+        type="text"
+        bgC="secondary"
+        width="full"
+        [control]="checkoutForm.controls['zip']"
+      ></app-input>
+
+      <!--*** Phone ***-->
+      <app-input
+        label="Phone *"
+        placeholder="Phone"
+        type="tel"
+        bgC="secondary"
+        width="full"
+        [control]="checkoutForm.controls['phone']"
+      ></app-input>
+
+      <!--*** Email ***-->
+      <app-input
+        label="Email Address *"
+        placeholder="Email"
+        type="email"
+        bgC="secondary"
+        width="full"
+        [control]="checkoutForm.controls['email']"
+      ></app-input>
+
+      <!--*** Additional Information ***-->
+      <label class="block text-gray-700 font-medium"
+        >Additional Information</label
+      >
+      <textarea
+        id="additional-info"
+        rows="4"
+        formControlName="additionalInfo"
+        class="w-full outline-0 rounded-md p-2 ps-2 bg-secondary"
+      ></textarea>
+    </form>
+  </div>
+
+  <!--***** Confirming payment *****-->
+  <div class="shadow p-6 rounded-lg flex-1 max-h-max flex flex-col gap-8">
+    <h2 class="text-3xl font-bold">Payment Method</h2>
+
+    <table class="w-full">
+      <thead>
+        <tr class="bg-gray-100">
+          <th class="p-2 text-left">Product</th>
+          <th class="p-2 text-left">Subtotal</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of cartItems; track item) {
+        <tr>
+          <td class="p-2">{{ item.name }} x {{ item.quantity }}</td>
+          <td class="p-2">{{ item.price * item.quantity | currency }}</td>
+        </tr>
+        }
+        <tr>
+          <td class="p-2 font-bold">Total</td>
+          <td class="p-2 text-primary font-bold">
+            {{ subtotal$ | async | currency }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="flex flex-col">
+      <!--***** Payment Options *****-->
+      <div [formGroup]="checkoutForm" class="flex flex-col gap-2">
+        <div class="flex gap-2">
+          <input
+            type="radio"
+            id="cashMethod"
+            name="paymentMethod"
+            formControlName="paymentMethod"
+            value="cod"
+          />
+          <label for="cashMethod"> Cash On Delivery </label>
+        </div>
+        <div class="flex gap-2 items-center">
+          <input
+            type="radio"
+            id="cardMethod"
+            name="paymentMethod"
+            formControlName="paymentMethod"
+            value="bank"
+          />
+          <label class="flex items-center gap-2" for="cardMethod">
+            <span> Credit Card </span>
+            <div class="flex items-center gap-2">
+              <img src="/icons/visa-card.svg" alt="VISA" class="w-9" />
+              <img src="/icons/master-card.svg" alt="Mastercard" class="w-9" />
+              <img src="/icons/depit-card.svg" alt="Debit Card" class="w-9" />
+            </div>
+          </label>
+        </div>
+        <p
+          [@slideUpDown]="
+            checkoutForm.get('paymentMethod')?.invalid &&
+            checkoutForm.get('paymentMethod')?.touched
+              ? 'in'
+              : 'out'
+          "
+          class="text-red-light text-sm"
+        >
+          Please select a payment method.
+        </p>
+      </div>
+
+      <div
+        [@slideUpDown]="
+          checkoutForm.get('paymentMethod')?.value === 'bank' ? 'in' : 'out'
+        "
+        class="overflow-hidden ml-4"
+      >
+        <app-payment></app-payment>
+      </div>
+      <div
+        [@slideUpDown]="
+          checkoutForm.get('paymentMethod')?.value === 'cod' ? 'in' : 'out'
+        "
+        class="overflow-hidden ml-4"
+      >
+        <p class="text-gray-500 text-sm">
+          You can make your payment when you receive the order at your doorstep.
+          Please keep exact change ready to avoid any inconvenience.
+        </p>
+      </div>
+    </div>
+
+    <p class="text-gray-800">
+      Your personal data will be used to support your experience throughout this
+      website, to manage access to your account , and for other purposes
+      described in our
+      <a class="font-bold text-primary" [routerLink]="['/privacypolicy']"
+        >privacy policy</a
+      >.
+    </p>
+    <app-button
+      (click)="onSubmit()"
+      class="flex justify-center items-center mx-auto"
+      type="black-outline"
+      >Place Order</app-button
+    >
+  </div>
+</section>
+
+<!--**** Footer component ****-->
+<app-feature-banner></app-feature-banner>

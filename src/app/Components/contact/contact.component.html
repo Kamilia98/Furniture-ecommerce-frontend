@@ -1,0 +1,133 @@
+<!-- Page Header -->
+<app-header-banner
+  bannerTitle="Contact"
+  [bannerPath]="[{ title: 'contact', path: '/contact' }]"
+></app-header-banner>
+
+<!-- Contact Section -->
+<section class="p-10 flex flex-col gap-10">
+  <!-- Contact Header -->
+  <div class="text-center flex flex-col items-center gap-4 w-full">
+    <h1 class="text-4xl font-semibold">Get in Touch with Us</h1>
+    <p class="text-base text-gray max-w-2xl">
+      For more information about our products and services, please feel free to
+      drop us an email. Our team is always here to assist you. Don't hesitate to
+      reach out!
+    </p>
+  </div>
+
+  <div
+    class="flex flex-col sm:flex-row justify-center items-start gap-5 md:gap-10"
+  >
+    <!-- Contact Information -->
+    <div class="flex flex-col gap-5">
+      <!-- Address -->
+      <div class="flex gap-3">
+        <i class="fas fa-map-marker-alt text-xl text-black mt-1"></i>
+        <div class="flex flex-col gap-4">
+          <p class="text-xl font-semibold text-black">Address</p>
+          <p class="text-sm lg:text-base text-black">
+            15 Tahrir Square, Downtown, Cairo, Egypt
+          </p>
+        </div>
+      </div>
+
+      <!-- Phone -->
+      <div class="flex gap-3">
+        <i class="fas fa-phone text-xl mt-1"></i>
+        <div class="flex flex-col gap-4">
+          <p class="text-xl font-semibold">Phone</p>
+          <p class="text-sm lg:text-base">Mobile: +20 100 123 4567</p>
+          <p class="text-sm lg:text-base">Hotline: 16000</p>
+        </div>
+      </div>
+
+      <!-- Working Hours -->
+      <div class="flex gap-3">
+        <i class="fas fa-clock text-xl mt-1"></i>
+        <div class="flex flex-col gap-4">
+          <p class="text-xl font-semibold">Working Hours</p>
+          <p class="text-sm lg:text-base">Mon - Fri: 9:00 AM - 10:00 PM</p>
+          <p class="text-sm lg:text-base">Sat - Sun: 10:00 AM - 9:00 PM</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact Form -->
+    <div class="max-w-md w-full p-1 bg-white">
+      <form
+        [formGroup]="contactForm"
+        (ngSubmit)="onSubmit()"
+        class="flex flex-col space-y-4"
+      >
+        <app-input
+          label="Name *"
+          placeholder="Enter Your Name"
+          type="text"
+          bgC="secondary"
+          width="full"
+          [control]="contactForm.controls['name']"
+        ></app-input>
+
+        <app-input
+          label="Email *"
+          placeholder="Enter your email"
+          type="text"
+          bgC="secondary"
+          width="full"
+          [control]="contactForm.controls['email']"
+        ></app-input>
+
+        <app-input
+          label="Subject"
+          placeholder="Enter a subject"
+          type="text"
+          bgC="secondary"
+          width="full"
+          [control]="contactForm.controls['subject']"
+        ></app-input>
+
+        <!-- Message Field -->
+        <label for="message" class="text-base font-medium">Your Message</label>
+        <textarea
+          id="message"
+          formControlName="message"
+          class="w-full outline-0 rounded-md p-2 ps-2 bg-secondary"
+          placeholder="Write Your Message"
+          required
+        ></textarea>
+
+        @if (contactForm.get('message')?.invalid &&
+        contactForm.get('message')?.touched) {
+        <p class="text-red-light text-sm">Message cannot be empty.</p>
+        }
+
+        <!-- Submit Button -->
+        <app-button type="primary-fill">
+          @if(!isLoading){ Submit } @else {
+          <div class="flex justify-center">
+            <div class="spinner"></div>
+          </div>
+          }
+        </app-button>
+      </form>
+
+      <!-- Submission Message -->
+      @if (message) {
+      <h2
+        [ngClass]="{
+          'text-green-500': isSuccess,
+          'text-red-light': !isSuccess
+        }"
+        class="mt-4 text-sm"
+      >
+        {{ message }}
+      </h2>
+
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Feature Banner -->
+<app-feature-banner></app-feature-banner>

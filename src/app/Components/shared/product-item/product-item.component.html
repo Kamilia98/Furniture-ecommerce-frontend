@@ -1,0 +1,77 @@
+<div class="bg-gray-light relative overflow-hidden" aria-labelledby="product-title">
+  @if(product.sale||isNewProduct()){
+  <div class="absolute right-1 top-1.5 flex gap-2">
+    @if (product.sale) {
+    <p class="w-[50px] h-[50px] p-[10px] text-white rounded-full bg-red-light flex items-center justify-center"
+      aria-label="Sale discount">
+      -{{ product.sale }}%
+    </p>
+    } @if(isNewProduct()){
+    <p class="w-[50px] h-[50px] p-[10px] text-white rounded-full bg-green-light flex items-center justify-center"
+      aria-label="Sale discount">
+      New
+    </p>
+
+    }
+  </div>
+
+  }
+  <div [routerLink]="['/product', product.id]" class="cursor-pointer">
+    <div class="bg-secondary h-[300px] flex justify-center items-center overflow-hidden">
+      <img [src]="product.image" class="w-full h-full bg-secondary object-cover" [alt]="product.name" loading="lazy" />
+    </div>
+
+    <!-- Info -->
+    <div class="flex flex-col gap-2 p-3">
+      <h2 class="font-semibold line-clamp-1" id="product-title">
+        {{ product.name }}
+      </h2>
+
+      <p class="text-gray line-clamp-2 min-h-[3rem] leading-[1.5rem]">
+        {{ product.subTitle }}
+      </p>
+
+      <div class="flex flex-col lg:flex-row gap-1 justify-between lg:items-center overflow-hidden lg:mb-[16px]">
+        @if (product.sale) {
+        <p class="font-semibold">
+          {{ product.price * (1 - product.sale / 100) | currency }}
+        </p>
+        <p class="line-through text-xs text-gray">
+          {{ product.price | currency }}
+        </p>
+        } @else {
+        <p class="font-semibold">{{ product.price | currency }}</p>
+        <p class="h-[16px]"></p>
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div class="hidden bg-black-transparent p-3 w-full flex-col items-center justify-center" [ngClass]="{
+      'lg:flex lg:absolute lg:h-full lg:top-0 lg:left-0': !showActions,
+    }" [@slideInOut]="isHovered ? 'in' : 'out'" [@.disabled]="showActions">
+    <app-button *ngIf="product.quantity > 0" type="plain" (click)="toggleCart()" btnWidth="200px">
+      {{ isInCartState ? "Remove from" : "Add to" }} Cart
+    </app-button>
+    <p *ngIf="product.quantity < 1" class="text-red-500 text-xl">
+      Out of stock
+    </p>
+    <nav class="flex flex-row flex-wrap justify-center gap-5 text-white mt-3" aria-label="Product actions">
+      <a class="flex gap-1 cursor-pointer" [routerLink]="['/product', product.id]" aria-label="View product details">
+        <img src="/icons/view.svg" class="w-[16px]" alt="View icon" />
+        <span>View</span>
+      </a>
+      <a class="flex gap-1 cursor-pointer" [routerLink]="['/comparison']" (click)="onAddToComparison()"
+        aria-label="Compare products">
+        <img src="/icons/compare.svg" class="w-[16px]" alt="Compare icon" />
+        <span>Compare</span>
+      </a>
+      <button class="flex gap-1 cursor-pointer" aria-label="Add to wishlist" (click)="toggleFavourites()">
+        <img src="/icons/heart-white{{ isFavoriteState ? '-fill' : '' }}.svg" class="w-[16px]" alt="Like icon" />
+        <span>Like</span>
+      </button>
+    </nav>
+  </div>
+</div>
+<!-- configure width with position -->

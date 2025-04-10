@@ -1,0 +1,74 @@
+<!-- Page Header -->
+<app-header-banner
+  bannerTitle="Privacy Policy"
+  [bannerPath]="[{ title: 'privacy policy', path: '/privacypolicy' }]"
+></app-header-banner>
+
+<div class="flex flex-col justify-center items-center gap-4 p-10">
+  <div class="p-6 bg-white shadow rounded-lg max-w-3xl">
+    <h1 class="text-3xl font-bold mb-4 text-center">Furniro Privacy Policy</h1>
+
+    <section class="mt-4">
+      <h2 class="text-xl font-semibold">1. About this Policy</h2>
+      <p class="text-gray-600 mt-2">
+        We value your privacy. This policy explains how we collect, use, and
+        protect your personal data. If you have questions, contact us at: <br />
+        <strong>Email:</strong> privacy.Furniro.com |
+        <strong>Hotline:</strong> 16576
+      </p>
+    </section>
+
+    <section class="mt-4">
+      <h2 class="text-xl font-semibold">2. Data We Collect</h2>
+      <ul class="list-disc ml-5 text-gray-600">
+        <li>Name, email, phone, address</li>
+        <li>Payment details</li>
+        <li>Purchase history & preferences</li>
+        <li>Website usage data</li>
+      </ul>
+    </section>
+
+    <section class="mt-4">
+      <h2 class="text-xl font-semibold">3. When We Collect Data</h2>
+      <ul class="list-disc ml-5 text-gray-600">
+        <li>When you shop online or in-store</li>
+        <li>When you join our loyalty program</li>
+        <li>When you interact with our website</li>
+      </ul>
+    </section>
+
+    <section class="mt-4">
+      <h2 class="text-xl font-semibold">4. How We Use Your Data</h2>
+      <ul class="list-disc ml-5 text-gray-600">
+        <li>Process orders and payments</li>
+        <li>Enhance user experience</li>
+        <li>Marketing (with your consent)</li>
+        <li>Security & fraud prevention</li>
+      </ul>
+    </section>
+
+    <section class="mt-4">
+      <h2 class="text-xl font-semibold">5. Data Sharing</h2>
+      <p class="text-gray-600 mt-2">
+        We do not sell your data. We may share it with trusted partners for
+        payment processing, delivery, and legal compliance.
+      </p>
+    </section>
+
+    <section class="mt-4">
+      <h2 class="text-xl font-semibold">6. Your Rights</h2>
+      <p class="text-gray-600 mt-2">
+        You have the right to access, modify, or delete your data. Contact us to
+        exercise your rights.
+      </p>
+    </section>
+
+    <p class="text-gray-500 text-sm text-center mt-6">Updated: March 2025</p>
+    <div class="w-full flex justify-center"></div>
+  </div>
+  <app-button (click)="goBack()">Go Back</app-button>
+</div>
+
+<!-- Page banner -->
+
+<app-feature-banner></app-feature-banner>

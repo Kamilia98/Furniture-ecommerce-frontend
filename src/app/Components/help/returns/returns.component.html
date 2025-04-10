@@ -1,0 +1,67 @@
+<!-- Page Header -->
+<app-header-banner
+  bannerTitle="Returns Policy"
+  [bannerPath]="[{ title: 'returns policy', path: '/returns' }]"
+></app-header-banner>
+
+<div class="flex justify-center p-10">
+  <div class="p-6 bg-white shadow rounded-lg flex flex-col gap-6 max-w-3xl">
+    <h1 class="text-3xl font-bold text-center">Return Policy</h1>
+
+    <!-- Returns Time -->
+    <div class="flex flex-col gap-4">
+      <h2 class="text-2xl font-semibold">Returns Time</h2>
+      <div class="flex">
+        <p class="mt-2 text-gray-700">
+          You can return your products within <strong>90 days</strong> for an
+          exchange or refund. Simply return the unopened items with proof of
+          purchase. If the returns criteria are not fully met, we may refuse the
+          return. This policy is in addition to your statutory rights and IKEA
+          commercial guarantees.
+        </p>
+        <img
+          src="images/90.png"
+          alt="Returns"
+          class="self-center w-80 hidden md:block"
+        />
+      </div>
+    </div>
+
+    <!-- Return Requirements -->
+    <div class="flex flex-col gap-4">
+      <h2 class="text-2xl font-semibold">What You Will Need</h2>
+      <p class="text-gray-700">
+        Your receipt and the item’s original packaging are required for all
+        returns and exchanges. Refunds will be issued using the same payment
+        method as the original purchase (e.g., credit card refunds will be
+        credited to the original account).
+      </p>
+    </div>
+
+    <!-- Non-Refundable Purchases -->
+    <div class="flex flex-col gap-4">
+      <h2 class="text-2xl font-semibold">Non-Refundable Purchases</h2>
+      <p class="text-gray-700">
+        IKEA reserves the right to refuse a return or exchange at any time, and
+        picture identification may be required. Please visit your local IKEA
+        store or contact us for more details.
+      </p>
+    </div>
+
+    <!-- Online Shopping Returns -->
+    <div class="flex flex-col gap-4">
+      <h2 class="text-2xl font-semibold">Online Shopping Returns & Refunds</h2>
+      <p class="text-gray-700">
+        If you are not entirely satisfied with your purchase, return the
+        unopened item within <strong>90 days</strong> with your receipt
+        in-store. We will refund the amount to your original payment method.
+        However, delivery and assembly costs are non-refundable for items
+        already delivered. Refunds will be based on our evaluation of the item's
+        condition.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- Page Banner -->
+<app-feature-banner></app-feature-banner>

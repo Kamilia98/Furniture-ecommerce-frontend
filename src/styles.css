@@ -1,0 +1,54 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+@import "tailwindcss";
+
+@theme {
+  --shadow: 0 0 5px #0000004d;
+  --font-poppins: "Poppins";
+  --font-montserrat: "Montserrat";
+
+  --color-secondary: #f9f1e7;
+  --color-primary: #b88e2f;
+
+  --color-gray: #9f9f9f;
+  --color-gray-light: #f4f5f7;
+  --color-gray-medium: #d1d5dc;
+  --color-gray-dark: #333333;
+
+  --color-white: #fff;
+  --color-black: #3a3a3a;
+  --color-black-transparent: #00000073;
+
+  --color-red-light: #e97171;
+  --color-green-light: #2ec1ac;
+}
+
+body {
+  accent-color: var(--color-primary);
+}
+::-webkit-scrollbar {
+  /* width: 10px; */
+  width: 0px;
+}
+
+::-webkit-scrollbar-track {
+  /* background: var(--color-gray-light); */
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  /* background: var(--color-gray-dark); */
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-gray-dark);
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+}
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE, Edge */
+  scrollbar-width: none; /* Firefox */
+}

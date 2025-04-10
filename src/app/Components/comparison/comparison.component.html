@@ -1,0 +1,290 @@
+<!-- comparison.component.html -->
+<app-header-banner
+  bannerTitle="Product Comparison"
+  [bannerPath]="[{ title: 'comparison', path: '/comparison' }]"
+>
+</app-header-banner>
+
+<div class="font-poppins max-w-7xl mx-auto p-6">
+  <!-- Header Section -->
+  <div
+    class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4"
+  >
+    <div class="space-y-1">
+      <h1 class="text-2xl md:text-3xl font-bold text-[var(--color-black)]">
+        Product Comparison
+      </h1>
+      <p class="text-sm text-[var(--color-gray)]">
+        Comparing {{ comparisonProducts.length }} products
+      </p>
+    </div>
+    <button
+      class="flex items-center cursor-pointer gap-2 px-6 py-3 rounded-full transition-all duration-200 bg-[var(--color-primary)] text-white hover:bg-opacity-90 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+      (click)="handleAddProduct()"
+      [disabled]="comparisonService.isComparisonFull()"
+    >
+      <svg
+        class="w-5 h-5"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+        />
+      </svg>
+      {{
+        comparisonService.isComparisonFull() ? "Comparison Full" : "Add Product"
+      }}
+    </button>
+  </div>
+
+  <!-- Comparison Content -->
+  <ng-container *ngIf="comparisonProducts.length > 0; else emptyState">
+    <div
+      class="overflow-x-auto bg-white rounded-xl shadow-xl border border-[var(--color-gray-light)]"
+    >
+      <table class="min-w-full text-sm">
+        <!-- Product Cards Header -->
+        <thead>
+          <tr>
+            <th
+              class="w-24 bg-[var(--color-gray-light)] p-6 text-left text-[var(--color-gray)] font-semibold"
+            >
+              Product Details
+            </th>
+            <th
+              *ngFor="let product of comparisonProducts"
+              class="w-60 p-6 align-top border-l border-[var(--color-gray-light)]"
+            >
+              <div
+                class="relative flex flex-col items-center text-center gap-3"
+              >
+                <button
+                  class="absolute top-2 right-2 text-[var(--color-gray)] hover:text-[var(--color-primary)] bg-white rounded-full shadow-sm p-1 transition-colors cursor-pointer"
+                  (click)="removeProduct(product.id, product.productName)"
+                >
+                  <svg
+                    class="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+
+                <div
+                  class="w-40 h-40 mb-3 bg-[var(--color-gray-light)] border border-[var(--color-gray-light)] flex items-center justify-center rounded-xl overflow-hidden"
+                >
+                  <img
+                    [src]="getMainImage(product)"
+                    alt="{{ product.productName }}"
+                    class="object-cover h-full w-full transition-transform duration-200 hover:scale-110"
+                  />
+                </div>
+
+                <div class="space-y-1">
+                  <h3 class="text-lg font-bold text-[var(--color-black)]">
+                    {{ product.productName }}
+                  </h3>
+                  <p
+                    class="text-sm text-[var(--color-gray)] line-clamp-4 min-h-[6rem] leading-[1.5rem]"
+                  >
+                    {{ product.productSubtitle }}
+                  </p>
+                  <div class="flex flex-col items-center">
+                    <span class="text-xl font-bold text-[var(--color-primary)]">
+                      {{ product.productPrice | currency }}
+                    </span>
+                    <span
+                      *ngIf="product.productSale"
+                      class="text-xs text-[var(--color-gray)] line-through"
+                    >
+                      {{
+                        product.productPrice + product.productSale | currency
+                      }}
+                    </span>
+                  </div>
+                  <div class="text-xs text-[var(--color-gray)] mt-2">
+                    Brand: {{ product.brand || "N/A" }}
+                  </div>
+                </div>
+              </div>
+            </th>
+          </tr>
+        </thead>
+
+        <!-- Comparison Details -->
+        <tbody>
+          <tr class="border-t border-[var(--color-gray-light)]">
+            <td
+              class="bg-[var(--color-gray-light)] text-[var(--color-gray)] font-medium p-4"
+            >
+              Sales Package
+            </td>
+            <td
+              *ngFor="let product of comparisonProducts"
+              class="p-4 bg-white text-center border border-[var(--color-gray-light)]"
+            >
+              <div class="min-h-[40px] flex items-center justify-center">
+                {{
+                  product.additionalInformation?.general?.salesPackage || "N/A"
+                }}
+              </div>
+            </td>
+          </tr>
+
+          <tr class="border-t border-[var(--color-gray-light)]">
+            <td
+              class="bg-[var(--color-gray-light)] text-[var(--color-gray)] font-medium p-4"
+            >
+              Configuration
+            </td>
+            <td
+              *ngFor="let product of comparisonProducts"
+              class="p-4 bg-white text-center border border-[var(--color-gray-light)]"
+            >
+              <div class="min-h-[40px] flex items-center justify-center">
+                {{
+                  product.additionalInformation?.general?.configuration || "N/A"
+                }}
+              </div>
+            </td>
+          </tr>
+
+          <tr class="border-t border-[var(--color-gray-light)]">
+            <td
+              class="bg-[var(--color-gray-light)] text-[var(--color-gray)] font-medium p-4"
+            >
+              Width (cm)
+            </td>
+            <td
+              *ngFor="let product of comparisonProducts"
+              class="p-4 bg-white text-center border border-[var(--color-gray-light)]"
+            >
+              <div class="min-h-[40px] flex items-center justify-center">
+                {{ product.additionalInformation?.dimensions?.width || "N/A" }}
+              </div>
+            </td>
+          </tr>
+
+          <tr class="border-t border-[var(--color-gray-light)]">
+            <td
+              class="bg-[var(--color-gray-light)] text-[var(--color-gray)] font-medium p-4"
+            >
+              Primary Material
+            </td>
+            <td
+              *ngFor="let product of comparisonProducts"
+              class="p-4 bg-white text-center border border-[var(--color-gray-light)]"
+            >
+              <div class="min-h-[40px] flex items-center justify-center">
+                {{
+                  product.additionalInformation?.materials?.primaryMaterial ||
+                    "N/A"
+                }}
+              </div>
+            </td>
+          </tr>
+
+          <tr class="border-t border-[var(--color-gray-light)]">
+            <td
+              class="bg-[var(--color-gray-light)] text-[var(--color-gray)] font-medium p-4"
+            >
+              Max Load (kg)
+            </td>
+            <td
+              *ngFor="let product of comparisonProducts"
+              class="p-4 bg-white text-center border border-[var(--color-gray-light)]"
+            >
+              <div class="min-h-[40px] flex items-center justify-center">
+                {{
+                  product.additionalInformation?.specifications
+                    ?.maximumLoadCapacity || "N/A"
+                }}
+              </div>
+            </td>
+          </tr>
+
+          <tr class="border-t border-[var(--color-gray-light)]">
+            <td
+              class="bg-[var(--color-gray-light)] text-[var(--color-gray)] font-medium p-4"
+            >
+              Adjustable Headrest
+            </td>
+            <td
+              *ngFor="let product of comparisonProducts"
+              class="p-4 bg-white text-center border border-[var(--color-gray-light)]"
+            >
+              <div class="min-h-[40px] flex items-center justify-center">
+                <span
+                  class="px-3 py-1 rounded-full text-sm
+                  {{
+                    product.additionalInformation?.specifications
+                      ?.adjustableHeadrest
+                      ? 'bg-green-100 text-green-800'
+                      : 'bg-red-100 text-red-800'
+                  }}"
+                >
+                  {{
+                    product.additionalInformation?.specifications
+                      ?.adjustableHeadrest
+                      ? "Yes"
+                      : "No"
+                  }}
+                </span>
+              </div>
+            </td>
+          </tr>
+
+          <tr class="border-t border-[var(--color-gray-light)]">
+            <td
+              class="bg-[var(--color-gray-light)] text-[var(--color-gray)] font-medium p-4"
+            >
+              Warranty Summary
+            </td>
+            <td
+              *ngFor="let product of comparisonProducts"
+              class="p-4 bg-white text-center border border-[var(--color-gray-light)]"
+            >
+              <div class="min-h-[40px] flex items-center justify-center">
+                {{ product.additionalInformation?.warranty?.summary || "N/A" }}
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </ng-container>
+
+  <!-- Empty State -->
+  <ng-template #emptyState>
+    <div
+      class="text-center py-16 space-y-6 border-2 border-dashed border-[var(--color-gray-light)] rounded-xl"
+    >
+      <div class="space-y-2">
+        <h3 class="text-2xl font-bold text-[var(--color-black)]">
+          No products to compare
+        </h3>
+        <p class="text-[var(--color-gray)]">
+          Add products to start comparing features
+        </p>
+      </div>
+      <button
+        class="px-8 py-3 cursor-pointer rounded-full bg-[var(--color-primary)] text-white hover:bg-opacity-90 transition-all duration-200 shadow-md"
+        (click)="handleAddProduct()"
+      >
+        Browse Products
+      </button>
+    </div>
+  </ng-template>
+</div>

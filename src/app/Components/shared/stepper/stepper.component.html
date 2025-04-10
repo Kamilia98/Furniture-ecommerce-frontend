@@ -1,0 +1,28 @@
+<div class="stepper-container px-5 sm:px-10 ">
+  <div
+    class="step"
+    [class.active]="stepIndex >= 0"
+    (click)="navigateToStep(0)"
+    [style.cursor]="stepIndex > 0 ? 'pointer' : 'default'"
+  >
+    <div class="step-number" [class.completed]="stepIndex > 0">1</div>
+    <div class="step-label">Your Cart</div>
+  </div>
+
+  <div class="step-line" [class.active]="stepIndex >= 1"></div>
+  <div
+    class="step"
+    [class.active]="stepIndex >= 1"
+    (click)="navigateToStep(1)"
+    [style.cursor]="stepIndex > 1 ? 'pointer' : 'default'"
+  >
+    <div class="step-number" [class.completed]="stepIndex > 1">2</div>
+    <div class="step-label">Checkout Details</div>
+  </div>
+
+  <div class="step-line" [class.active]="stepIndex >= 2"></div>
+  <div class="step" [class.active]="stepIndex >= 2">
+    <div class="step-number" [class.completed]="stepIndex > 2">3</div>
+    <div class="step-label">Order Complete</div>
+  </div>
+</div>

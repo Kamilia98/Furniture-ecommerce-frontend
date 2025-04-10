@@ -1,0 +1,22 @@
+<div
+  class="bg-[url('/images/header-banner-background.jpg')] bg-cover aspect-[4.5] w-full bg-no-repeat"
+>
+  <div
+    class="flex flex-col justify-center items-center h-full gap-[10px] text-white"
+  >
+    <h3 class="text-xl md:text-4xl lg:text-5xl font-medium lg:leading-[72px]">
+      {{ bannerTitle | titlecase }}
+    </h3>
+    <nav class="flex items-center gap-[10px]">
+      <div>
+        <a routerLink="/" class="hover:underline">Home</a>
+      </div>
+      <div *ngFor="let item of bannerPath" class="flex gap-[10px]">
+        <div class="">></div>
+        <a class="hover:underline cursor-pointer" [routerLink]="item.path">{{
+          item.title | titlecase
+        }}</a>
+      </div>
+    </nav>
+  </div>
+</div>

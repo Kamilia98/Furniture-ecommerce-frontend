@@ -1,0 +1,124 @@
+<app-header-banner
+  bannerTitle="Blogs"
+  [bannerPath]="[{ title: 'blogs', path: '/blogs' }]"
+></app-header-banner>
+
+<section
+  class="flex flex-col lg:flex-row gap-5 my-0 mx-auto max-w-[1240px] p-5 sm:p-10"
+  #blogsContainer
+>
+  <!-- Categories Dropdown (Small Screen) -->
+  <div class="lg:hidden flex flex-col gap-5">
+    <p class="text-lg font-semibold text-gray-dark md:hidden">Categories</p>
+    <div class="relative">
+      <button
+        class="bg-white h-14 flex items-center px-5 cursor-pointer w-full min-w-48 border border-gray-medium rounded-md focus:outline-none"
+        (click)="toggleDropdown(true)"
+      >
+        <span class="text-gray-dark">{{ selectedCategory }}</span>
+      </button>
+      <app-dropdown
+        *ngIf="isMenuOpen && categories.length > 0"
+        [items]="categories"
+        (selectedValueChange)="filterByCategory($event)"
+      ></app-dropdown>
+    </div>
+  </div>
+
+  <!-- Posts and Categories -->
+  <div class="flex-1 flex flex-row gap-20">
+    <!-- Categories List -->
+    <div class="hidden lg:block w-[200px]">
+      <div class="flex flex-col gap-[40px]">
+        <h1 class="text-black font-semibold text-[25px]">Categories</h1>
+
+        <ul class="flex flex-col gap-[20px] ml-2">
+          <li
+            *ngFor="let category of categories"
+            (click)="filterByCategory(category)"
+            class="cursor-pointer text-gray p-2 px-4 rounded-lg hover:bg-secondary transition-all duration-300"
+            [ngClass]="{ 'bg-secondary': category == selectedCategory }"
+          >
+            {{ category }}
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Posts Loading Skeleton -->
+    <div *ngIf="loading" class="flex flex-col gap-6 flex-1">
+      <!-- Post Skeleton Loader -->
+      <app-blog-skeleton *ngFor="let _ of [1, 2, 3]"></app-blog-skeleton>
+    </div>
+
+    <!-- No Posts Found or Content -->
+    <div
+      *ngIf="!loading && (posts$ | async)?.length === 0"
+      class="flex justify-center items-center flex-1"
+    >
+      <p class="text-gray text-center text-4xl">
+        There are no posts in this category.
+      </p>
+    </div>
+
+    <!-- Blog Posts -->
+    <div *ngIf="!loading" class="flex flex-col gap-[50px] flex-1">
+      <div
+        *ngFor="let post of posts$ | async"
+        class="bg-white flex flex-col items-start gap-3"
+      >
+        <!-- Post Image -->
+        <img [src]="post.img" alt="{{ post.title }}" class="w-full rounded" />
+
+        <!-- Post Info -->
+        <div class="flex flex-wrap items-center gap-2">
+          <div class="flex gap-2">
+            <img src="/icons/profile.svg " alt="profile" />
+            <p class="text-gray text-sm flex items-center">
+              {{ post.user }}
+            </p>
+          </div>
+          <div class="flex gap-2">
+            <img src="/icons/calender.svg " alt="date" />
+            <p class="text-gray text-sm flex items-center">
+              {{ post.date | date }}
+            </p>
+          </div>
+          <div class="flex gap-2">
+            <img src="/icons/tag.svg" alt="category" />
+            <p class="text-gray text-sm flex items-center">
+              {{ post.categories.join(", ") }}
+            </p>
+          </div>
+        </div>
+
+        <h2 class="text-xl md:text-xl font-semibold max-w-2xl">
+          {{ post.title }}
+        </h2>
+
+        <p
+          class="text-gray-dark text-sm md:text-base max-w-2xl leading-relaxed"
+        >
+          {{ post.description }}
+        </p>
+
+        <a
+          [routerLink]="['/blog', post._id]"
+          class="text-black border-b border-gray-dark cursor-pointer"
+        >
+          Read More
+        </a>
+      </div>
+
+      <!-- Navigation Buttons -->
+      <app-pagination
+        [(currentPage)]="currentPage"
+        [pagesCount]="totalPages"
+        [container]="this.blogsContainer"
+        (currentPageChange)="loadPosts()"
+      ></app-pagination>
+    </div>
+  </div>
+</section>
+
+<app-feature-banner></app-feature-banner>

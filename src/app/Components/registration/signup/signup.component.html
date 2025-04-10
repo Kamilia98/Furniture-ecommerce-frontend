@@ -1,0 +1,93 @@
+<div class="flex flex-col gap-4">
+  <h2 class="text-5xl font-bold font-poppins">Sign Up</h2>
+  <form [formGroup]="signupForm" class="flex flex-col gap-4">
+    <app-input
+      placeholder="User name"
+      label="Name"
+      type="text"
+      bgC="secondary"
+      width="full"
+      [control]="signupForm.controls['username']"
+    ></app-input>
+    <app-input
+      placeholder="test@test.com"
+      label="Email"
+      type="email"
+      bgC="secondary"
+      width="full"
+      [control]="signupForm.controls['email']"
+    ></app-input>
+    <app-input
+      placeholder="Phone"
+      bgC="secondary"
+      label="Phone"
+      type="text"
+      width="full"
+      [control]="signupForm.controls['phone']"
+    ></app-input>
+    <app-input
+      placeholder="Password"
+      label="Password"
+      type="password"
+      bgC="secondary"
+      width="full"
+      [control]="signupForm.controls['password']"
+    ></app-input>
+    <!-- Agree to privacy Policy -->
+    <div class="flex flex-col gap-2 w-full mt-2">
+      <div class="flex items-center gap-2">
+        <input
+          type="checkbox"
+          id="agree"
+          formControlName="agree"
+          class="w-4 h-4"
+        />
+        <label for="agree" class="text-sm text-gray-600">
+          I agree to the
+          <a class="text-primary cursor-pointer hover:underline"
+            >Terms of Service</a
+          >
+          and
+          <a class="text-primary cursor-pointer hover:underline"
+          [routerLink]="['/privacypolicy']"
+            >Privacy Policy</a
+          >.
+        </label>
+      </div>
+      <div
+        class="text-red-light text-sm"
+        [@slideUpDown]="
+          !signupForm.controls['agree'].value &&
+          this.signupForm.controls['agree'].touched
+            ? 'in'
+            : 'out'
+        "
+      >
+        You must agree to the terms before signing in.
+      </div>
+    </div>
+
+    <div
+      class="text-red-light text-center"
+      [@slideUpDown]="errorMessage ? 'in' : 'out'"
+    >
+      {{ errorMessage }}
+    </div>
+
+    <div class="flex justify-center">
+      <app-button (click)="onSubmit()">Sign Up</app-button>
+    </div>
+
+    <div class="text-center mt-2">
+      <span class="text-gray">Already have an account ?</span>
+      <span>
+        <a
+          class="text-primary font-bold opacity-100"
+          [routerLink]="['/auth/login']"
+        >
+          Sign In</a
+        >
+      </span>
+    </div>
+  </form>
+</div>

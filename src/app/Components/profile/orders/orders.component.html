@@ -1,0 +1,39 @@
+<section class="w-full h-full flex flex-col gap-4">
+  <h3 class="text-lg font-medium">Orders</h3>
+
+  <!-- Orders Table -->
+  <div class="rounded-md border text-xs">
+    <div class="relative w-full overflow-auto">
+      <table class="w-full text-xs sm:text-sm">
+        <thead>
+          <tr class="border-b">
+            <th class="h-12 px-4 text-left font-medium">Order Number</th>
+            <th class="h-12 px-4 text-left font-medium">Status</th>
+            <th class="h-12 px-4 text-left font-medium">Total</th>
+            <th class="h-12 px-4 text-left font-medium">Created At</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngIf="totalOrders$ | async; else noData">
+            <tr
+              *ngFor="let order of orders$ | async"
+              class="border-b last:border-none"
+            >
+              <td class="px-4 py-2">{{ order.orderNumber }}</td>
+              <td class="px-4 py-2">{{ order.status }}</td>
+              <td class="px-4 py-2">{{ order.total | currency }}</td>
+              <td class="px-4 py-2">{{ order.createdAt | date }}</td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- No Data Message -->
+  <ng-template #noData>
+    <tr>
+      <td class="p-4 text-center h-24" colspan="4">No data available</td>
+    </tr>
+  </ng-template>
+</section>
