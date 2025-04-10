@@ -86,7 +86,7 @@
   <div
     class="border-y border-gray flex-1 flex flex-col gap-[10px] py-[10px] justify-between overflow-scroll"
   >
-    <div class="flex flex-col gap-[25px] overflow-scroll">
+    <div class="flex flex-col flex-1 gap-[25px] overflow-scroll">
       @if (cartLength$|async) {
       <div
         *ngFor="let item of cart$ | async"
