@@ -25,7 +25,12 @@
     >
   </div>
   <div class="flex gap-2 justify-end">
-    <app-button type="primary-outline" btnWidth="fit">Remove</app-button>
+    <app-button
+      type="primary-outline"
+      btnWidth="fit"
+      (click)="deleteFavorite(item.id)"
+      >Remove</app-button
+    >
   </div>
 </div>
 

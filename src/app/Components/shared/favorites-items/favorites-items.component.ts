@@ -31,4 +31,12 @@ export class FavoritesItemsComponent implements OnInit {
       map((favorites) => favorites.length)
     );
   }
+  
+  deleteFavorite(id: string): void {
+    this.favoriteService.toggleFavourite(id).subscribe({
+      next: () => {
+        this.cdr.markForCheck();
+      },
+    });
+  }
 }
