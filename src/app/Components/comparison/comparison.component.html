@@ -65,7 +65,7 @@
               >
                 <button
                   class="absolute top-2 right-2 text-[var(--color-gray)] hover:text-[var(--color-primary)] bg-white rounded-full shadow-sm p-1 transition-colors cursor-pointer"
-                  (click)="removeProduct(product.id, product.productName)"
+                  (click)="removeProduct(product.id, product.name)"
                 >
                   <svg
                     class="w-5 h-5"
@@ -87,32 +87,32 @@
                 >
                   <img
                     [src]="getMainImage(product)"
-                    alt="{{ product.productName }}"
+                    alt="{{ product.name }}"
                     class="object-cover h-full w-full transition-transform duration-200 hover:scale-110"
                   />
                 </div>
 
                 <div class="space-y-1">
                   <h3 class="text-lg font-bold text-[var(--color-black)]">
-                    {{ product.productName }}
+                    {{ product.name }}
                   </h3>
                   <p
                     class="text-sm text-[var(--color-gray)] line-clamp-4 min-h-[6rem] leading-[1.5rem]"
                   >
-                    {{ product.productSubtitle }}
+                    {{ product.subtitle }}
                   </p>
                   <div class="flex flex-col items-center">
                     <span class="text-xl font-bold text-[var(--color-primary)]">
                       {{
-                        product.productPrice *
-                          (1 - (product.productSale ?? 0) / 100) | currency
+                        product.price * (1 - (product.sale ?? 0) / 100)
+                          | currency
                       }}
                     </span>
                     <span
-                      *ngIf="product.productSale"
+                      *ngIf="product.sale"
                       class="text-xs text-[var(--color-gray)] line-through"
                     >
-                      {{ product.productPrice | currency }}
+                      {{ product.price | currency }}
                     </span>
                   </div>
                   <div class="text-xs text-[var(--color-gray)] mt-2">

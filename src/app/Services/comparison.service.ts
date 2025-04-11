@@ -19,21 +19,21 @@ export class ComparisonService {
   ) {}
 
   // In ComparisonService
-  addToComparison(productId: string, productName: string): void {
+  addToComparison(id: string, name: string): void {
     let comparison = JSON.parse(
       localStorage.getItem(this.comparisonKey) || '[]'
     );
 
     // Remove existing entry if it exists
-    comparison = comparison.filter((id: string) => id !== productId);
+    comparison = comparison.filter((id: string) => id !== id);
 
     // Add to the end of array if not full
     if (comparison.length < 4) {
-      comparison.push(productId);
-      this.toast.success(`${productName} Added to comparison`);
+      comparison.push(id);
+      this.toast.success(`${name} Added to comparison`);
     } else {
       // If full, remove oldest and add new (FIFO)
-      comparison = [comparison[1], productId];
+      comparison = [comparison[1], id];
     }
 
     localStorage.setItem(this.comparisonKey, JSON.stringify(comparison));
@@ -71,17 +71,17 @@ export class ComparisonService {
   }
 
   // Remove a product from the comparison (by ID)
-  removeFromComparison(productId: string, productName: string): void {
+  removeFromComparison(id: string, name: string): void {
     let comparison = JSON.parse(
       localStorage.getItem(this.comparisonKey) || '[]'
     );
 
     // Remove the product ID from the comparison list
-    comparison = comparison.filter((id: string) => id !== productId);
+    comparison = comparison.filter((id: string) => id !== id);
 
     // Update LocalStorage with the new list
     localStorage.setItem(this.comparisonKey, JSON.stringify(comparison));
-    this.toast.success(`${productName} removed from comparison`);
+    this.toast.success(`${name} removed from comparison`);
   }
 
   // Clear the entire comparison list from LocalStorage

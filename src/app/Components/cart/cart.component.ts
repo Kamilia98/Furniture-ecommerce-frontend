@@ -72,8 +72,8 @@ export class CartComponent implements OnInit {
       .subscribe();
   }
 
-  decreaseQuantity(productId: string) {
-    this.cartService.decreaseQuantity(productId);
+  decreaseQuantity(id: string) {
+    this.cartService.decreaseQuantity(id);
   }
 
   goToCheckout() {

@@ -65,11 +65,11 @@
       <!-- Product Details -->
       <div class="flex-1 lg:w-2/5 max-w-xl space-y-3 lg:space-y-6">
         <h1 class="text-3xl lg:text-4xl font-light text-[var(--color-black)]">
-          {{ (product$ | async)?.productName }}
+          {{ (product$ | async)?.name }}
         </h1>
 
         <p class="text-sm lg:text-base text-[var(--color-black)]">
-          {{ (product$ | async)?.productSubtitle }}
+          {{ (product$ | async)?.subtitle }}
         </p>
 
         <p class="text-lg lg:text-xl font-meduim text-[var(--color-gray-dark)]">
@@ -187,7 +187,7 @@
 
   <!-- About the product  -->
   <app-product-description
-    [description]="(product$ | async)?.productDescription"
+    [description]="(product$ | async)?.description"
     [additionalInfo]="(product$ | async)?.additionalInformation"
     [imageUrls]="selectedColor?.galleryImages"
   >

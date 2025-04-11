@@ -77,12 +77,12 @@ export class CartService {
   private mapToProductCart(p: any): productCart {
     return {
       id: p._id,
-      name: p.productName,
-      image: p.productImage,
-      price: p.productPrice,
-      quantity: p.productQuantity,
-      subtotal: p.productPrice * p.productQuantity,
-      color: p.productColor,
+      name: p.name,
+      image: p.image,
+      price: p.price,
+      quantity: p.quantity,
+      subtotal: p.price * p.quantity,
+      color: p.color,
     };
   }
 
@@ -126,7 +126,7 @@ export class CartService {
 
     const body = [
       {
-        productId: product.id,
+        id: product.id,
         quantity,
         color: product.color,
       },
@@ -174,30 +174,30 @@ export class CartService {
     this.toast.success(`${product.name} added to cart successfully.`);
   }
 
-  removeProduct(productId: string, color?: string): void {
-    console.log(`[CartService] Removing product ID: ${productId}`);
-    this.modifyQuantity(productId, 0, true, color);
+  removeProduct(id: string, color?: string): void {
+    console.log(`[CartService] Removing product ID: ${id}`);
+    this.modifyQuantity(id, 0, true, color);
   }
 
   private modifyQuantity(
-    productId: string,
+    id: string,
     change: number,
     remove = false,
     color?: string
   ): void {
     let cart = [...this.cartSubject.getValue()];
-    let productName = '';
+    let name = '';
 
-    const product = cart.find((p) => p.id === productId);
+    const product = cart.find((p) => p.id === id);
     if (product) {
-      productName = product.name;
+      name = product.name;
       if (remove) {
-        cart = cart.filter((p) => p.id !== productId);
+        cart = cart.filter((p) => p.id !== id);
       } else {
         product.quantity += change;
         product.subtotal = product.quantity * product.price;
         if (product.quantity <= 0) {
-          cart = cart.filter((p) => p.id !== productId);
+          cart = cart.filter((p) => p.id !== id);
         }
       }
     }
@@ -207,15 +207,15 @@ export class CartService {
       this.http
         .patch(
           this.apiUrl,
-          { productId, quantity: remove ? 0 : product?.quantity || 0, color },
+          { id, quantity: remove ? 0 : product?.quantity || 0, color },
           { headers: this.getAuthHeaders() }
         )
         .pipe(
           catchError((error) => {
             this.toast.danger(
               remove
-                ? `Failed to remove ${productName} from cart.`
-                : `Failed to update ${productName} quantity.`
+                ? `Failed to remove ${name} from cart.`
+                : `Failed to update ${name} quantity.`
             );
             return this.handleError('modifyQuantity')(error);
           })
@@ -229,8 +229,8 @@ export class CartService {
               );
 
               const message = remove
-                ? `${productName} has been removed from the cart.`
-                : `${productName} quantity updated successfully.`;
+                ? `${name} has been removed from the cart.`
+                : `${name} quantity updated successfully.`;
               this.toast.success(message);
             }
           },
@@ -242,30 +242,26 @@ export class CartService {
         cart.reduce((sum, p) => sum + p.subtotal, 0)
       );
       const message = remove
-        ? `${productName} has been removed from the cart.`
-        : `${productName} quantity updated successfully.`;
+        ? `${name} has been removed from the cart.`
+        : `${name} quantity updated successfully.`;
       this.toast.success(message);
     }
   }
 
-  increaseQuantity(productId: string): void {
-    console.log(
-      `[CartService] Increasing quantity for product ID: ${productId}`
-    );
-    this.modifyQuantity(productId, 1);
+  increaseQuantity(id: string): void {
+    console.log(`[CartService] Increasing quantity for product ID: ${id}`);
+    this.modifyQuantity(id, 1);
   }
 
-  decreaseQuantity(productId: string): void {
-    console.log(
-      `[CartService] Decreasing quantity for product ID: ${productId}`
-    );
-    this.modifyQuantity(productId, -1);
+  decreaseQuantity(id: string): void {
+    console.log(`[CartService] Decreasing quantity for product ID: ${id}`);
+    this.modifyQuantity(id, -1);
   }
 
-  isInCart(productId: string): boolean {
-    const exists = this.cartSubject.getValue().some((p) => p.id === productId);
+  isInCart(id: string): boolean {
+    const exists = this.cartSubject.getValue().some((p) => p.id === id);
     console.log(
-      `[CartService] Checking if product ${productId} is in cart: ${exists}`
+      `[CartService] Checking if product ${id} is in cart: ${exists}`
     );
     return exists;
   }
@@ -300,7 +296,7 @@ export class CartService {
           this.apiUrl,
           [
             {
-              productId: product.id,
+              id: product.id,
               quantity,
               color: product.color,
             },
@@ -332,16 +328,16 @@ export class CartService {
     }
   }
 
-  removeColorVariant(productId: string, color: string): void {
-    this.removeProduct(productId, color);
+  removeColorVariant(id: string, color: string): void {
+    this.removeProduct(id, color);
     // const cart = this.cartSubject.getValue();
-    // const product = cart.find((p) => p.id === productId && p.color === color);
+    // const product = cart.find((p) => p.id === id && p.color === color);
     // console.log(cart);
-    // console.log(productId);
+    // console.log(id);
     // console.log(color);
     // if (product) {
     //   const filteredCart = cart.filter(
-    //     (p) => !(p.id === productId && p.color === color)
+    //     (p) => !(p.id === id && p.color === color)
     //   );
     //   this.updateCartState(filteredCart);
     //   this.toast.success(`${product.name} (${color}) removed from the cart`);
@@ -374,13 +370,11 @@ export class CartService {
     this.updateCartState(cart);
   }
 
-  isColorInCart(productId: string, colorName: string): boolean {
+  isColorInCart(id: string, colorName: string): boolean {
     const cart = this.cartSubject.getValue();
     console.log('[isColorInCart]', cart);
     console.log(cart);
-    return cart.some(
-      (item) => item.id === productId && item.color === colorName
-    );
+    return cart.some((item) => item.id === id && item.color === colorName);
   }
   isUserLoggedIn(): boolean {
     return this.isLoggedInSubject.getValue();

@@ -105,19 +105,19 @@ export class ProductService {
             console.error('[ProductService] Invalid API response:', response);
             return;
           }
-
+          console.log('#################', response);
           const apiProducts = response.data.products.map((p) => ({
             id: p._id,
-            name: p.productName,
-            image: p.productImage,
-            subTitle: p.productSubtitle,
-            price: p.productPrice,
-            quantity: p.productQuantity,
-            categories: p.productCategories.map(
+            name: p.name,
+            image: p.image,
+            subTitle: p.subtitle,
+            price: p.price,
+            quantity: p.quantity,
+            categories: p.categories.map(
               (cat: { catName: string }) => cat.catName
             ),
-            date: p.productDate,
-            sale: p.productSale,
+            date: p.date,
+            sale: p.sale,
             color: p.mainColor,
           }));
 
@@ -135,30 +135,26 @@ export class ProductService {
   }
 
   // Get a single product by ID
-  getProduct(productId: string): Observable<ProductDetails> {
-    console.log('[ProductService] Fetching product with ID:', productId);
+  getProduct(id: string): Observable<ProductDetails> {
+    console.log('[ProductService] Fetching product with ID:', id);
 
     return this.http
-      .get<{ status: string; data: { product: any } }>(
-        `${this.apiUrl}/${productId}`
-      )
+      .get<{ status: string; data: { product: any } }>(`${this.apiUrl}/${id}`)
       .pipe(
         tap((response) =>
           console.log('[ProductService] Raw product response:', response)
         ),
         map(({ data }) => ({
           id: data.product._id,
-          productName: data.product.productName,
-          productSubtitle: data.product.productSubtitle,
-          productPrice: data.product.productPrice,
-          productDate: data.product.productDate,
-          productSale: data.product.productSale,
-          productDescription: data.product.productDescription,
+          name: data.product.name,
+          subtitle: data.product.subtitle,
+          price: data.product.price,
+          date: data.product.date,
+          sale: data.product.sale,
+          description: data.product.description,
           brand: data.product.brand,
 
-          productCategories: data.product.productCategories.map(
-            (cat: string) => cat
-          ),
+          categories: data.product.categories.map((cat: string) => cat),
 
           colors: data.product.colors.map((color: any) => ({
             name: color.name,
@@ -226,7 +222,7 @@ export class ProductService {
           console.log('[ProductService] Search response:', response)
         ),
         map((response) =>
-          response.data.map((p) => ({ id: p._id, value: p.productName }))
+          response.data.map((p) => ({ id: p._id, value: p.name }))
         ),
         catchError((error) => {
           console.error('[ProductService] Search error:', error);

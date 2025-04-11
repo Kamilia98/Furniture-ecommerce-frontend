@@ -53,8 +53,8 @@ export class FavoriteService {
   }
 
   /*** TOGGLE FAVORITE (ADD/REMOVE) ***/
-  toggleFavourite(productId: string): Observable<productFavorite[]> {
-    let productName = this.getStoredProductName(productId); // Store name before removing
+  toggleFavourite(id: string): Observable<productFavorite[]> {
+    let name = this.getStoredname(id); // Store name before removing
 
     return this.authService.isLoggedIn$.pipe(
       first(),
@@ -62,14 +62,14 @@ export class FavoriteService {
         if (!isLoggedIn) {
           this.modalService.show(LoginPromptModalComponent);
           console.error('User is not logged in. Prompting for login.');
-          console.log(productId);
+          console.log(id);
           return of(this.favoritesSubject.getValue());
         }
 
         return this.http
           .post<{ data: { favourites: any[] } }>(
             `${this.apiUrl}/toggle-favourites`,
-            { productId },
+            { id },
             { headers: this.getAuthHeaders() }
           )
           .pipe(
@@ -78,11 +78,11 @@ export class FavoriteService {
               this.favoritesSubject.next(favorites);
 
               // Fetch name after adding
-              if (!productName) {
-                productName = this.getFetchedProductName(productId, favorites);
+              if (!name) {
+                name = this.getFetchedname(id, favorites);
               }
 
-              this.showFavoriteToast(productId, productName);
+              this.showFavoriteToast(id, name);
             }),
             catchError((error) =>
               this.handleFavoriteError(error, this.favoritesSubject.getValue())
@@ -92,23 +92,18 @@ export class FavoriteService {
     );
   }
 
-  isInFavorites(productId: string): boolean {
-    return this.favoritesSubject.getValue().some((p) => p.id === productId);
+  isInFavorites(id: string): boolean {
+    return this.favoritesSubject.getValue().some((p) => p.id === id);
   }
 
   /*** FAVORITE NAME HANDLINGE ***/
-  private getStoredProductName(productId: string): string | null {
-    const product = this.favoritesSubject
-      .getValue()
-      .find((p) => p.id === productId);
+  private getStoredname(id: string): string | null {
+    const product = this.favoritesSubject.getValue().find((p) => p.id === id);
     return product ? product.name : null;
   }
 
-  private getFetchedProductName(
-    productId: string,
-    favorites: productFavorite[]
-  ): string {
-    const product = favorites.find((p) => p.id === productId);
+  private getFetchedname(id: string, favorites: productFavorite[]): string {
+    const product = favorites.find((p) => p.id === id);
     return product ? product.name : 'Product';
   }
 
@@ -116,9 +111,9 @@ export class FavoriteService {
   private mapFavorites(apiFavorites: any[]): productFavorite[] {
     return apiFavorites.map((p) => ({
       id: p._id,
-      name: p.productName,
-      image: p.productImage,
-      subTitle: p.productSubtitle,
+      name: p.name,
+      image: p.image,
+      subTitle: p.subtitle,
     }));
   }
 
@@ -133,9 +128,9 @@ export class FavoriteService {
   }
 
   /*** UI TOAST MESSAGES ***/
-  private showFavoriteToast(productId: string, productName: string): void {
-    const isFavoriteNow = this.isInFavorites(productId);
+  private showFavoriteToast(id: string, name: string): void {
+    const isFavoriteNow = this.isInFavorites(id);
     const action = isFavoriteNow ? 'added to' : 'removed from';
-    this.toast.success(`${productName} has been ${action} your favorites.`);
+    this.toast.success(`${name} has been ${action} your favorites.`);
   }
 }

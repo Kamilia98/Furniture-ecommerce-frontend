@@ -39,7 +39,7 @@ import { ComparisonService } from '../../Services/comparison.service';
   templateUrl: './product.component.html',
 })
 export class ProductComponent implements OnInit {
-  productId: string | null = null;
+  id: string | null = null;
   private productSubject = new BehaviorSubject<ProductDetails | null>(null);
   product$ = this.productSubject.asObservable(); // Observable for the product
   relatedProducts$!: Observable<product[]>;
@@ -64,7 +64,7 @@ export class ProductComponent implements OnInit {
   } | null = null;
   count: number = 1;
   originalPrice: number = 0;
-  productcategories: string[] = [];
+  categories: string[] = [];
   salePrice: number = 0;
   isInCartState: boolean = false;
   isFavoriteState: boolean = false;
@@ -100,7 +100,7 @@ export class ProductComponent implements OnInit {
         console.log(cart);
         this.isInCartState = cart.some(
           (item) =>
-            item.id === this.productId &&
+            item.id === this.id &&
             this.selectedColor &&
             item.color == this.selectedColor.name
         );
@@ -110,9 +110,7 @@ export class ProductComponent implements OnInit {
 
     this.subs.add(
       this.favoriteService.favorites$.subscribe((favorites) => {
-        this.isFavoriteState = favorites.some(
-          (fav) => fav.id === this.productId
-        );
+        this.isFavoriteState = favorites.some((fav) => fav.id === this.id);
         this.cdr.markForCheck();
       })
     );
@@ -120,11 +118,11 @@ export class ProductComponent implements OnInit {
   }
 
   private updateCartStateForCurrentProduct(): void {
-    // if (!this.productId || !this.selectedColor) return;
+    // if (!this.id || !this.selectedColor) return;
     // console.log(5);
 
     // this.isInCartState = this.cartService.isColorInCart(
-    //   this.productId,
+    //   this.id,
     //   this.selectedColor.name
     // );
     // console.log(this.isInCartState);
@@ -134,7 +132,7 @@ export class ProductComponent implements OnInit {
       this.cartService.cart$.subscribe((cart) => {
         this.isInCartState = cart.some(
           (item) =>
-            item.id === this.productId &&
+            item.id === this.id &&
             this.selectedColor &&
             item.color == this.selectedColor.name
         );
@@ -157,15 +155,15 @@ export class ProductComponent implements OnInit {
   getMappedProduct(product: ProductDetails): product {
     return {
       id: product.id,
-      name: product.productName,
+      name: product.name,
       image: this.selectedColor?.mainImage || 'default-image.jpg',
-      subTitle: product.productSubtitle,
+      subTitle: product.subtitle,
       price: this.salePrice,
       color: this.selectedColor?.name || '',
       quantity: this.count,
-      categories: product.productCategories || [],
-      date: product.productDate,
-      sale: product.productSale,
+      categories: product.categories || [],
+      date: product.date,
+      sale: product.sale,
       colors: [this.selectedColor?.hex || ''],
       sizes: [],
       brand: product.brand,
@@ -190,19 +188,19 @@ export class ProductComponent implements OnInit {
     }
   }
 
-  fetchProduct(productId: string): Observable<ProductDetails> {
-    return this.productService.getProduct(productId).pipe(
+  fetchProduct(id: string): Observable<ProductDetails> {
+    return this.productService.getProduct(id).pipe(
       tap({
         next: (productData) => {
           if (productData) {
             this.count = 1;
             this.productSubject.next(productData);
-            this.originalPrice = productData.productPrice;
-            this.productcategories = (productData.productCategories ?? []).map(
+            this.originalPrice = productData.price;
+            this.categories = (productData.categories ?? []).map(
               ({ _id }) => _id
             );
             this.salePrice =
-              this.originalPrice * (1 - (productData.productSale || 0) / 100);
+              this.originalPrice * (1 - (productData.sale || 0) / 100);
             console.log('[product component] sale price', this.salePrice);
 
             this.colors = productData.colors || [];
@@ -213,7 +211,7 @@ export class ProductComponent implements OnInit {
             );
             console.log(
               '[ProductComponent -- fetch product] Categories:',
-              this.productcategories
+              this.categories
             );
             this.productLoading = false;
             this.fetchProducts();
@@ -233,7 +231,7 @@ export class ProductComponent implements OnInit {
 
   // related products
   fetchProducts() {
-    this.productService.getProducts(1, 4, this.productcategories).subscribe({
+    this.productService.getProducts(1, 4, this.categories).subscribe({
       next: (response) => {
         this.productsLoading = false;
         this.cdr.detectChanges();
@@ -251,9 +249,9 @@ export class ProductComponent implements OnInit {
   loadProduct(): void {
     this.productLoading = true;
     this.productsLoading = true;
-    this.productId = this.route.snapshot.paramMap.get('id');
-    if (this.productId) {
-      this.fetchProduct(this.productId).subscribe(() => {
+    this.id = this.route.snapshot.paramMap.get('id');
+    if (this.id) {
+      this.fetchProduct(this.id).subscribe(() => {
         console.log('[ProductComponent] Product data fetched successfully.');
         this.relatedProducts$ = this.productService.products$;
       });
@@ -327,7 +325,7 @@ export class ProductComponent implements OnInit {
       if (currentProduct) {
         this.comparisonService.addToComparison(
           currentProduct.id,
-          currentProduct.productName
+          currentProduct.name
         );
       }
     }

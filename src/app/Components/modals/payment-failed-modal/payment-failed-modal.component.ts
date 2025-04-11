@@ -19,7 +19,8 @@ import { MatButtonModule } from '@angular/material/button';
         </p>
       </div>
 
-     <div class="flex justify-center"> <div mat-dialog-close>
+      <div class="flex justify-center">
+        <div mat-dialog-close>
           <app-button btnWidth="auto" type="primary-outline">Okay</app-button>
         </div>
       </div>

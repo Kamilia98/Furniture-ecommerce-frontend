@@ -32,7 +32,6 @@ export class UserActionsComponent implements OnInit {
 
   ngOnInit(): void {
     this.user$ = this.userService.user$;
-
     this.authService.isLoggedIn$.subscribe((status) => {
       this.isLoggedIn = status;
     });

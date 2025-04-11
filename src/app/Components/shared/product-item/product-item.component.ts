@@ -109,10 +109,10 @@ export class ProductItemComponent implements OnInit, OnDestroy {
 
   isNewProduct(): boolean {
     if (!this.product?.date) return false;
-    const productDate = new Date(this.product.date).getTime();
+    const date = new Date(this.product.date).getTime();
     const oneMonthAgo = new Date();
     oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
-    return productDate > oneMonthAgo.getTime();
+    return date > oneMonthAgo.getTime();
   }
 
   onImageError(event: Event): void {

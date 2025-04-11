@@ -188,8 +188,8 @@ export class CheckoutComponent implements OnDestroy {
     console.log('cartItems>>>>>>>>>>', this.cartItems);
 
     const orderItems: OrderItem[] = this.cartItems.map((item) => ({
-      productId: item.productId,
-      productName: item.name,
+      id: item.id,
+      name: item.name,
       quantity: item.quantity,
       price: item.price,
       subtotal: item.price * item.quantity,

@@ -1,12 +1,12 @@
 export interface ProductDetails {
   id: string;
-  productName: string;
-  productSubtitle: string;
-  productPrice: number;
-  productDate: Date;
-  productSale?: number;
-  productCategories?: any[];
-  productDescription?: string;
+  name: string;
+  subtitle: string;
+  price: number;
+  date: Date;
+  sale?: number;
+  categories?: any[];
+  description?: string;
   brand?: string;
 
   colors?: {

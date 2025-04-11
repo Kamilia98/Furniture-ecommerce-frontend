@@ -62,9 +62,34 @@ export class AuthService {
   }
 
   logout(): void {
-    this.clearToken();
-    this.isLoggedInSubject.next(false);
-    this.router.navigate(['/auth/login']);
+    const token = this.getToken();
+    if (token) {
+      this.http
+        .post(
+          `${this.apiUrl}/logout`,
+          {},
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        )
+        .subscribe({
+          next: () => {
+            this.clearToken();
+            this.isLoggedInSubject.next(false);
+            this.router.navigate(['/auth/login']);
+          },
+          error: (err) => {
+            console.error('Logout error:', err);
+            this.clearToken();
+            this.isLoggedInSubject.next(false);
+            this.router.navigate(['/auth/login']);
+          },
+        });
+    } else {
+      this.clearToken();
+      this.isLoggedInSubject.next(false);
+      this.router.navigate(['/auth/login']);
+    }
   }
 
   googleSignIn(): void {

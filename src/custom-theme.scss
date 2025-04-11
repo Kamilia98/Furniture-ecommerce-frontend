@@ -3,17 +3,6 @@
 @use "@angular/material" as mat;
 
 html {
-  @include mat.theme(
-    (
-      color: (
-        theme-type: light,
-        primary: mat.$azure-palette,
-        tertiary: mat.$blue-palette,
-      ),
-      typography: Roboto,
-      density: 0,
-    )
-  );
   @include mat.slider-overrides(
     (
       handle-color: var(--color-primary),
@@ -28,9 +17,5 @@ html {
       active-indicator-color: var(--color-primary),
     )
   );
-  @include mat.dialog-overrides(
-    (
-      container-small-max-width: 300px,
-    )
-  );
+  @include mat.dialog-overrides(());
 }

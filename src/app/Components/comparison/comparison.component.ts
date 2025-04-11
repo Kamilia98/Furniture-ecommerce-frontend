@@ -63,8 +63,8 @@ export class ComparisonComponent implements OnInit {
   }
 
   // In ComparisonComponent
-  removeProduct(productId: string, productName: string): void {
-    this.comparisonService.removeFromComparison(productId, productName);
+  removeProduct(id: string, name: string): void {
+    this.comparisonService.removeFromComparison(id, name);
     // Force reload comparison products
     this.loadComparisonProducts();
   }

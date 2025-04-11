@@ -56,41 +56,47 @@ export class ContactComponent {
   }
 
   onSubmit() {
-    if (this.contactForm.valid) {
-      this.isLoading = true; // Set loading to true
+    this.modalService.show(ContactConfirmModalComponent, {
+      isSuccess: true,
+      title: 'Thank you for reaching out!',
+      message: 'We will get back to you as soon as we can.',
+      buttonText: 'Continue Shopping',
+    });
+    // if (this.contactForm.valid) {
+    //   this.isLoading = true; // Set loading to true
 
-      const formValues = this.contactForm.value;
-      const contactData = {
-        name: formValues.name ?? '',
-        email: formValues.email ?? '',
-        subject: formValues.subject ?? '',
-        message: formValues.message ?? '',
-      };
+    //   const formValues = this.contactForm.value;
+    //   const contactData = {
+    //     name: formValues.name ?? '',
+    //     email: formValues.email ?? '',
+    //     subject: formValues.subject ?? '',
+    //     message: formValues.message ?? '',
+    //   };
 
-      this.contactService.sendMessage(contactData).subscribe({
-        next: () => {
-          this.isLoading = false; // Reset loading
-          this.modalService.show(ContactConfirmModalComponent, {
-            isSuccess: true,
-            title: 'Thank you for reaching out!',
-            message: 'We will get back to you as soon as we can.',
-            buttonText: 'Continue Shopping',
-          });
-          this.contactForm.reset();
-        },
-        error: () => {
-          this.isLoading = false; // Reset loading
-          this.modalService.show(ContactConfirmModalComponent, {
-            isSuccess: false,
-            title: 'Something went wrong!',
-            message: 'Please try again later.',
-            buttonText: 'Try Again',
-          });
-        },
-      });
-    } else {
-      this.message = 'Please fill all fields correctly.';
-      this.isSuccess = false;
-    }
+    //   this.contactService.sendMessage(contactData).subscribe({
+    //     next: () => {
+    //       this.isLoading = false; // Reset loading
+    //       this.modalService.show(ContactConfirmModalComponent, {
+    //         isSuccess: true,
+    //         title: 'Thank you for reaching out!',
+    //         message: 'We will get back to you as soon as we can.',
+    //         buttonText: 'Continue Shopping',
+    //       });
+    //       this.contactForm.reset();
+    //     },
+    //     error: () => {
+    //       this.isLoading = false; // Reset loading
+    //       this.modalService.show(ContactConfirmModalComponent, {
+    //         isSuccess: false,
+    //         title: 'Something went wrong!',
+    //         message: 'Please try again later.',
+    //         buttonText: 'Try Again',
+    //       });
+    //     },
+    //   });
+    // } else {
+    //   this.message = 'Please fill all fields correctly.';
+    //   this.isSuccess = false;
+    // }
   }
 }
