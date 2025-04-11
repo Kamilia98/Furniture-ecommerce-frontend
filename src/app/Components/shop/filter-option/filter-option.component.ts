@@ -29,7 +29,7 @@ import {
         </div>
         <div class="w-[15px]">
           <img
-            src="icons/arrow.svg"
+            src="/icons/arrow.svg"
             class="rotate-[90deg] duration-300 ease"
             [ngClass]="{ 'rotate-[270deg]': isActive }"
             alt=""

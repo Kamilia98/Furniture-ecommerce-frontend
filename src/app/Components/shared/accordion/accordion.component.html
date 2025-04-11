@@ -1,29 +1,21 @@
 <div class="accordion-item mb-4">
-    <div class="accordion-header flex justify-between items-center py-3 px-4 bg-gray-100 cursor-pointer rounded-lg hover:bg-gray-200"
-        (click)="toggle()">
-        <h3 class="text-lg font-semibold">{{ title }}</h3>
-        <span class="text-xl">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-600" viewBox="0 0 20 20"
-                fill="currentColor" stroke="currentColor" *ngIf="!isOpen">
-                <path fill-rule="evenodd"
-                    d="M10 15a1 1 0 01-.707-.293l-5-5a1 1 0 011.414-1.414L10 12.586l4.293-4.293a1 1 0 111.414 1.414l-5 5A1 1 0 0110 15z"
-                    clip-rule="evenodd" />
-            </svg>
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-600" viewBox="0 0 20 20"
-                fill="currentColor" stroke="currentColor" *ngIf="isOpen">
-                <path fill-rule="evenodd"
-                    d="M10 5a1 1 0 01.707.293l5 5a1 1 0 01-1.414 1.414L10 7.414 5.707 10.707a1 1 0 01-1.414-1.414l5-5A1 1 0 0110 5z"
-                    clip-rule="evenodd" />
-            </svg>
-        </span>
-
-
-
-    </div>
-    @if(isOpen){
-    <div class="accordion-content mt-2">
-        <ng-content></ng-content>
-    </div>
-    }
-
+  <div
+    class="accordion-header flex justify-between items-center py-3 px-4 bg-gray-100 cursor-pointer rounded-lg hover:bg-gray-200"
+    (click)="toggle()"
+  >
+    <h3 class="text-lg font-semibold">{{ title }}</h3>
+    <span class="text-xl">
+      <img
+        src="/icons/arrow.svg"
+        class="rotate-[90deg] duration-300 ease"
+        [ngClass]="{ 'rotate-[270deg]': isOpen }"
+        alt=""
+      />
+    </span>
+  </div>
+  @if(isOpen){
+  <div class="accordion-content mt-2">
+    <ng-content></ng-content>
+  </div>
+  }
 </div>
