@@ -113,9 +113,7 @@ export class ProductService {
             subTitle: p.subtitle,
             price: p.price,
             quantity: p.quantity,
-            categories: p.categories.map(
-              (cat: { catName: string }) => cat.catName
-            ),
+            categories: p.categories.map((cat: { name: string }) => cat.name),
             date: p.date,
             sale: p.sale,
             color: p.mainColor,

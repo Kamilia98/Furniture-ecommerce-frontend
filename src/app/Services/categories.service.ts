@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 import { category } from '../Models/category.model';
 
 import { environment } from '../environments/environment';
@@ -13,23 +13,31 @@ export class CategoriesService {
   private apiUrl = `${environment.apiUrl}/categories`;
   private categoriesSubject = new BehaviorSubject<category[]>([]);
   categories$ = this.categoriesSubject.asObservable();
+
   constructor(private http: HttpClient) {}
 
-  getCategories(): Observable<any> {
-    return this.http
-      .get<{ data: { categories: any[] } }>(`${this.apiUrl}`)
-      .pipe(
-        tap((response) => {
-          const apiCategories = response.data.categories.map((p) => ({
-            id: p._id,
-            name: p.catName,
+  getCategories(): Observable<category[]> {
+    return this.http.get<{ data: { categories: any[] } }>(this.apiUrl).pipe(
+      tap((response) => {
+        const categories = response.data.categories.map((category) => ({
+          ...category,
+          id: category._id,
+        }));
+        this.categoriesSubject.next(categories);
+      }),
+      catchError((error) => {
+        console.error('Error fetching categories:', error);
+        return of([]);
+      }),
+      map((response) => {
+        if ('data' in response && response.data.categories) {
+          return response.data.categories.map((category) => ({
+            ...category,
+            id: category._id,
           }));
-          this.categoriesSubject.next(apiCategories);
-        }),
-        catchError((error) => {
-          console.error('Error fetching categories:', error);
-          return of([]);
-        })
-      );
+        }
+        return [];
+      })
+    );
   }
 }

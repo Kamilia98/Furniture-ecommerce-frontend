@@ -21,6 +21,7 @@ import { ButtonComponent } from '../shared/button/button.component';
 import { ProductItemComponent } from '../shared/product-item/product-item.component';
 import { Observable } from 'rxjs';
 import { product } from '../../Models/product.model';
+import { CategoriesService } from '../../Services/categories.service';
 
 @Component({
   selector: 'app-home',
@@ -36,6 +37,7 @@ import { product } from '../../Models/product.model';
 })
 export class HomeComponent implements OnInit, AfterViewInit {
   products$!: Observable<product[]>;
+  categories: any;
 
   @ViewChild('swiperRef', { static: false }) swiperRef!: ElementRef;
   @ViewChild('imageSwiper', { static: false }) imageSwiper!: ElementRef;
@@ -43,13 +45,18 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   constructor(
     private productService: ProductService,
-    private cdr: ChangeDetectorRef
+    private categoriesService: CategoriesService,
+    private cdr: ChangeDetectorRef,
+    public router: Router
   ) {}
 
   ngOnInit(): void {
     this.products$ = this.productService.products$;
     this.productService.getProducts(1, 10).subscribe({
       next: () => this.cdr.detectChanges(),
+    });
+    this.categoriesService.getCategories().subscribe((categories) => {
+      this.categories = categories;
     });
   }
 
