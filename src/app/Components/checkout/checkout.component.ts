@@ -13,7 +13,7 @@ import { InputComponent } from '../shared/input/input.component';
 import { NgToastService } from 'ng-angular-popup';
 import { CartService } from '../../Services/cart.service';
 import { CheckoutService } from '../../Services/checkout.service';
-import { first, Observable, Subject, takeUntil } from 'rxjs';
+import { first, Subject, takeUntil } from 'rxjs';
 import {
   FormGroup,
   Validators,
@@ -93,7 +93,7 @@ export class CheckoutComponent implements OnDestroy {
 
   selectedPayment: string = '';
   cartItems: any[] = [];
-  subtotal$!: Observable<number>;
+  subtotal!: number;
   isLoading = false;
   @ViewChild(PaymentComponent) paymentComponent!: PaymentComponent;
   private destroy$ = new Subject<void>();
@@ -115,10 +115,12 @@ export class CheckoutComponent implements OnDestroy {
 
   /** Load cart data on component initialization */
   private loadCartData(): void {
-    this.cartService.getCart().subscribe((cartItems) => {
+    this.cartService.cart$.subscribe((cartItems) => {
       this.cartItems = cartItems;
     });
-    this.subtotal$ = this.cartService.cartSubtotal$;
+    this.cartService.cartSubtotal$.subscribe((subtotal) => {
+      this.subtotal = subtotal;
+    });
   }
 
   /** Handle form submission */

@@ -5,12 +5,12 @@ import { CartTotalsComponent } from './cart-components/cart-totals/cart-totals.c
 import { FeatureBannerComponent } from '../shared/feature-banner/feature-banner.component';
 import { HeaderBannerComponent } from '../shared/header-banner/header-banner.component';
 import { CartService } from '../../Services/cart.service';
-import { Observable, map, take, switchMap, of } from 'rxjs';
+import { take, switchMap, of } from 'rxjs';
 import { StepperComponent } from '../shared/stepper/stepper.component';
-import { productCart } from '../../Models/productCart.model';
 import { Router } from '@angular/router';
 import { ProductService } from '../../Services/product.service';
 import { NgToastService } from 'ng-angular-popup';
+import { ProductCart } from '../../Models/productCart.model';
 
 @Component({
   selector: 'app-cart',
@@ -27,8 +27,8 @@ import { NgToastService } from 'ng-angular-popup';
   ],
 })
 export class CartComponent implements OnInit {
-  cart$!: Observable<productCart[]>;
-  cartLength$!: Observable<number>;
+  cart!: ProductCart[];
+  cartLength!: number;
 
   constructor(
     private cartService: CartService,
@@ -38,15 +38,19 @@ export class CartComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.cart$ = this.cartService.cart$;
-    this.cartLength$ = this.cart$.pipe(map((cart) => cart.length));
+    this.cartService.cart$.subscribe({
+      next: (cart) => {
+        this.cart = cart;
+        this.cartLength = this.cart.length;
+      },
+    });
   }
 
   removeItem(itemId: string) {
     this.cartService.removeProduct(itemId);
   }
 
-  increaseQuantity(item: productCart) {
+  increaseQuantity(item: ProductCart) {
     this.productService
       .getProduct(item.id)
       .pipe(

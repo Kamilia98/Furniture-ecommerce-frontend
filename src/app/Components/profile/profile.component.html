@@ -11,10 +11,12 @@
               class="h-10 w-10 object-cover"
               alt="User avatar"
               [src]="user.thumbnail || 'images/user.png'"
+              (error)="onImageError($event)"
+              referrerpolicy="no-referrer"
           /></span>
           <div class="flex flex-col">
             <p class="text-sm">{{ user.name }}</p>
-            <p class="text-xs">{{ user.email }}</p>
+            <p class="text-xs min-w-48">{{ user.email }}</p>
           </div>
         </div>
         <div role="none" class="shrink-0 bg-border h-[1px] w-full mt-4"></div>

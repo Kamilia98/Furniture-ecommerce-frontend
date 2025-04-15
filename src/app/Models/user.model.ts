@@ -1,10 +1,9 @@
-import { product } from './product.model';
+import { Product } from './product.model';
 
-export interface user {
+export interface User {
   id: string;
   name: string;
   email: string;
   thumbnail: string;
-  favorites?: product[];
-  cart?: product[];
+  favorites?: Product[];
 }

@@ -101,8 +101,12 @@
           <div class="flex gap-3">
             @for (color of (product$ | async)?.colors; track color) {
             <div
-              class="w-8 h-8 rounded-full border border-gray-300 cursor-pointer"
+              class="w-8 h-8 rounded-full border cursor-pointer hover:shadow border-gray-300"
               [ngStyle]="{ 'background-color': color.hex }"
+              [ngClass]="{
+                shadow: color.name == selectedColor?.name,
+                '': color.name != selectedColor?.name
+              }"
               [title]="color.name"
               (click)="selectColor(color)"
             ></div>

@@ -1,5 +1,3 @@
-@let cartLength = (cartLength$|async)??10;
-
 <app-header-banner
   bannerTitle="Cart"
   [bannerPath]="[{ title: 'cart', path: '/cart' }]"
@@ -18,7 +16,7 @@
     </div>
     @if(cartLength>0){
     <div
-      *ngFor="let item of cart$ | async"
+      *ngFor="let item of cart"
       class="grid grid-cols-4 md:grid-cols-5 items-center text-center py-4 border-b"
     >
       <div class="flex flex-col items-center">
@@ -76,7 +74,7 @@
   </div>
 
   <div class="w-full lg:w-1/3">
-    <app-cart-totals [cartItems]="(cart$ | async) ?? []"></app-cart-totals>
+    <app-cart-totals [cartItems]="cart"></app-cart-totals>
   </div>
 </div>
 

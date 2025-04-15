@@ -1,45 +1,48 @@
-@let user = (user$ |async)??{name:'',email:'',thumbnail:''};@let cartLength =
-(cartLength$|async)??0; @let favoritesLength = (favoritesLength$|async)??0;
-
 <ul class="flex gap-[15px] py-[15px] w-full justify-center">
+  @if(isLoggedIn$|async){
   <li class="relative h-[20px]">
     <button class="cursor-pointer" (click)="showFavModal()">
-      <img src="icons/heart.svg" alt="" srcset="" class="w-[20px]" />
+      <img src="/icons/heart.svg" alt="" srcset="" class="w-[20px]" />
     </button>
     @if(favoritesLength){
     <div
       class="absolute top-0 right-0 bg-primary text-white w-[20px] h-[20px] rounded-[50px] text-xs flex justify-center items-center translate-x-[50%] translate-y-[-50%]"
     >
-      @if((favoritesLength$|async)&&favoritesLength<10){
-      {{ favoritesLength$ | async }}
+      @if((favoritesLength)&&favoritesLength<10){
+      {{ favoritesLength }}
       } @else{ 9+ }
     </div>
     }
   </li>
+  }
   <li class="relative h-[20px]">
     <button class="cursor-pointer" (click)="showCartModal()">
-      <img src="icons/shopping-cart.svg" alt="" srcset="" class="w-[20px]" />
+      <img src="/icons/shopping-cart.svg" alt="" srcset="" class="w-[20px]" />
     </button>
-    @if(cartLength$|async){
+    @if(cartLength){
     <div
       class="absolute top-0 right-0 bg-primary text-white w-[20px] h-[20px] rounded-[50px] text-xs flex justify-center items-center translate-x-[50%] translate-y-[-50%]"
     >
-      @if((cartLength$|async)&&cartLength<10){
-      {{ cartLength$ | async }}
+      @if(cartLength&&cartLength<10){
+      {{ cartLength }}
       } @else{ 9+ }
     </div>
     }
   </li>
 
   <li class="rounded-4xl overflow-hidden">
-    <a routerLink="{{ isLoggedIn ? ['/profile'] : '/auth' }}">
+    @if(isLoggedIn$|async){
+    <a [routerLink]="['/profile']">
       <img
-        [src]="isLoggedIn ? user.thumbnail : 'icons/account-alert.svg'"
+        [src]="(user$ | async)?.thumbnail"
         alt=""
-        srcset=""
         class="w-[20px] h-[20px] object-cover"
-        (onimageerror)="onImageError($event)"
+        (error)="onImageError($event)"
+        referrerpolicy="no-referrer"
       />
     </a>
+    } @else {
+    <a [routerLink]="['/auth']" class="font-semibold">LOG IN</a>
+    }
   </li>
 </ul>

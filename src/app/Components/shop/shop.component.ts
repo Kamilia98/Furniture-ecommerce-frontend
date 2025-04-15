@@ -10,8 +10,7 @@ import {
 import { CommonModule, TitleCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { trigger, transition, animate, style } from '@angular/animations';
-import { BehaviorSubject, Observable, combineLatest, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 
 // Angular Material & CDK
 import { DragDropModule } from '@angular/cdk/drag-drop';
@@ -32,12 +31,12 @@ import { ProductService } from '../../Services/product.service';
 import { CategoriesService } from '../../Services/categories.service';
 
 // Models
-import { product } from '../../Models/product.model';
-import { category } from '../../Models/category.model';
+import { Product } from '../../Models/product.model';
+import { Category } from '../../Models/category.model';
 import { ProductItemSkeletonComponent } from '../shared/product-item/product-item-skeleton/product-item-skeleton.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { SearchComponent } from './search/search.component';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 // Enums
 enum SortOptions {
@@ -94,7 +93,7 @@ export class ShopComponent implements OnInit {
   disableAnimation = false;
 
   // Product Data
-  products$!: Observable<product[]>;
+  products$!: Observable<Product[]>;
   selectedCategories: string[] = [];
   private selectedSortValueSubject = new BehaviorSubject<SortOptions>(
     SortOptions.Default
@@ -118,7 +117,7 @@ export class ShopComponent implements OnInit {
 
   // Sorting
   sortMenuItems = Object.values(SortOptions);
-  categories!: category[];
+  categories!: Category[];
 
   // Track loading state
   loading = true;
@@ -127,8 +126,7 @@ export class ShopComponent implements OnInit {
     private productService: ProductService,
     private categoriesService: CategoriesService,
     private renderer: Renderer2,
-    private router: Router,
-    private route: ActivatedRoute
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -142,6 +140,7 @@ export class ShopComponent implements OnInit {
     this.fetchProducts();
     this.initializePriceRange();
     this.initializeCategories();
+    this.onResize();
   }
 
   private initializePriceRange() {
@@ -177,10 +176,9 @@ export class ShopComponent implements OnInit {
         this.maxPrice
       )
       .subscribe({
-        next: (response) => {
-          console.log(this.selectedCategories);
-          console.log('Products fetched:', response.data);
-          this.totalProducts = response.data.totalProducts;
+        next: (data) => {
+          console.log('Products fetched:', data);
+          this.totalProducts = data.totalProducts;
           this.updatePagesCount();
           this.loading = false;
         },
@@ -218,7 +216,7 @@ export class ShopComponent implements OnInit {
     this.toggleDropdown(false);
   }
 
-  onCategoryChange(category: category, event: Event): void {
+  onCategoryChange(category: Category, event: Event): void {
     const checked = (event.target as HTMLInputElement).checked;
     this.selectedCategories = checked
       ? [...this.selectedCategories, category.id]

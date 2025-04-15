@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, BehaviorSubject, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import { BlogPost } from '../Models/blog.model';
+import { Blog } from '../Models/blog.model';
 import { environment } from '../environments/environment';
 
 @Injectable({
@@ -11,9 +11,9 @@ import { environment } from '../environments/environment';
 export class BlogService {
   private apiUrl = `${environment.apiUrl}/posts`;
 
-  private postsSubject: BehaviorSubject<BlogPost[]> = new BehaviorSubject<
-    BlogPost[]
-  >([]);
+  private postsSubject: BehaviorSubject<Blog[]> = new BehaviorSubject<Blog[]>(
+    []
+  );
   private totalPostsSubject: BehaviorSubject<number> =
     new BehaviorSubject<number>(0);
   private categoriesSubject: BehaviorSubject<string[]> = new BehaviorSubject<
@@ -44,33 +44,30 @@ export class BlogService {
     }
 
     return this.http
-      .get<{ status: string; data: { totalPosts: number; posts: BlogPost[] } }>(
-        url
-      )
+      .get<{ status: string; data: { totalPosts: number; posts: Blog[] } }>(url)
       .pipe(
         tap((data) => {
           console.log('[BlogService] Posts data received:', data);
           this.postsSubject.next(data.data.posts);
           this.totalPostsSubject.next(data.data.totalPosts);
         }),
+        map((res) => res.data.posts),
         catchError(this.handleError)
       );
   }
 
-  getPostById(id: string): Observable<BlogPost> {
+  getPostById(id: string): Observable<Blog> {
     console.log(`[BlogService] Fetching post by ID: ${id}`);
-    return this.http
-      .get<{ data: { post: BlogPost } }>(`${this.apiUrl}/${id}`)
-      .pipe(
-        map((response) => response.data.post),
-        catchError(this.handleError)
-      );
+    return this.http.get<{ data: { post: Blog } }>(`${this.apiUrl}/${id}`).pipe(
+      map((response) => response.data.post),
+      catchError(this.handleError)
+    );
   }
 
-  getRecentPosts(): Observable<BlogPost[]> {
+  getRecentPosts(): Observable<Blog[]> {
     console.log('[BlogService] Fetching recent posts');
     return this.http
-      .get<{ data: { posts: BlogPost[] } }>(`${this.apiUrl}/recent`)
+      .get<{ data: { posts: Blog[] } }>(`${this.apiUrl}/recent`)
       .pipe(
         map((response) => response.data.posts),
         tap((posts) => console.log('[BlogService] Recent posts:', posts)),
@@ -78,10 +75,10 @@ export class BlogService {
       );
   }
 
-  getRelatedPosts(id: string): Observable<BlogPost[]> {
+  getRelatedPosts(id: string): Observable<Blog[]> {
     console.log(`[BlogService] Fetching related posts for post ID: ${id}`);
     return this.http
-      .get<{ data: { relatedPosts: BlogPost[] } }>(
+      .get<{ data: { relatedPosts: Blog[] } }>(
         `${this.apiUrl}/related?id=${id}`
       )
       .pipe(

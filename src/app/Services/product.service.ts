@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { product } from '../Models/product.model';
+import { Product } from '../Models/product.model';
 import { ProductDetails } from '../Models/product-details.model';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
@@ -22,7 +22,7 @@ enum SortOptions {
 export class ProductService {
   private apiUrl = `${environment.apiUrl}/products`;
 
-  private productsSubject = new BehaviorSubject<product[]>([]);
+  private productsSubject = new BehaviorSubject<Product[]>([]);
   products$ = this.productsSubject.asObservable();
 
   constructor(private http: HttpClient) {}
@@ -105,7 +105,6 @@ export class ProductService {
             console.error('[ProductService] Invalid API response:', response);
             return;
           }
-          console.log('#################', response);
           const apiProducts = response.data.products.map((p) => ({
             id: p._id,
             name: p.name,
@@ -125,6 +124,7 @@ export class ProductService {
           );
           this.productsSubject.next(apiProducts);
         }),
+        map((response) => response.data),
         catchError((error) => {
           console.error('[ProductService] Error fetching products:', error);
           return of([]);

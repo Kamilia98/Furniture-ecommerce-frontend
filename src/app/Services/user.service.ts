@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { user } from '../Models/user.model';
+import { User } from '../Models/user.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, map, Observable, tap } from 'rxjs';
 import { AuthService } from './auth.service';
@@ -11,11 +11,11 @@ import { environment } from '../environments/environment';
 export class UserService {
   private apiUrl = `${environment.apiUrl}/users/profile`;
 
-  private userSubject = new BehaviorSubject<user | null>(null);
+  private userSubject = new BehaviorSubject<User | null>(null);
   user$ = this.userSubject.asObservable();
   constructor(private http: HttpClient, private authService: AuthService) {}
 
-  getUser(): Observable<user> {
+  getUser(): Observable<User> {
     return this.http
       .get<{ status: string; data: { user: any } }>(this.apiUrl, {
         headers: this.getAuthHeaders(),
@@ -29,7 +29,7 @@ export class UserService {
             name: username,
             id: _id,
             thumbnail,
-          } as user;
+          } as User;
         }),
         tap((u) => this.userSubject.next(u))
       );

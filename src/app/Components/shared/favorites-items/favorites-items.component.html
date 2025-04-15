@@ -33,7 +33,6 @@
     >
   </div>
 </div>
-
 } @else{
 <div
   class="h-full flex-1 flex flex-col justify-center items-center gap-4 text-center py-10"
@@ -44,7 +43,8 @@
     You can add products to your favorites by clicking the heart icon on
     product.
   </p>
-  <app-button btnWidth="fit">Discover products</app-button>
+  <app-button btnWidth="fit" [routerLink]="['/shop']"
+    >Discover products</app-button
+  >
 </div>
-
 }

@@ -9,10 +9,9 @@ import { DropdownComponent } from '../shared/dropdown/dropdown.component';
 import { PaginationComponent } from '../shared/pagination/pagination.component';
 
 import { BlogService } from '../../Services/blog.service';
-import { BlogPost } from '../../Models/blog.model';
+import { Blog } from '../../Models/blog.model';
 
 import { RouterModule } from '@angular/router';
-import { Observable } from 'rxjs';
 import { BlogSkeletonComponent } from '../blog/blog-skeleton/blog-skeleton.component';
 
 @Component({
@@ -36,7 +35,7 @@ export class BlogsComponent implements OnInit {
   selectedCategory: string = 'All';
   isMenuOpen: boolean = false;
   searchQuery: string = '';
-  posts$!: Observable<BlogPost[]>; // Observable for posts
+  posts!: Blog[];
   loading = true;
 
   currentPage: number = 1;
@@ -62,21 +61,17 @@ export class BlogsComponent implements OnInit {
   }
 
   loadPosts() {
-    this.loading = true; // Set loading state to true when starting to load posts
+    this.loading = true;
 
     this.blogService
       .getAllPosts(this.currentPage, this.postsPerPage, this.selectedCategory)
-      .subscribe(() => {
-        this.loading = false; // Set loading to false once posts are loaded
+      .subscribe((posts) => {
+        this.posts = posts;
+        this.loading = false;
       });
 
-    // Subscribe to posts$ to get the posts list
-    this.posts$ = this.blogService.posts$;
-
-    // Subscribe to totalPosts$ to get the total count of posts
     this.blogService.totalPosts$.subscribe((totalPosts) => {
       this.totalPosts = totalPosts;
-      // Calculate total pages based on totalPosts and postsPerPage
       this.totalPages = Math.ceil(this.totalPosts / this.postsPerPage);
       console.log('Total Pages:', this.totalPages);
     });

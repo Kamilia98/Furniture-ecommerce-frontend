@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ButtonComponent } from '../../shared/button/button.component';
-import { user } from '../../../Models/user.model';
+import { User } from '../../../Models/user.model';
 import { UserService } from '../../../Services/user.service';
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
@@ -27,7 +27,7 @@ export class SettingComponent {
       'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png',
   };
   imagePreview: string | ArrayBuffer | null = null;
-  user$!: Observable<user | null>;
+  user$!: Observable<User | null>;
   isChecked: boolean = false;
   activeComponent: string = 'orders';
   errorMessage: string = '';
@@ -50,10 +50,7 @@ export class SettingComponent {
   }
 
   ngOnInit(): void {
-    this.user$ = this.userService.user$;
-    this.userService.getUser().subscribe((user) => {
-      console.log(user.thumbnail);
-    });
+    this.user$ = this.userService.getUser();
   }
   toggleCheck() {
     this.isChecked = !this.isChecked;

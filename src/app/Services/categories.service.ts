@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import { category } from '../Models/category.model';
+import { Category } from '../Models/category.model';
 
 import { environment } from '../environments/environment';
 
@@ -11,12 +11,12 @@ import { environment } from '../environments/environment';
 })
 export class CategoriesService {
   private apiUrl = `${environment.apiUrl}/categories`;
-  private categoriesSubject = new BehaviorSubject<category[]>([]);
+  private categoriesSubject = new BehaviorSubject<Category[]>([]);
   categories$ = this.categoriesSubject.asObservable();
 
   constructor(private http: HttpClient) {}
 
-  getCategories(): Observable<category[]> {
+  getCategories(): Observable<Category[]> {
     return this.http.get<{ data: { categories: any[] } }>(this.apiUrl).pipe(
       tap((response) => {
         const categories = response.data.categories.map((category) => ({

@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, tap, map, first, switchMap } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 import { NgToastService } from 'ng-angular-popup';
-import { productFavorite } from '../Models/productFavorite.model';
+import { ProductFavorite } from '../Models/productFavorite.model';
 import { ModalService } from './modal.service';
 import { LoginPromptModalComponent } from '../Components/modals/login-prompt-modal/login-prompt-modal.component';
 import { environment } from '../environments/environment';
@@ -14,7 +14,7 @@ import { environment } from '../environments/environment';
 })
 export class FavoriteService {
   private apiUrl = `${environment.apiUrl}/users`;
-  private favoritesSubject = new BehaviorSubject<productFavorite[]>([]);
+  private favoritesSubject = new BehaviorSubject<ProductFavorite[]>([]);
   favorites$ = this.favoritesSubject.asObservable();
 
   constructor(
@@ -25,11 +25,13 @@ export class FavoriteService {
   ) {
     this.authService.isLoggedIn$.subscribe((status) => {
       if (status) this.loadFavorites();
+      else {
+        this.favoritesSubject.next([]);
+      }
     });
   }
 
   /*** AUTHORIZATION HEADER ***/
-
   private getAuthHeaders(): HttpHeaders {
     const token = this.authService.getToken();
     return new HttpHeaders({ Authorization: `Bearer ${token}` });
@@ -40,7 +42,7 @@ export class FavoriteService {
     this.getFavorites().subscribe();
   }
 
-  getFavorites(): Observable<productFavorite[]> {
+  getFavorites(): Observable<ProductFavorite[]> {
     return this.http
       .get<{ data: { favourites: any[] } }>(`${this.apiUrl}/favourites`, {
         headers: this.getAuthHeaders(),
@@ -53,7 +55,7 @@ export class FavoriteService {
   }
 
   /*** TOGGLE FAVORITE (ADD/REMOVE) ***/
-  toggleFavourite(id: string): Observable<productFavorite[]> {
+  toggleFavourite(id: string): Observable<ProductFavorite[]> {
     let name = this.getStoredname(id); // Store name before removing
 
     return this.authService.isLoggedIn$.pipe(
@@ -102,13 +104,13 @@ export class FavoriteService {
     return product ? product.name : null;
   }
 
-  private getFetchedname(id: string, favorites: productFavorite[]): string {
+  private getFetchedname(id: string, favorites: ProductFavorite[]): string {
     const product = favorites.find((p) => p.id === id);
     return product ? product.name : 'Product';
   }
 
   /*** API RESPONSE MAPPING  ***/
-  private mapFavorites(apiFavorites: any[]): productFavorite[] {
+  private mapFavorites(apiFavorites: any[]): ProductFavorite[] {
     return apiFavorites.map((p) => ({
       id: p._id,
       name: p.name,
@@ -120,8 +122,8 @@ export class FavoriteService {
   /*** ERROR HANDLING ***/
   private handleFavoriteError(
     error: any,
-    fallbackValue: productFavorite[]
-  ): Observable<productFavorite[]> {
+    fallbackValue: ProductFavorite[]
+  ): Observable<ProductFavorite[]> {
     console.error('Error updating favorites:', error);
     this.toast.danger('Failed to update favorites. Please try again.');
     return of(fallbackValue);

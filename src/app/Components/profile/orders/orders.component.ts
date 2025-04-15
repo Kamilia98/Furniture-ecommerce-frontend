@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { OrderService } from '../../../Services/order.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { DropdownComponent } from '../../shared/dropdown/dropdown.component';
-import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
 interface Order {
   orderNumber: string;

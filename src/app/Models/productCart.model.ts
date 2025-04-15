@@ -1,4 +1,4 @@
-export interface productCart {
+export interface ProductCart {
   id: string;
   image: string;
   name: string;

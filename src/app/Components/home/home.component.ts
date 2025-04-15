@@ -4,7 +4,6 @@ import {
   ElementRef,
   ViewChild,
   OnInit,
-  ChangeDetectorRef,
 } from '@angular/core';
 import Swiper from 'swiper';
 import {
@@ -20,8 +19,9 @@ import { ProductService } from '../../Services/product.service';
 import { ButtonComponent } from '../shared/button/button.component';
 import { ProductItemComponent } from '../shared/product-item/product-item.component';
 import { Observable } from 'rxjs';
-import { product } from '../../Models/product.model';
+import { Product } from '../../Models/product.model';
 import { CategoriesService } from '../../Services/categories.service';
+import { Category } from '../../Models/category.model';
 
 @Component({
   selector: 'app-home',
@@ -36,8 +36,8 @@ import { CategoriesService } from '../../Services/categories.service';
   styleUrl: './home.component.css',
 })
 export class HomeComponent implements OnInit, AfterViewInit {
-  products$!: Observable<product[]>;
-  categories: any;
+  products$!: Observable<Product[]>;
+  categories$!: Observable<Category[]>;
 
   @ViewChild('swiperRef', { static: false }) swiperRef!: ElementRef;
   @ViewChild('imageSwiper', { static: false }) imageSwiper!: ElementRef;
@@ -46,24 +46,19 @@ export class HomeComponent implements OnInit, AfterViewInit {
   constructor(
     private productService: ProductService,
     private categoriesService: CategoriesService,
-    private cdr: ChangeDetectorRef,
     public router: Router
   ) {}
 
   ngOnInit(): void {
     this.products$ = this.productService.products$;
-    this.productService.getProducts(1, 10).subscribe({
-      next: () => this.cdr.detectChanges(),
-    });
-    this.categoriesService.getCategories().subscribe((categories) => {
-      this.categories = categories;
-    });
+    this.productService.getProducts(1, 10).subscribe();
+    this.categories$ = this.categoriesService.getCategories();
   }
 
   ngAfterViewInit() {
     this.products$.subscribe((products) => {
       if (products?.length) {
-        setTimeout(() => this.initSwipers(), 0);
+        setTimeout(() => this.initSwipers(), 1);
       }
     });
   }
@@ -102,7 +97,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         fill: 'row',
       },
       autoplay: {
-        delay: 3000,
+        delay: 2000,
         disableOnInteraction: false,
       },
       loop: true,
@@ -118,7 +113,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         fill: 'row',
       },
       autoplay: {
-        delay: 3000,
+        delay: 2000,
         disableOnInteraction: false,
         reverseDirection: true,
       },

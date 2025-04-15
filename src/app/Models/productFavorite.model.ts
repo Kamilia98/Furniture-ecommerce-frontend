@@ -1,4 +1,4 @@
-export interface productFavorite {
+export interface ProductFavorite {
   id: string;
   image: string;
   name: string;

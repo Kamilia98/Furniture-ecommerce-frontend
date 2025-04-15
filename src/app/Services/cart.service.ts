@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
-import { product } from '../Models/product.model';
+import { catchError, map, tap } from 'rxjs/operators';
+import { Product } from '../Models/product.model';
 import { AuthService } from './auth.service';
-import { productCart } from '../Models/productCart.model';
+import { ProductCart } from '../Models/productCart.model';
 import { NgToastService } from 'ng-angular-popup';
 import { environment } from '../environments/environment';
 
@@ -13,13 +13,13 @@ export class CartService {
   private apiUrl = `${environment.apiUrl}/cart`;
 
   private isLoggedInSubject = new BehaviorSubject<boolean>(false);
-  private cartSubject = new BehaviorSubject<productCart[]>([]);
+  private cartSubject = new BehaviorSubject<ProductCart[]>([]);
   cart$ = this.cartSubject.asObservable();
 
   private cartSubtotalSubject = new BehaviorSubject<number>(0);
   cartSubtotal$ = this.cartSubtotalSubject.asObservable();
 
-  private checkoutSubject = new BehaviorSubject<productCart[]>([]);
+  private checkoutSubject = new BehaviorSubject<ProductCart[]>([]);
   checkoutData$ = this.checkoutSubject.asObservable();
 
   constructor(
@@ -40,13 +40,13 @@ export class CartService {
     return new HttpHeaders({ Authorization: `Bearer ${token}` });
   }
 
-  private getGuestCart(): productCart[] {
+  private getGuestCart(): ProductCart[] {
     const cart = JSON.parse(localStorage.getItem('cart') || '[]');
     console.log('[CartService] Loaded guest cart:', cart);
     return cart;
   }
 
-  private saveGuestCart(cart: productCart[]): void {
+  private saveGuestCart(cart: ProductCart[]): void {
     if (cart.length === 0) {
       console.log('[CartService] Guest cart cleared.');
       localStorage.removeItem('cart');
@@ -74,7 +74,7 @@ export class CartService {
     this.getCart().subscribe();
   }
 
-  private mapToProductCart(p: any): productCart {
+  private mapToProductCart(p: any): ProductCart {
     return {
       id: p._id,
       name: p.name,
@@ -86,7 +86,7 @@ export class CartService {
     };
   }
 
-  getCart(): Observable<productCart[]> {
+  getCart(): Observable<ProductCart[]> {
     if (this.isLoggedInSubject.getValue()) {
       console.log('[CartService] Fetching cart for logged-in user...');
       return this.http
@@ -103,7 +103,7 @@ export class CartService {
             console.log('[CartService] Updated cart:', cart);
             this.cartSubject.next(cart);
           }),
-          catchError(this.handleError<productCart[]>('getCart', []))
+          catchError(this.handleError<ProductCart[]>('getCart', []))
         );
     } else {
       console.log('[CartService] Fetching guest cart...');
@@ -116,7 +116,7 @@ export class CartService {
     }
   }
 
-  addProduct(product: product, quantity: number = 1): void {
+  addProduct(product: Product, quantity: number = 1): void {
     console.log(`[CartService] Adding product to cart: ${product.name}`);
 
     if (!this.isLoggedInSubject.getValue()) {
@@ -141,7 +141,7 @@ export class CartService {
 
           if (response.status !== 'success') return;
 
-          const cartProducts = response.data.products.map((p: productCart) =>
+          const cartProducts = response.data.products.map((p: ProductCart) =>
             this.mapToProductCart(p)
           );
 
@@ -153,7 +153,7 @@ export class CartService {
       });
   }
 
-  private handleGuestAddProduct(product: product, quantity: number): void {
+  private handleGuestAddProduct(product: Product, quantity: number): void {
     let cart = [...this.cartSubject.getValue()];
     // const price = this.calculateDiscountedPrice(product.price, product.sale);
 
@@ -272,7 +272,7 @@ export class CartService {
     localStorage.removeItem('cart');
     this.cartSubtotalSubject.next(0);
   }
-  private updateCartState(cart: productCart[]): void {
+  private updateCartState(cart: ProductCart[]): void {
     // Update the cart items
     this.cartSubject.next(cart);
 
@@ -288,7 +288,7 @@ export class CartService {
     console.log('[CartService] Cart state updated:', cart);
   }
 
-  addProductWithColor(product: product, quantity: number): void {
+  addProductWithColor(product: Product, quantity: number): void {
     if (this.isLoggedInSubject.getValue()) {
       console.log('juiyvuyyyyyyyyyyyyyyyyyyy', product.color);
       this.http
@@ -308,7 +308,7 @@ export class CartService {
           next: (response: any) => {
             if (response.status === 'success') {
               const cartProducts = response.data.products.map(
-                (p: productCart) => this.mapToProductCart(p)
+                (p: ProductCart) => this.mapToProductCart(p)
               );
               console.log(cartProducts);
               this.cartSubject.next(cartProducts);
@@ -330,22 +330,10 @@ export class CartService {
 
   removeColorVariant(id: string, color: string): void {
     this.removeProduct(id, color);
-    // const cart = this.cartSubject.getValue();
-    // const product = cart.find((p) => p.id === id && p.color === color);
-    // console.log(cart);
-    // console.log(id);
-    // console.log(color);
-    // if (product) {
-    //   const filteredCart = cart.filter(
-    //     (p) => !(p.id === id && p.color === color)
-    //   );
-    //   this.updateCartState(filteredCart);
-    //   this.toast.success(`${product.name} (${color}) removed from the cart`);
-    // }
   }
 
   private handleGuestAddProductWithColor(
-    product: product,
+    product: Product,
     quantity: number,
     price: number
   ): void {

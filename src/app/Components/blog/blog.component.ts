@@ -5,7 +5,7 @@ import {
   NavigationEnd,
   RouterModule,
 } from '@angular/router';
-import { BlogPost } from '../../Models/blog.model';
+import { Blog } from '../../Models/blog.model';
 import { BlogService } from '../../Services/blog.service';
 import { Subscription } from 'rxjs';
 import { BlogSkeletonComponent } from './blog-skeleton/blog-skeleton.component';
@@ -27,9 +27,9 @@ import { RelatedBlogSkeletonComponent } from './related-blog-skeleton/related-bl
   ],
 })
 export class BlogComponent implements OnInit, OnDestroy {
-  blogs: BlogPost[] = [];
-  blog: BlogPost | undefined;
-  relatedBlogs: BlogPost[] = [];
+  blogs: Blog[] = [];
+  blog: Blog | undefined;
+  relatedBlogs: Blog[] = [];
   selectedCategory: string = '';
   private routeSub: Subscription = new Subscription();
   loading: boolean = true; // For main blog data
@@ -82,7 +82,7 @@ export class BlogComponent implements OnInit, OnDestroy {
     return this.route.snapshot.paramMap.get('id');
   }
 
-  get relatedBlogsList(): BlogPost[] {
+  get relatedBlogsList(): Blog[] {
     return this.relatedBlogs;
   }
 }

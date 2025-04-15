@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../Services/user.service';
-import { user } from '../../Models/user.model';
+import { User } from '../../Models/user.model';
 import { Router, ActivatedRoute, RouterOutlet } from '@angular/router';
 import { AuthService } from '../../Services/auth.service';
 import { Observable } from 'rxjs';
@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
   imports: [RouterOutlet, CommonModule],
 })
 export class ProfileComponent implements OnInit {
-  user$!: Observable<user | null>;
+  user$!: Observable<User | null>;
   isChecked: boolean = false;
   activeComponent: string = '';
 
@@ -31,6 +31,10 @@ export class ProfileComponent implements OnInit {
     this.route.firstChild?.url.subscribe((segments) => {
       this.activeComponent = segments.length ? segments[0].path : 'orders';
     });
+  }
+
+  onImageError(event: Event) {
+    (event.target as HTMLImageElement).src = '/images/user.png';
   }
 
   toggleCheck() {

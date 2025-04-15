@@ -33,7 +33,7 @@
       class="flex justify-around flex-col md:flex-row items-center gap-3 my-10"
     >
       <div
-        *ngFor="let item of categories.slice(0, 3)"
+        *ngFor="let item of (categories$ | async)?.slice(0, 3)"
         class="bg-white rounded-lg overflow-hidden shadow-md transition-all duration-300 hover:shadow-xl hover:scale-105 cursor-pointer"
         (click)="
           this.router.navigate(['/shop'], { state: { category: item.id } })
@@ -109,7 +109,7 @@
       </div>
     </div>
     <div #imageSwiper2 class="swiper w-full">
-      <div class="swiper-wrapper py-2">
+      <div class="swiper-wrapper">
         <div class="swiper-slide" *ngFor="let product of products$ | async">
           <img
             [src]="product.image"

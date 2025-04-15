@@ -14,9 +14,9 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ProductItemComponent } from '../shared/product-item/product-item.component';
 import { FavoriteService } from '../../Services/favorite.service';
 import { CartService } from '../../Services/cart.service';
-import { Observable, BehaviorSubject, map, Subscription } from 'rxjs';
-import { take, tap } from 'rxjs/operators';
-import { product } from '../../Models/product.model';
+import { Observable, BehaviorSubject, Subscription } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { Product } from '../../Models/product.model';
 import { ProductSkeletonComponent } from './product-skeleton/product-skeleton.component';
 import { ProductItemSkeletonComponent } from '../shared/product-item/product-item-skeleton/product-item-skeleton.component';
 import { ComparisonService } from '../../Services/comparison.service';
@@ -39,10 +39,10 @@ import { ComparisonService } from '../../Services/comparison.service';
   templateUrl: './product.component.html',
 })
 export class ProductComponent implements OnInit {
-  id: string | null = null;
+  id!: string;
   private productSubject = new BehaviorSubject<ProductDetails | null>(null);
-  product$ = this.productSubject.asObservable(); // Observable for the product
-  relatedProducts$!: Observable<product[]>;
+  product$ = this.productSubject.asObservable();
+  relatedProducts$!: Observable<Product[]>;
   warningMessage: string | null = null;
   colors: {
     name: string;
@@ -95,64 +95,37 @@ export class ProductComponent implements OnInit {
         this.loadProduct();
       }
     });
+
     this.subs.add(
-      this.cartService.cart$.subscribe((cart) => {
-        console.log(cart);
-        this.isInCartState = cart.some(
-          (item) =>
-            item.id === this.id &&
-            this.selectedColor &&
-            item.color == this.selectedColor.name
+      this.cartService.cart$.subscribe(() => {
+        this.isInCartState = this.cartService.isColorInCart(
+          this.id,
+          this.selectedColor?.name ?? ''
         );
-        this.cdr.markForCheck();
       })
     );
 
     this.subs.add(
       this.favoriteService.favorites$.subscribe((favorites) => {
-        this.isFavoriteState = favorites.some((fav) => fav.id === this.id);
-        this.cdr.markForCheck();
+        this.isFavoriteState = this.favoriteService.isInFavorites(this.id);
       })
     );
+
     this.loadProduct();
   }
 
   private updateCartStateForCurrentProduct(): void {
-    // if (!this.id || !this.selectedColor) return;
-    // console.log(5);
-
-    // this.isInCartState = this.cartService.isColorInCart(
-    //   this.id,
-    //   this.selectedColor.name
-    // );
-    // console.log(this.isInCartState);
-    // this.cdr.markForCheck();
-
-    this.subs.add(
-      this.cartService.cart$.subscribe((cart) => {
-        this.isInCartState = cart.some(
-          (item) =>
-            item.id === this.id &&
-            this.selectedColor &&
-            item.color == this.selectedColor.name
-        );
-        this.cdr.markForCheck();
-      })
+    this.isInCartState = this.cartService.isColorInCart(
+      this.id,
+      this.selectedColor?.name ?? ''
     );
   }
+
   toggleFavorite() {
-    const product = this.productSubject.getValue();
-    if (product) {
-      this.favoriteService.toggleFavourite(product.id).subscribe({
-        next: () => {
-          this.isFavoriteState = this.favoriteService.isInFavorites(product.id);
-          this.cdr.markForCheck();
-        },
-      });
-    }
+    this.favoriteService.toggleFavourite(this.id).subscribe();
   }
 
-  getMappedProduct(product: ProductDetails): product {
+  getMappedProduct(product: ProductDetails): Product {
     return {
       id: product.id,
       name: product.name,
@@ -218,12 +191,10 @@ export class ProductComponent implements OnInit {
           } else {
             console.warn('[ProductComponent] No product data received.');
           }
-          this.cdr.detectChanges();
         },
         error: (error) => {
           console.error('[ProductComponent] Error fetching product:', error);
           this.productLoading = false;
-          this.cdr.detectChanges();
         },
       })
     );
@@ -234,7 +205,6 @@ export class ProductComponent implements OnInit {
     this.productService.getProducts(1, 4, this.categories).subscribe({
       next: (response) => {
         this.productsLoading = false;
-        this.cdr.detectChanges();
       },
       error: (error) => {
         console.error(
@@ -242,14 +212,13 @@ export class ProductComponent implements OnInit {
           error
         );
         this.productsLoading = false;
-        this.cdr.detectChanges();
       },
     });
   }
   loadProduct(): void {
     this.productLoading = true;
     this.productsLoading = true;
-    this.id = this.route.snapshot.paramMap.get('id');
+    this.id = this.route.snapshot.paramMap.get('id') ?? '';
     if (this.id) {
       this.fetchProduct(this.id).subscribe(() => {
         console.log('[ProductComponent] Product data fetched successfully.');
