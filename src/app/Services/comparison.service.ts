@@ -19,21 +19,21 @@ export class ComparisonService {
   ) {}
 
   // In ComparisonService
-  addToComparison(id: string, name: string): void {
+  addToComparison(productId: string, name: string): void {
     let comparison = JSON.parse(
       localStorage.getItem(this.comparisonKey) || '[]'
     );
 
     // Remove existing entry if it exists
-    comparison = comparison.filter((id: string) => id !== id);
+    comparison = comparison.filter((id: string) => id !== productId);
 
     // Add to the end of array if not full
     if (comparison.length < 4) {
-      comparison.push(id);
+      comparison.push(productId);
       this.toast.success(`${name} Added to comparison`);
     } else {
       // If full, remove oldest and add new (FIFO)
-      comparison = [comparison[1], id];
+      comparison = [comparison[1], productId];
     }
 
     localStorage.setItem(this.comparisonKey, JSON.stringify(comparison));
