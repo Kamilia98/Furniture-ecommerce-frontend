@@ -104,7 +104,7 @@ export class CheckoutComponent implements OnDestroy {
     private authService: AuthService,
     private modalService: ModalService,
     private toast: NgToastService,
-    private router: Router
+    private router: Router,
   ) {
     this.loadCartData();
   }
@@ -151,7 +151,7 @@ export class CheckoutComponent implements OnDestroy {
           const paymentSuccess = this.paymentComponent.validatePaymentForm();
           if (!paymentSuccess) {
             this.toast.danger(
-              'Payment failed. Please check your card details.'
+              'Payment failed. Please check your card details.',
             );
             return;
           }
@@ -212,7 +212,7 @@ export class CheckoutComponent implements OnDestroy {
               paymentIntentResponse.data.clientSecret;
             console.log(
               'Client Secret in checkout:',
-              this.checkoutService.clientSecret
+              this.checkoutService.clientSecret,
             );
 
             this.checkoutService.paymentCompleted

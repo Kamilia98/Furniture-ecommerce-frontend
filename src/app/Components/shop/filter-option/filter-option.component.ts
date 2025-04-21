@@ -19,9 +19,9 @@ import {
     ]),
   ],
   template: `
-    <div class="border-t border-gray-medium z-3 overflow-hidden">
+    <div class="z-3 overflow-hidden border-t border-gray-medium">
       <div
-        class="flex items-center justify-between py-3 cursor-pointer"
+        class="flex cursor-pointer items-center justify-between py-3"
         (click)="toggleActive()"
       >
         <div>
@@ -30,7 +30,7 @@ import {
         <div class="w-[15px]">
           <img
             src="/icons/arrow.svg"
-            class="rotate-[90deg] duration-300 ease"
+            class="ease rotate-[90deg] duration-300"
             [ngClass]="{ 'rotate-[270deg]': isActive }"
             alt=""
           />
@@ -46,7 +46,7 @@ import {
 })
 export class FilterOptionComponent {
   @Input() title: string = '';
-  isActive: boolean = false;
+  isActive: boolean = true;
 
   toggleActive() {
     this.isActive = !this.isActive;

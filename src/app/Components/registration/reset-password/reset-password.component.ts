@@ -50,13 +50,13 @@ export class ResetPasswordComponent {
         Validators.minLength(8),
       ]),
     },
-    { validators: this.passwordMatchValidator() }
+    { validators: this.passwordMatchValidator() },
   );
 
   constructor(
     private authService: AuthService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
   ) {
     this.token = this.route.snapshot.queryParams['token'];
   }
@@ -76,7 +76,7 @@ export class ResetPasswordComponent {
       this.authService
         .resetPassword(
           this.resetForm.controls['password'].value ?? '',
-          this.token
+          this.token,
         )
         .subscribe({
           next: () => {

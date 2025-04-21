@@ -3,7 +3,7 @@
   bannerTitle="Checkout"
   [bannerPath]="[
     { title: 'cart', path: '/cart' },
-    { title: 'checkout', path: '/checkout' }
+    { title: 'checkout', path: '/checkout' },
   ]"
 ></app-header-banner>
 
@@ -11,9 +11,9 @@
 <app-stepper></app-stepper>
 
 <!--**** Checkout Section ****-->
-<section class="flex flex-col md:flex-row p-10 gap-10">
+<section class="flex flex-col gap-10 p-10 md:flex-row">
   <!-- Billing Details Form -->
-  <div class="shadow p-6 rounded-lg flex-1 max-h-max flex flex-col gap-8">
+  <div class="flex max-h-max flex-1 flex-col gap-8 rounded-lg p-6 shadow">
     <h2 class="text-3xl font-bold">Billing Details</h2>
     <form
       [formGroup]="checkoutForm"
@@ -112,20 +112,20 @@
       ></app-input>
 
       <!--*** Additional Information ***-->
-      <label class="block text-gray-700 font-medium"
+      <label class="block font-medium text-gray-700"
         >Additional Information</label
       >
       <textarea
         id="additional-info"
         rows="4"
         formControlName="additionalInfo"
-        class="w-full outline-0 rounded-md p-2 ps-2 bg-secondary"
+        class="w-full rounded-md bg-secondary p-2 ps-2 outline-0"
       ></textarea>
     </form>
   </div>
 
   <!--***** Confirming payment *****-->
-  <div class="shadow p-6 rounded-lg flex-1 max-h-max flex flex-col gap-8">
+  <div class="flex max-h-max flex-1 flex-col gap-8 rounded-lg p-6 shadow">
     <h2 class="text-3xl font-bold">Payment Method</h2>
 
     <table class="w-full">
@@ -137,14 +137,14 @@
       </thead>
       <tbody>
         @for (item of cartItems; track item) {
-        <tr>
-          <td class="p-2">{{ item.name }} x {{ item.quantity }}</td>
-          <td class="p-2">{{ item.price * item.quantity | currency }}</td>
-        </tr>
+          <tr>
+            <td class="p-2">{{ item.name }} x {{ item.quantity }}</td>
+            <td class="p-2">{{ item.price * item.quantity | currency }}</td>
+          </tr>
         }
         <tr>
           <td class="p-2 font-bold">Total</td>
-          <td class="p-2 text-primary font-bold">
+          <td class="p-2 font-bold text-primary">
             {{ subtotal | currency }}
           </td>
         </tr>
@@ -164,7 +164,7 @@
           />
           <label for="cashMethod"> Cash On Delivery </label>
         </div>
-        <div class="flex gap-2 items-center">
+        <div class="flex items-center gap-2">
           <input
             type="radio"
             id="cardMethod"
@@ -188,7 +188,7 @@
               ? 'in'
               : 'out'
           "
-          class="text-red-light text-sm"
+          class="text-sm text-red-light"
         >
           Please select a payment method.
         </p>
@@ -198,7 +198,7 @@
         [@slideUpDown]="
           checkoutForm.get('paymentMethod')?.value === 'bank' ? 'in' : 'out'
         "
-        class="overflow-hidden ml-4"
+        class="ml-4 overflow-hidden"
       >
         <app-payment></app-payment>
       </div>
@@ -206,9 +206,9 @@
         [@slideUpDown]="
           checkoutForm.get('paymentMethod')?.value === 'cod' ? 'in' : 'out'
         "
-        class="overflow-hidden ml-4"
+        class="ml-4 overflow-hidden"
       >
-        <p class="text-gray-500 text-sm">
+        <p class="text-sm text-gray-500">
           You can make your payment when you receive the order at your doorstep.
           Please keep exact change ready to avoid any inconvenience.
         </p>
@@ -225,7 +225,7 @@
     </p>
     <app-button
       (click)="onSubmit()"
-      class="flex justify-center items-center mx-auto"
+      class="mx-auto flex items-center justify-center"
       type="black-outline"
       >Place Order</app-button
     >

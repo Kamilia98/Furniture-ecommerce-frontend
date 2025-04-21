@@ -12,144 +12,145 @@
 <ng-toast [position]="ToasterPosition.BOTTOM_RIGHT" />
 <!-- Favorites Modal -->
 @if (favModalShow) {
-<div
-  class="fixed top-0 right-0 w-full h-full bg-black-transparent z-[1000]"
-  (click)="toggleFavModal(false)"
-></div>
-<div
-  class="fixed top-0 right-0 h-full w-full max-w-[420px] bg-gray-light p-[25px] flex flex-col gap-[25px] z-[1000]"
-  [@slideInOut]="favModalShow ? 'in' : 'out'"
->
-  <div class="flex justify-between">
-    <h3 class="text-2xl font-semibold">Favorites</h3>
-    <div class="cursor-pointer" (click)="toggleFavModal(false)">
-      <img src="icons/close.svg" alt="Close" />
-    </div>
-  </div>
   <div
-    class="border-y border-gray flex-1 flex flex-col gap-[10px] py-[10px] overflow-scroll"
+    class="fixed top-0 right-0 z-[1000] h-full w-full bg-black-transparent"
+    (click)="toggleFavModal(false)"
+  ></div>
+  <div
+    class="fixed top-0 right-0 z-[1000] flex h-full w-full max-w-[420px] flex-col gap-[25px] bg-gray-light p-[25px]"
+    [@slideInOut]="favModalShow ? 'in' : 'out'"
   >
-    @if (favoritesLength$|async) { @for (item of favorites$|async; track
-    item.id) {
-    <div
-      class="flex items-center shadow-sm p-2 rounded hover:shadow-xl duration-300 ease"
-    >
-      <div
-        class="flex flex-1 gap-3 items-center cursor-pointer"
-        [routerLink]="['/product', item.id]"
-      >
-        <img
-          src="{{ item.image }}"
-          alt="{{ item.name }}"
-          class="w-20 h-20 object-cover rounded-[10px]"
-        />
-        <h3 class="text-base cursor-pointer flex-1">
-          {{ item.name }}
-        </h3>
-      </div>
-      <div class="cursor-pointer" (click)="deleteFavorite(item.id)">
-        <img src="icons/close-filled.svg" alt="Remove" />
+    <div class="flex justify-between">
+      <h3 class="text-2xl font-semibold">Favorites</h3>
+      <div class="cursor-pointer" (click)="toggleFavModal(false)">
+        <img src="icons/close.svg" alt="Close" />
       </div>
     </div>
-    } } @else {
-    <p class="text-center text-gray text-xl m-auto">
-      You don't have any favorites!
-    </p>
-    }
-  </div>
-  <div class="flex justify-between">
-    <a
-      routerLink="/favorites"
-      (click)="toggleFavModal(false)"
-      class="border py-[5px] px-[30px] text-xs rounded-[50px]"
+    <div
+      class="flex flex-1 flex-col gap-[10px] overflow-scroll border-y border-gray py-[10px]"
     >
-      See more
-    </a>
+      @if (favoritesLength$ | async) {
+        @for (item of favorites$ | async; track item.id) {
+          <div
+            class="ease flex items-center rounded p-2 shadow-sm duration-300 hover:shadow-xl"
+          >
+            <div
+              class="flex flex-1 cursor-pointer items-center gap-3"
+              [routerLink]="['/product', item.id]"
+            >
+              <img
+                src="{{ item.image }}"
+                alt="{{ item.name }}"
+                class="h-20 w-20 rounded-[10px] object-cover"
+              />
+              <h3 class="flex-1 cursor-pointer text-base">
+                {{ item.name }}
+              </h3>
+            </div>
+            <div class="cursor-pointer" (click)="deleteFavorite(item.id)">
+              <img src="icons/close-filled.svg" alt="Remove" />
+            </div>
+          </div>
+        }
+      } @else {
+        <p class="m-auto text-center text-xl text-gray">
+          You don't have any favorites!
+        </p>
+      }
+    </div>
+    <div class="flex justify-between">
+      <a
+        routerLink="/favorites"
+        (click)="toggleFavModal(false)"
+        class="rounded-[50px] border px-[30px] py-[5px] text-xs"
+      >
+        See more
+      </a>
+    </div>
   </div>
-</div>
 }
 
 <!-- Shopping Cart Modal -->
 @if (cartModalShow) {
-<div
-  class="fixed top-0 right-0 w-full h-full bg-black-transparent z-[999]"
-  (click)="toggleCartModal(false)"
-></div>
-<div
-  class="fixed top-0 right-0 h-full w-full max-w-[420px] bg-gray-light p-[25px] flex flex-col gap-[25px] z-[1000]"
-  [@slideInOut]="cartModalShow ? 'in' : 'out'"
->
-  <div class="flex justify-between items-center">
-    <h3 class="text-2xl font-semibold">Shopping Cart</h3>
-    <div class="cursor-pointer" (click)="toggleCartModal(false)">
-      <img src="icons/close.svg" alt="Close" />
-    </div>
-  </div>
   <div
-    class="border-y border-gray flex-1 flex flex-col gap-[10px] py-[10px] justify-between overflow-scroll"
+    class="fixed top-0 right-0 z-[999] h-full w-full bg-black-transparent"
+    (click)="toggleCartModal(false)"
+  ></div>
+  <div
+    class="fixed top-0 right-0 z-[1000] flex h-full w-full max-w-[420px] flex-col gap-[25px] bg-gray-light p-[25px]"
+    [@slideInOut]="cartModalShow ? 'in' : 'out'"
   >
-    <div class="flex flex-col flex-1 gap-[25px] overflow-scroll">
-      @if (cartLength) {
-      <div
-        *ngFor="let item of cart"
-        class="flex items-center shadow-sm p-2 rounded hover:shadow-xl duration-300 ease"
-      >
-        <div
-          class="flex flex-1 gap-3 items-center cursor-pointer"
-          [routerLink]="['/product', item.id]"
-        >
-          <img
-            [src]="item.image"
-            [alt]="item.name"
-            class="w-20 h-20 object-cover rounded-[10px]"
-          />
-          <div class="flex flex-col">
-            <h3 class="text-base cursor-pointer">{{ item.name }}</h3>
-            <div class="flex gap-[10px]">
-              <div>{{ item.quantity }}</div>
-              <div>x</div>
-              <div class="text-primary">{{ item.price | currency }}</div>
+    <div class="flex items-center justify-between">
+      <h3 class="text-2xl font-semibold">Shopping Cart</h3>
+      <div class="cursor-pointer" (click)="toggleCartModal(false)">
+        <img src="icons/close.svg" alt="Close" />
+      </div>
+    </div>
+    <div
+      class="flex flex-1 flex-col justify-between gap-[10px] overflow-scroll border-y border-gray py-[10px]"
+    >
+      <div class="flex flex-1 flex-col gap-[25px] overflow-scroll">
+        @if (cartLength) {
+          <div
+            *ngFor="let item of cart"
+            class="ease flex items-center rounded p-2 shadow-sm duration-300 hover:shadow-xl"
+          >
+            <div
+              class="flex flex-1 cursor-pointer items-center gap-3"
+              [routerLink]="['/product', item.id]"
+            >
+              <img
+                [src]="item.image"
+                [alt]="item.name"
+                class="h-20 w-20 rounded-[10px] object-cover"
+              />
+              <div class="flex flex-col">
+                <h3 class="cursor-pointer text-base">{{ item.name }}</h3>
+                <div class="flex gap-[10px]">
+                  <div>{{ item.quantity }}</div>
+                  <div>x</div>
+                  <div class="text-primary">{{ item.price | currency }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="cursor-pointer" (click)="deleteCartProduct(item.id)">
+              <img src="icons/close-filled.svg" alt="Remove" />
             </div>
           </div>
-        </div>
-        <div class="cursor-pointer" (click)="deleteCartProduct(item.id)">
-          <img src="icons/close-filled.svg" alt="Remove" />
+        } @else {
+          <p class="m-auto text-center text-xl text-gray">
+            Your shopping cart is empty. Start adding products to your cart to
+            see them here.
+          </p>
+        }
+      </div>
+      <div class="flex justify-between">
+        <div>Subtotal</div>
+        <div class="text-primary">
+          {{ cartProductsTotalPrice | currency }}
         </div>
       </div>
-      } @else {
-      <p class="text-center text-gray text-xl m-auto">
-        Your shopping cart is empty. Start adding products to your cart to see
-        them here.
-      </p>
-      }
     </div>
     <div class="flex justify-between">
-      <div>Subtotal</div>
-      <div class="text-primary">
-        {{ cartProductsTotalPrice | currency }}
-      </div>
+      <a
+        routerLink="/cart"
+        (click)="toggleCartModal(false)"
+        class="rounded-[50px] border px-[30px] py-[5px] text-xs"
+        >Cart</a
+      >
+      @if (cartLength) {
+        <a
+          [routerLink]="['/checkout']"
+          class="cursor-pointer rounded-[50px] border px-[30px] py-[5px] text-xs"
+          >Checkout</a
+        >
+      }
+      <a
+        routerLink="/comparison"
+        (click)="toggleCartModal(false)"
+        class="rounded-[50px] border px-[30px] py-[5px] text-xs"
+        >Comparison</a
+      >
     </div>
   </div>
-  <div class="flex justify-between">
-    <a
-      routerLink="/cart"
-      (click)="toggleCartModal(false)"
-      class="border py-[5px] px-[30px] text-xs rounded-[50px]"
-      >Cart</a
-    >
-    @if (cartLength) {
-    <a
-      [routerLink]="['/checkout']"
-      class="border py-[5px] px-[30px] text-xs rounded-[50px] cursor-pointer"
-      >Checkout</a
-    >
-    }
-    <a
-      routerLink="/comparison"
-      (click)="toggleCartModal(false)"
-      class="border py-[5px] px-[30px] text-xs rounded-[50px]"
-      >Comparison</a
-    >
-  </div>
-</div>
 }

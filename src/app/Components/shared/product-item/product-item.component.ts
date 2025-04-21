@@ -36,7 +36,7 @@ import { ComparisonService } from '../../../Services/comparison.service';
       state('in', style({ transform: 'translateY(0%)', opacity: 1 })),
       state(
         'out',
-        style({ transform: 'translateY(100%)', opacity: 0, display: 'none' })
+        style({ transform: 'translateY(100%)', opacity: 0, display: 'none' }),
       ),
       transition('in <=> out', [animate('300ms ease-in-out')]),
     ]),
@@ -58,7 +58,7 @@ export class ProductItemComponent implements OnInit, OnDestroy {
     private cdr: ChangeDetectorRef,
     private favoriteService: FavoriteService,
     private cartService: CartService,
-    private ComparisonService: ComparisonService
+    private ComparisonService: ComparisonService,
   ) {}
 
   ngOnInit(): void {
@@ -66,16 +66,16 @@ export class ProductItemComponent implements OnInit, OnDestroy {
       this.cartService.cart$.subscribe((cart) => {
         this.isInCartState = cart.some((item) => item.id === this.product.id);
         this.cdr.markForCheck();
-      })
+      }),
     );
 
     this.subs.add(
       this.favoriteService.favorites$.subscribe((favorites) => {
         this.isFavoriteState = favorites.some(
-          (fav) => fav.id === this.product.id
+          (fav) => fav.id === this.product.id,
         );
         this.cdr.markForCheck();
-      })
+      }),
     );
   }
 
@@ -120,7 +120,7 @@ export class ProductItemComponent implements OnInit, OnDestroy {
       console.log('Adding to comparison:', this.product.id);
       this.ComparisonService.addToComparison(
         this.product.id,
-        this.product.name
+        this.product.name,
       );
     }
   }

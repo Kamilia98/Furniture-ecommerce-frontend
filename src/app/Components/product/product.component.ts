@@ -85,7 +85,7 @@ export class ProductComponent implements OnInit {
     private cartService: CartService,
     private comparisonService: ComparisonService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -100,15 +100,15 @@ export class ProductComponent implements OnInit {
       this.cartService.cart$.subscribe(() => {
         this.isInCartState = this.cartService.isColorInCart(
           this.id,
-          this.selectedColor?.name ?? ''
+          this.selectedColor?.name ?? '',
         );
-      })
+      }),
     );
 
     this.subs.add(
       this.favoriteService.favorites$.subscribe((favorites) => {
         this.isFavoriteState = this.favoriteService.isInFavorites(this.id);
-      })
+      }),
     );
 
     this.loadProduct();
@@ -117,7 +117,7 @@ export class ProductComponent implements OnInit {
   private updateCartStateForCurrentProduct(): void {
     this.isInCartState = this.cartService.isColorInCart(
       this.id,
-      this.selectedColor?.name ?? ''
+      this.selectedColor?.name ?? '',
     );
   }
 
@@ -170,7 +170,7 @@ export class ProductComponent implements OnInit {
             this.productSubject.next(productData);
             this.originalPrice = productData.price;
             this.categories = (productData.categories ?? []).map(
-              ({ _id }) => _id
+              ({ _id }) => _id,
             );
             this.salePrice =
               this.originalPrice * (1 - (productData.sale || 0) / 100);
@@ -180,11 +180,11 @@ export class ProductComponent implements OnInit {
             if (this.colors.length > 0) this.setSelectedColor(0);
             this.isInCartState = this.cartService.isInCart(productData.id);
             this.isFavoriteState = this.favoriteService.isInFavorites(
-              productData.id
+              productData.id,
             );
             console.log(
               '[ProductComponent -- fetch product] Categories:',
-              this.categories
+              this.categories,
             );
             this.productLoading = false;
             this.fetchProducts();
@@ -196,7 +196,7 @@ export class ProductComponent implements OnInit {
           console.error('[ProductComponent] Error fetching product:', error);
           this.productLoading = false;
         },
-      })
+      }),
     );
   }
 
@@ -209,7 +209,7 @@ export class ProductComponent implements OnInit {
       error: (error) => {
         console.error(
           '[ProductComponent] Error fetching related products:',
-          error
+          error,
         );
         this.productsLoading = false;
       },
@@ -294,7 +294,7 @@ export class ProductComponent implements OnInit {
       if (currentProduct) {
         this.comparisonService.addToComparison(
           currentProduct.id,
-          currentProduct.name
+          currentProduct.name,
         );
       }
     }

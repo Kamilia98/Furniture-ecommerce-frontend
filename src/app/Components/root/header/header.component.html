@@ -1,9 +1,8 @@
 <nav
-  class="sticky top-0 z-[999] flex h-[100px] items-center justify-between px-[10px] lg:px-[30px] gap-[10px] transition-colors duration-300 bg-white shadow"
- 
+  class="sticky top-0 z-[999] flex h-[100px] items-center justify-between gap-[10px] bg-white px-[10px] shadow transition-colors duration-300 lg:px-[30px]"
 >
   <!-- Logo -->
-  <div class="flex items-center gap-[5px] cursor-pointer" routerLink="/home">
+  <div class="flex cursor-pointer items-center gap-[5px]" routerLink="/home">
     <img src="images/logo.png" alt="Logo" class="w-[30px] lg:w-[50px]" />
     <div class="font-montserrat text-2xl font-bold lg:text-4xl">Furniro</div>
   </div>
@@ -33,29 +32,29 @@
       class="hamburgerMenu flex h-[40px] w-[40px] flex-col items-center justify-evenly md:hidden"
     >
       <span
-        class="menuSign w-[60%] border-2 rounded-[5px] duration-300 ease"
+        class="menuSign ease w-[60%] rounded-[5px] border-2 duration-300"
       ></span>
       <span
-        class="menuSign w-[90%] border-2 rounded-[5px] duration-300 ease"
+        class="menuSign ease w-[90%] rounded-[5px] border-2 duration-300"
       ></span>
       <span
-        class="menuSign w-[60%] border-2 rounded-[5px] duration-300 ease"
+        class="menuSign ease w-[60%] rounded-[5px] border-2 duration-300"
       ></span>
     </div>
   </button>
 
   <!-- Mobile Menu -->
-  @if(isActive){
-  <div
-    class="absolute top-[100px] right-0 flex-col w-[250px] bg-white text-center shadow md:hidden"
-    (click)="toggleMenu()"
-  >
-    <app-navigation></app-navigation>
-    <app-user-actions
-      (openFavorites)="openFavorites.emit()"
-      (openCart)="openCart.emit()"
+  @if (isActive) {
+    <div
+      class="absolute top-[100px] right-0 w-[250px] flex-col bg-white text-center shadow md:hidden"
+      (click)="toggleMenu()"
     >
-    </app-user-actions>
-  </div>
+      <app-navigation></app-navigation>
+      <app-user-actions
+        (openFavorites)="openFavorites.emit()"
+        (openCart)="openCart.emit()"
+      >
+      </app-user-actions>
+    </div>
   }
 </nav>

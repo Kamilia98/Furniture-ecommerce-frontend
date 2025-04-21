@@ -31,7 +31,10 @@ export class HeaderComponent {
   @Output() openCart = new EventEmitter<void>();
   isActive = false;
 
-  constructor(private router: Router, private elementRef: ElementRef) {}
+  constructor(
+    private router: Router,
+    private elementRef: ElementRef,
+  ) {}
 
   toggleMenu() {
     this.isActive = !this.isActive;

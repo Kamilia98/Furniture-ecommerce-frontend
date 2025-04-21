@@ -25,7 +25,7 @@ export class PaymentComponent implements OnInit {
 
   constructor(
     private checkoutService: CheckoutService,
-    private modalService: ModalService
+    private modalService: ModalService,
   ) {}
   async ngOnInit() {
     this.stripe = await loadStripe(environment.stripePublishableKey);
@@ -47,7 +47,7 @@ export class PaymentComponent implements OnInit {
         payment_method: {
           card: this.card,
         },
-      }
+      },
     );
 
     if (error) {

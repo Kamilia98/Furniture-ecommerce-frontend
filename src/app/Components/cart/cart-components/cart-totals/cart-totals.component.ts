@@ -9,7 +9,6 @@ import { ProductCart } from '../../../../Models/productCart.model';
 @Component({
   selector: 'app-cart-totals',
   templateUrl: './cart-totals.component.html',
-  styleUrls: ['./cart-totals.component.css'],
   standalone: true,
   imports: [CommonModule, ButtonComponent, CurrencyPipe],
 })
@@ -17,7 +16,10 @@ export class CartTotalsComponent {
   subtotal$!: Observable<number>;
   @Input() cartItems: ProductCart[] = [];
 
-  constructor(private cartService: CartService, private router: Router) {}
+  constructor(
+    private cartService: CartService,
+    private router: Router,
+  ) {}
 
   ngOnInit(): void {
     this.subtotal$ = this.cartService.cartSubtotal$;

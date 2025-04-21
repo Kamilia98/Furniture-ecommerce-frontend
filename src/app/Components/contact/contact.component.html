@@ -5,11 +5,11 @@
 ></app-header-banner>
 
 <!-- Contact Section -->
-<section class="p-10 flex flex-col gap-10">
+<section class="flex flex-col gap-10 p-10">
   <!-- Contact Header -->
-  <div class="text-center flex flex-col items-center gap-4 w-full">
+  <div class="flex w-full flex-col items-center gap-4 text-center">
     <h1 class="text-4xl font-semibold">Get in Touch with Us</h1>
-    <p class="text-base text-gray max-w-2xl">
+    <p class="max-w-2xl text-base text-gray">
       For more information about our products and services, please feel free to
       drop us an email. Our team is always here to assist you. Don't hesitate to
       reach out!
@@ -17,16 +17,16 @@
   </div>
 
   <div
-    class="flex flex-col sm:flex-row justify-center items-start gap-5 md:gap-10"
+    class="flex flex-col items-start justify-center gap-5 sm:flex-row md:gap-10"
   >
     <!-- Contact Information -->
     <div class="flex flex-col gap-5">
       <!-- Address -->
       <div class="flex gap-3">
-        <i class="fas fa-map-marker-alt text-xl text-black mt-1"></i>
+        <i class="fas fa-map-marker-alt mt-1 text-xl text-black"></i>
         <div class="flex flex-col gap-4">
           <p class="text-xl font-semibold text-black">Address</p>
-          <p class="text-sm lg:text-base text-black">
+          <p class="text-sm text-black lg:text-base">
             15 Tahrir Square, Downtown, Cairo, Egypt
           </p>
         </div>
@@ -34,7 +34,7 @@
 
       <!-- Phone -->
       <div class="flex gap-3">
-        <i class="fas fa-phone text-xl mt-1"></i>
+        <i class="fas fa-phone mt-1 text-xl"></i>
         <div class="flex flex-col gap-4">
           <p class="text-xl font-semibold">Phone</p>
           <p class="text-sm lg:text-base">Mobile: +20 100 123 4567</p>
@@ -44,7 +44,7 @@
 
       <!-- Working Hours -->
       <div class="flex gap-3">
-        <i class="fas fa-clock text-xl mt-1"></i>
+        <i class="fas fa-clock mt-1 text-xl"></i>
         <div class="flex flex-col gap-4">
           <p class="text-xl font-semibold">Working Hours</p>
           <p class="text-sm lg:text-base">Mon - Fri: 9:00 AM - 10:00 PM</p>
@@ -54,7 +54,7 @@
     </div>
 
     <!-- Contact Form -->
-    <div class="max-w-md w-full p-1 bg-white">
+    <div class="w-full max-w-md bg-white p-1">
       <form
         [formGroup]="contactForm"
         (ngSubmit)="onSubmit()"
@@ -92,38 +92,41 @@
         <textarea
           id="message"
           formControlName="message"
-          class="w-full outline-0 rounded-md p-2 ps-2 bg-secondary"
+          class="w-full rounded-md bg-secondary p-2 ps-2 outline-0"
           placeholder="Write Your Message"
           required
         ></textarea>
 
-        @if (contactForm.get('message')?.invalid &&
-        contactForm.get('message')?.touched) {
-        <p class="text-red-light text-sm">Message cannot be empty.</p>
+        @if (
+          contactForm.get("message")?.invalid &&
+          contactForm.get("message")?.touched
+        ) {
+          <p class="text-sm text-red-light">Message cannot be empty.</p>
         }
 
         <!-- Submit Button -->
         <app-button type="primary-fill">
-          @if(!isLoading){ Submit } @else {
-          <div class="flex justify-center">
-            <div class="spinner"></div>
-          </div>
+          @if (!isLoading) {
+            Submit
+          } @else {
+            <div class="flex justify-center">
+              <div class="spinner"></div>
+            </div>
           }
         </app-button>
       </form>
 
       <!-- Submission Message -->
       @if (message) {
-      <h2
-        [ngClass]="{
-          'text-green-500': isSuccess,
-          'text-red-light': !isSuccess
-        }"
-        class="mt-4 text-sm"
-      >
-        {{ message }}
-      </h2>
-
+        <h2
+          [ngClass]="{
+            'text-green-500': isSuccess,
+            'text-red-light': !isSuccess,
+          }"
+          class="mt-4 text-sm"
+        >
+          {{ message }}
+        </h2>
       }
     </div>
   </div>

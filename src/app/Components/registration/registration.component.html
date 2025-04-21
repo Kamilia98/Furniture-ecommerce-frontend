@@ -2,19 +2,19 @@
   class="flex h-screen"
   [ngClass]="{
     'flex-row-reverse': isSignUp$ | async,
-    'flex-row': !(isSignUp$ | async)
+    'flex-row': !(isSignUp$ | async),
   }"
 >
   <div
-    class="flex-1 flex flex-col items-center overflow-y-scroll py-5 gap-y-5 self-center lg:self-stretch"
+    class="flex flex-1 flex-col items-center gap-y-5 self-center overflow-y-scroll py-5 lg:self-stretch"
   >
     <div
-      class="flex-1 flex flex-col justify-center w-[90%] lg:w-[70%] self-center"
+      class="flex w-[90%] flex-1 flex-col justify-center self-center lg:w-[70%]"
     >
-      <div class="flex flex-col shadow gap-4 p-4 md:p-10 rounded-xl">
+      <div class="flex flex-col gap-4 rounded-xl p-4 shadow md:p-10">
         <!-- Logo -->
         <div
-          class="flex items-center gap-2 w-full cursor-pointer"
+          class="flex w-full cursor-pointer items-center gap-2"
           [routerLink]="['/']"
         >
           <img src="images/logo.png" alt="Logo" class="w-[30px] lg:w-[40px]" />
@@ -28,7 +28,7 @@
   </div>
 
   <div
-    class="bg-secondary w-[100%] lg:w-[600px] hidden lg:flex justify-center items-end py-4"
+    class="hidden w-[100%] items-end justify-center bg-secondary py-4 lg:flex lg:w-[600px]"
   >
     <img
       src="icons/registration.svg"

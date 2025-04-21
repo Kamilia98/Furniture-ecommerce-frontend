@@ -6,9 +6,9 @@ import { RouterModule } from '@angular/router';
   selector: 'app-error',
   imports: [ButtonComponent, RouterModule],
   template: `
-    <div class="flex flex-col p-10 justify-center items-center gap-10">
+    <div class="flex flex-col items-center justify-center gap-10 p-10">
       <img src="./images/{{ errorCode }}.jpg" alt="" class="w-[500px]" />
-      <h1 class="text-4xl text-center max-w-md">
+      <h1 class="max-w-md text-center text-4xl">
         {{ errorMessage }}
       </h1>
       <app-button btnWidth="200px" [routerLink]="['/home']"

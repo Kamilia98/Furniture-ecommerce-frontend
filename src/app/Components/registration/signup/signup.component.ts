@@ -49,7 +49,10 @@ export class SignupComponent {
     ]),
     agree: new FormControl(false, [Validators.requiredTrue]),
   });
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+  ) {}
   onSubmit() {
     this.signupForm.controls.email.markAsTouched();
     this.signupForm.controls.username.markAsTouched();

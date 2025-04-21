@@ -1,6 +1,6 @@
 <div class="relative">
   <div class="flex flex-col gap-2">
-    <label class="text-gray-dark font-medium" for="">{{ label }}</label>
+    <label class="font-medium text-gray-dark" for="">{{ label }}</label>
     <div class="relative">
       <input
         [type]="showPassword ? 'text' : type"
@@ -9,39 +9,38 @@
         [formControl]="control"
       />
       <!-- Eye Icon for Password Toggle -->
-      @if (type === 'password') {
-      <button
-        type="button"
-        (click)="togglePassword()"
-        class="absolute right-3 top-1/2 transform -translate-y-1/2 bg-transparent border-none cursor-pointer"
-      >
-        @if(showPassword){
-
-        <img src="/icons/eye.svg" alt="Hide Password" class="w-5 h-5" />
-        }@else {
-        <img src="/icons/eye-off.svg" alt="Show Password" class="w-5 h-5" />
-        }
-      </button>
+      @if (type === "password") {
+        <button
+          type="button"
+          (click)="togglePassword()"
+          class="absolute top-1/2 right-3 -translate-y-1/2 transform cursor-pointer border-none bg-transparent"
+        >
+          @if (showPassword) {
+            <img src="/icons/eye.svg" alt="Hide Password" class="h-5 w-5" />
+          } @else {
+            <img src="/icons/eye-off.svg" alt="Show Password" class="h-5 w-5" />
+          }
+        </button>
       }
     </div>
   </div>
 
   <!-- Error Messages -->
   <div
-    class="text-red-light text-sm mt-1 h-4"
+    class="mt-1 h-4 text-sm text-red-light"
     [@slideUpDown]="control.invalid && control.touched ? 'in' : 'out'"
   >
-    @if(control.errors?.['required']){
-    <span>This field is required.</span>
-    }@else if (control.errors?.['email']) {
-    <span>Invalid email format.</span>
-    }@else if (control.errors?.['pattern'] ) {
-    <span>Please Enter A valid {{ label }}.</span>
-    } @else if(control.errors?.['minlength']) {
-    <span
-      >Minimum length is
-      {{ control.errors?.['minlength'].requiredLength }}.</span
-    >
+    @if (control.errors?.["required"]) {
+      <span>This field is required.</span>
+    } @else if (control.errors?.["email"]) {
+      <span>Invalid email format.</span>
+    } @else if (control.errors?.["pattern"]) {
+      <span>Please Enter A valid {{ label }}.</span>
+    } @else if (control.errors?.["minlength"]) {
+      <span
+        >Minimum length is
+        {{ control.errors?.["minlength"].requiredLength }}.</span
+      >
     }
   </div>
 </div>

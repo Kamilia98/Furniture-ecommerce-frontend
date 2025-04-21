@@ -6,39 +6,39 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
   standalone: true,
   imports: [NgxSkeletonLoaderModule],
   template: `
-    <div class="w-full h-full">
+    <div class="h-full w-full">
       <div
-        class="w-full max-w-6xl px-4 sm:px-6 lg:px-8 py-6 flex flex-col lg:flex-row gap-6 lg:gap-12 justify-center mx-auto"
+        class="mx-auto flex w-full max-w-6xl flex-col justify-center gap-6 px-4 py-6 sm:px-6 lg:flex-row lg:gap-12 lg:px-8"
       >
         <!-- Image Section Skeleton -->
         <div class="flex-1 lg:w-3/5">
-          <div class="flex flex-col lg:flex-row gap-4 lg:gap-6">
+          <div class="flex flex-col gap-4 lg:flex-row lg:gap-6">
             <!-- Vertical Thumbnails Skeleton -->
-            <div class="hidden lg:flex flex-col gap-3 lg:gap-4">
+            <div class="hidden flex-col gap-3 lg:flex lg:gap-4">
               <ngx-skeleton-loader
                 *ngFor="let _ of [1, 2, 3, 4]"
                 [theme]="{
                   'width.px': 80,
                   'height.px': 80,
-                  'border-radius': '8px'
+                  'border-radius': '8px',
                 }"
               />
             </div>
 
             <!-- Main Image Skeleton -->
-            <div class="w-full relative">
+            <div class="relative w-full">
               <ngx-skeleton-loader
                 [theme]="{
                   width: '100%',
                   'height.px': 600,
-                  'border-radius': '8px'
+                  'border-radius': '8px',
                 }"
               />
             </div>
 
             <!-- Mobile Thumbnails Skeleton -->
             <div
-              class="lg:hidden flex gap-4 overflow-x-auto scrollbar-hide pb-2"
+              class="scrollbar-hide flex gap-4 overflow-x-auto pb-2 lg:hidden"
             >
               <ngx-skeleton-loader
                 *ngFor="let _ of [1, 2, 3, 4]"
@@ -46,7 +46,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
                 [theme]="{
                   'width.px': 80,
                   'height.px': 80,
-                  'border-radius': '8px'
+                  'border-radius': '8px',
                 }"
               />
             </div>
@@ -54,13 +54,13 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
         </div>
 
         <!-- Details Section Skeleton -->
-        <div class="flex-1 lg:w-2/5 max-w-xl space-y-3 lg:space-y-6">
+        <div class="max-w-xl flex-1 space-y-3 lg:w-2/5 lg:space-y-6">
           <!-- Product Title -->
           <ngx-skeleton-loader
             [theme]="{
               'width.%': 70,
               'height.px': 40,
-              'margin-bottom': '8px'
+              'margin-bottom': '8px',
             }"
           />
 
@@ -69,7 +69,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
             [theme]="{
               'width.%': 90,
               'height.px': 24,
-              'margin-bottom': '16px'
+              'margin-bottom': '16px',
             }"
           />
 
@@ -78,7 +78,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
             [theme]="{
               'width.%': 40,
               'height.px': 24,
-              'margin-bottom': '24px'
+              'margin-bottom': '24px',
             }"
           />
 
@@ -87,13 +87,13 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
             <ngx-skeleton-loader
               [theme]="{
                 'width.%': 30,
-                'height.px': 28
+                'height.px': 28,
               }"
             />
             <ngx-skeleton-loader
               [theme]="{
                 'width.%': 40,
-                'height.px': 20
+                'height.px': 20,
               }"
             />
           </div>
@@ -103,7 +103,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
             [theme]="{
               'width.%': 20,
               'height.px': 20,
-              'margin-bottom': '32px'
+              'margin-bottom': '32px',
             }"
           />
 
@@ -112,7 +112,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
             <ngx-skeleton-loader
               [theme]="{
                 'width.%': 15,
-                'height.px': 20
+                'height.px': 20,
               }"
             />
             <div class="flex gap-3">
@@ -121,23 +121,23 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
                 [theme]="{
                   'width.px': 32,
                   'height.px': 32,
-                  'border-radius': '50%'
+                  'border-radius': '50%',
                 }"
               />
             </div>
           </div>
 
           <!-- Buttons Section Skeleton -->
-          <div class="flex flex-col w-full gap-3 lg:gap-4 items-start mt-6">
+          <div class="mt-6 flex w-full flex-col items-start gap-3 lg:gap-4">
             <div
-              class="flex flex-col sm:flex-row gap-3 lg:gap-4 w-full sm:w-auto items-center"
+              class="flex w-full flex-col items-center gap-3 sm:w-auto sm:flex-row lg:gap-4"
             >
               <!-- Quantity Selector -->
               <ngx-skeleton-loader
                 [theme]="{
                   'width.px': 150,
                   'height.px': 48,
-                  'border-radius': '8px'
+                  'border-radius': '8px',
                 }"
               />
 
@@ -146,14 +146,14 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
                 [theme]="{
                   'width.px': 190,
                   'height.px': 48,
-                  'border-radius': '8px'
+                  'border-radius': '8px',
                 }"
               />
               <ngx-skeleton-loader
                 [theme]="{
                   'width.px': 140,
                   'height.px': 48,
-                  'border-radius': '8px'
+                  'border-radius': '8px',
                 }"
               />
             </div>

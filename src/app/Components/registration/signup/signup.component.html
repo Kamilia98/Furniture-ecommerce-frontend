@@ -1,5 +1,5 @@
 <div class="flex flex-col gap-4">
-  <h2 class="text-5xl font-bold font-poppins">Sign Up</h2>
+  <h2 class="font-poppins text-5xl font-bold">Sign Up</h2>
   <form [formGroup]="signupForm" class="flex flex-col gap-4">
     <app-input
       placeholder="User name"
@@ -34,28 +34,29 @@
       [control]="signupForm.controls['password']"
     ></app-input>
     <!-- Agree to privacy Policy -->
-    <div class="flex flex-col gap-2 w-full mt-2">
+    <div class="mt-2 flex w-full flex-col gap-2">
       <div class="flex items-center gap-2">
         <input
           type="checkbox"
           id="agree"
           formControlName="agree"
-          class="w-4 h-4"
+          class="h-4 w-4"
         />
         <label for="agree" class="text-sm text-gray-600">
           I agree to the
-          <a class="text-primary cursor-pointer hover:underline"
+          <a class="cursor-pointer text-primary hover:underline"
             >Terms of Service</a
           >
           and
-          <a class="text-primary cursor-pointer hover:underline"
-          [routerLink]="['/privacypolicy']"
+          <a
+            class="cursor-pointer text-primary hover:underline"
+            [routerLink]="['/privacypolicy']"
             >Privacy Policy</a
           >.
         </label>
       </div>
       <div
-        class="text-red-light text-sm"
+        class="text-sm text-red-light"
         [@slideUpDown]="
           !signupForm.controls['agree'].value &&
           this.signupForm.controls['agree'].touched
@@ -68,7 +69,7 @@
     </div>
 
     <div
-      class="text-red-light text-center"
+      class="text-center text-red-light"
       [@slideUpDown]="errorMessage ? 'in' : 'out'"
     >
       {{ errorMessage }}
@@ -78,11 +79,11 @@
       <app-button (click)="onSubmit()">Sign Up</app-button>
     </div>
 
-    <div class="text-center mt-2">
+    <div class="mt-2 text-center">
       <span class="text-gray">Already have an account ?</span>
       <span>
         <a
-          class="text-primary font-bold opacity-100"
+          class="font-bold text-primary opacity-100"
           [routerLink]="['/auth/login']"
         >
           Sign In</a

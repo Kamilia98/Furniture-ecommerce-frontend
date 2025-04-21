@@ -18,7 +18,7 @@ import { ProductService } from '../../../Services/product.service';
   imports: [CommonModule, FormsModule, DropdownComponent],
   template: `
     <div
-      class="relative flex flex-1 h-full w-full cursor-pointer items-center rounded-md border border-gray-medium bg-white p-1"
+      class="relative flex h-full w-full flex-1 cursor-pointer items-center rounded-md border border-gray-medium bg-white p-1"
     >
       <input
         type="text"
@@ -30,11 +30,11 @@ import { ProductService } from '../../../Services/product.service';
         (keydown)="handleKeyDown($event)"
       />
       <img src="icons/search.svg" alt="Search" class="w-5" />
-      @if(isMenuOpen && filteredItems.length > 0){
-      <app-dropdown
-        [items]="filteredItems"
-        (selectedValueChange)="updateValue($event)"
-      ></app-dropdown>
+      @if (isMenuOpen && filteredItems.length > 0) {
+        <app-dropdown
+          [items]="filteredItems"
+          (selectedValueChange)="updateValue($event)"
+        ></app-dropdown>
       }
     </div>
   `,
@@ -51,12 +51,12 @@ export class SearchComponent {
 
   constructor(
     private elementRef: ElementRef,
-    private productService: ProductService
+    private productService: ProductService,
   ) {
     this.searchSubject
       .pipe(
         debounceTime(300),
-        switchMap((query) => this.productService.searchProducts(query))
+        switchMap((query) => this.productService.searchProducts(query)),
       )
       .subscribe((results) => {
         this.filteredItems = results;

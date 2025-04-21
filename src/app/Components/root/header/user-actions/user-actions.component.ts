@@ -27,7 +27,7 @@ export class UserActionsComponent implements OnInit {
     private favoriteService: FavoriteService,
     private cartService: CartService,
     private authService: AuthService,
-    private userService: UserService
+    private userService: UserService,
   ) {}
 
   ngOnInit(): void {
@@ -41,8 +41,8 @@ export class UserActionsComponent implements OnInit {
           combineLatest([
             this.userService.getUser(),
             this.favoriteService.favorites$,
-          ])
-        )
+          ]),
+        ),
       )
       .subscribe(([user, favorites]) => {
         this.favoritesLength = favorites.length;

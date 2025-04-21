@@ -45,7 +45,7 @@ export class ContactComponent {
 
   constructor(
     private contactService: ContactService,
-    private modalService: ModalService
+    private modalService: ModalService,
   ) {
     this.contactService.message$.subscribe((response) => {
       if (response) {

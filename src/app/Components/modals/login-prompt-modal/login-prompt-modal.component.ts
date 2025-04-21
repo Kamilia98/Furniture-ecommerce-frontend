@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component,Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ButtonComponent } from '../../shared/button/button.component';
 import { MatDialogClose } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
@@ -9,16 +9,16 @@ import { RouterModule } from '@angular/router';
   standalone: true,
   imports: [MatDialogClose, MatButtonModule, ButtonComponent, RouterModule],
   template: `
-    <div class="flex flex-col items-center text-center p-6 space-y-4">
-      <div class="flex flex-col items-center text-center p-6 space-y-4">
-        <div class="rounded-full h-10 w-10 text-red">
+    <div class="flex flex-col items-center space-y-4 p-6 text-center">
+      <div class="flex flex-col items-center space-y-4 p-6 text-center">
+        <div class="text-red h-10 w-10 rounded-full">
           <img src="/icons/warning.svg" alt="warning-icon" />
         </div>
         <p class="text-lg font-medium text-gray-800">
-         {{ mainMessage }}
+          {{ mainMessage }}
         </p>
         <p class="text-sm text-gray-600">
-        {{ subMessage }}
+          {{ subMessage }}
         </p>
       </div>
 

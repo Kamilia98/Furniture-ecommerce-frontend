@@ -1,48 +1,52 @@
-<ul class="flex gap-[15px] py-[15px] w-full justify-center">
-  @if(isLoggedIn$|async){
-  <li class="relative h-[20px]">
-    <button class="cursor-pointer" (click)="showFavModal()">
-      <img src="/icons/heart.svg" alt="" srcset="" class="w-[20px]" />
-    </button>
-    @if(favoritesLength){
-    <div
-      class="absolute top-0 right-0 bg-primary text-white w-[20px] h-[20px] rounded-[50px] text-xs flex justify-center items-center translate-x-[50%] translate-y-[-50%]"
-    >
-      @if((favoritesLength)&&favoritesLength<10){
-      {{ favoritesLength }}
-      } @else{ 9+ }
-    </div>
-    }
-  </li>
+<ul class="flex w-full justify-center gap-[15px] py-[15px]">
+  @if (isLoggedIn$ | async) {
+    <li class="relative h-[20px]">
+      <button class="cursor-pointer" (click)="showFavModal()">
+        <img src="/icons/heart.svg" alt="" srcset="" class="w-[20px]" />
+      </button>
+      @if (favoritesLength) {
+        <div
+          class="absolute top-0 right-0 flex h-[20px] w-[20px] translate-x-[50%] translate-y-[-50%] items-center justify-center rounded-[50px] bg-primary text-xs text-white"
+        >
+          @if (favoritesLength && favoritesLength < 10) {
+            {{ favoritesLength }}
+          } @else {
+            9+
+          }
+        </div>
+      }
+    </li>
   }
   <li class="relative h-[20px]">
     <button class="cursor-pointer" (click)="showCartModal()">
       <img src="/icons/shopping-cart.svg" alt="" srcset="" class="w-[20px]" />
     </button>
-    @if(cartLength){
-    <div
-      class="absolute top-0 right-0 bg-primary text-white w-[20px] h-[20px] rounded-[50px] text-xs flex justify-center items-center translate-x-[50%] translate-y-[-50%]"
-    >
-      @if(cartLength&&cartLength<10){
-      {{ cartLength }}
-      } @else{ 9+ }
-    </div>
+    @if (cartLength) {
+      <div
+        class="absolute top-0 right-0 flex h-[20px] w-[20px] translate-x-[50%] translate-y-[-50%] items-center justify-center rounded-[50px] bg-primary text-xs text-white"
+      >
+        @if (cartLength && cartLength < 10) {
+          {{ cartLength }}
+        } @else {
+          9+
+        }
+      </div>
     }
   </li>
 
-  <li class="rounded-4xl overflow-hidden">
-    @if(isLoggedIn$|async){
-    <a [routerLink]="['/profile']">
-      <img
-        [src]="(user$ | async)?.thumbnail"
-        alt=""
-        class="w-[20px] h-[20px] object-cover"
-        (error)="onImageError($event)"
-        referrerpolicy="no-referrer"
-      />
-    </a>
+  <li class="overflow-hidden rounded-4xl">
+    @if (isLoggedIn$ | async) {
+      <a [routerLink]="['/profile']">
+        <img
+          [src]="(user$ | async)?.thumbnail"
+          alt=""
+          class="h-[20px] w-[20px] object-cover"
+          (error)="onImageError($event)"
+          referrerpolicy="no-referrer"
+        />
+      </a>
     } @else {
-    <a [routerLink]="['/auth']" class="font-semibold">LOG IN</a>
+      <a [routerLink]="['/auth']" class="font-semibold">LOG IN</a>
     }
   </li>
 </ul>

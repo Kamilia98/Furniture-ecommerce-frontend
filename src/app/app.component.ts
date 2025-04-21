@@ -12,14 +12,20 @@ import { CommonModule } from '@angular/common';
   templateUrl: './app.component.html',
 })
 export class AppComponent implements OnInit {
-  title = 'client';
   constructor(private router: Router) {}
+  previousUrl: string | null = null;
+
   ngOnInit() {
     this.router.events.subscribe((event) => {
-      if (!(event instanceof NavigationEnd)) {
-        return;
+      if (event instanceof NavigationEnd) {
+        const currentUrl = this.router.url.split('?')[0];
+
+        if (this.previousUrl !== null && this.previousUrl !== currentUrl) {
+          window.scrollTo(0, 0);
+        }
+
+        this.previousUrl = currentUrl;
       }
-      window.scrollTo(0, 0);
     });
   }
 }

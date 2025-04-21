@@ -1,218 +1,230 @@
 <!-- Product-navigation -->
 <div class="flex flex-col gap-2">
-  @if(productLoading){
-  <app-product-skeleton />
+  @if (productLoading) {
+    <app-product-skeleton />
+  } @else {
+    <div class="h-full w-full">
+      <div
+        class="mx-auto flex w-full max-w-6xl flex-col justify-center gap-6 px-4 py-6 sm:px-6 lg:flex-row lg:gap-12 lg:px-8"
+      >
+        <!-- Images Section -->
+        <div class="flex-1 lg:w-3/5">
+          <div class="flex flex-col gap-4 lg:flex-row lg:gap-6">
+            <!-- Vertical Thumbnails (Hidden on Mobile) -->
+            <div class="hidden flex-col gap-3 lg:flex lg:gap-4">
+              @for (
+                img of selectedColor?.galleryImages | slice: 0 : 6;
+                track img
+              ) {
+                <app-thumbnail
+                  [image]="img"
+                  (click)="selectThumbnail(img)"
+                ></app-thumbnail>
+              }
+            </div>
 
-  } @else{
-
-  <div class="w-full h-full">
-    <div
-      class="w-full max-w-6xl px-4 sm:px-6 lg:px-8 py-6 flex flex-col lg:flex-row gap-6 lg:gap-12 justify-center mx-auto"
-    >
-      <!-- Images Section -->
-      <div class="flex-1 lg:w-3/5">
-        <div class="flex flex-col lg:flex-row gap-4 lg:gap-6">
-          <!-- Vertical Thumbnails (Hidden on Mobile) -->
-          <div class="hidden lg:flex flex-col gap-3 lg:gap-4">
-            @for (img of selectedColor?.galleryImages | slice:0:6; track img) {
-            <app-thumbnail
-              [image]="img"
-              (click)="selectThumbnail(img)"
-            ></app-thumbnail>
-            }
-          </div>
-
-          <!-- Main Image -->
-          <div class="w-full relative">
-            <div
-              class="bg-secondary rounded-lg aspect-square lg:aspect-[3/4] overflow-hidden"
-            >
-              <button
-                class="absolute top-2 right-2 flex items-center gap-1 text-xs px-2 py-1 rounded z-10 cursor-pointer"
-                aria-label="Add to wishlist"
-                (click)="toggleFavorite()"
+            <!-- Main Image -->
+            <div class="relative w-full">
+              <div
+                class="aspect-square overflow-hidden rounded-lg bg-secondary lg:aspect-[3/4]"
               >
+                <button
+                  class="absolute top-2 right-2 z-10 flex cursor-pointer items-center gap-1 rounded px-2 py-1 text-xs"
+                  aria-label="Add to wishlist"
+                  (click)="toggleFavorite()"
+                >
+                  <img
+                    [src]="
+                      isFavoriteState
+                        ? '/icons/heart-black-filled.svg'
+                        : '/icons/heart-black.svg'
+                    "
+                    class="w-[32px]"
+                    alt="Like icon"
+                  />
+                </button>
+
                 <img
-                  [src]="
-                    isFavoriteState
-                      ? '/icons/heart-black-filled.svg'
-                      : '/icons/heart-black.svg'
-                  "
-                  class="w-[32px]"
-                  alt="Like icon"
+                  class="h-full w-full rounded-lg object-cover"
+                  alt="Selected Color Image"
+                  [src]="selectedImage"
                 />
-              </button>
-
-              <img
-                class="w-full h-full rounded-lg object-cover"
-                alt="Selected Color Image"
-                [src]="selectedImage"
-              />
+              </div>
+            </div>
+            <!-- Horizontal Thumbnails for Mobile -->
+            <div
+              class="scrollbar-hide flex gap-4 overflow-x-auto pb-2 lg:hidden"
+            >
+              @for (img of selectedColor?.galleryImages; track img) {
+                <app-thumbnail
+                  class="shrink-0"
+                  [image]="img"
+                  (click)="selectThumbnail(img)"
+                ></app-thumbnail>
+              }
             </div>
           </div>
-          <!-- Horizontal Thumbnails for Mobile -->
-          <div class="lg:hidden flex gap-4 overflow-x-auto scrollbar-hide pb-2">
-            @for (img of selectedColor?.galleryImages; track img) {
-            <app-thumbnail
-              class="shrink-0"
-              [image]="img"
-              (click)="selectThumbnail(img)"
-            ></app-thumbnail>
-            }
-          </div>
         </div>
-      </div>
-      <!-- Product Details -->
-      <div class="flex-1 lg:w-2/5 max-w-xl space-y-3 lg:space-y-6">
-        <h1 class="text-3xl lg:text-4xl font-light text-[var(--color-black)]">
-          {{ (product$ | async)?.name }}
-        </h1>
+        <!-- Product Details -->
+        <div class="max-w-xl flex-1 space-y-3 lg:w-2/5 lg:space-y-6">
+          <h1 class="text-3xl font-light text-[var(--color-black)] lg:text-4xl">
+            {{ (product$ | async)?.name }}
+          </h1>
 
-        <p class="text-sm lg:text-base text-[var(--color-black)]">
-          {{ (product$ | async)?.subtitle }}
-        </p>
-
-        <p class="text-lg lg:text-xl font-meduim text-[var(--color-gray-dark)]">
-          Brand: {{ (product$ | async)?.brand }}
-        </p>
-        <!-- Prices -->
-        <p class="text-lg lg:text-xl font-medium text-[var(--color-gray-dark)]">
-          Price: {{ salePrice | currency }}
-        </p>
-
-        <p class="text-sm lg:text-base font-semibold text-[var(--color-gray)]">
-          Previous price:
-          <span class="line-through text-[var(--color-gray)]">{{
-            originalPrice | currency
-          }}</span>
-        </p>
-        <p
-          class="text-sm lg:text-base font-semibold"
-          [class.text-[var(--color-green-light)]]="stockStatus === 'In Stock'"
-          [class.text-[var(--color-red-light)]]="stockStatus === 'Out of Stock'"
-        >
-          {{ stockStatus }}
-        </p>
-
-        <!-- Color Selection -->
-        @if ((product$ | async)?.colors?.length ?? 0 > 0) {
-        <div class="space-y-2">
-          <p class="text-gray text-sm">Color</p>
-          <div class="flex gap-3">
-            @for (color of (product$ | async)?.colors; track color) {
-            <div
-              class="w-8 h-8 rounded-full border cursor-pointer hover:shadow border-gray-300"
-              [ngStyle]="{ 'background-color': color.hex }"
-              [ngClass]="{
-                shadow: color.name == selectedColor?.name,
-                '': color.name != selectedColor?.name
-              }"
-              [title]="color.name"
-              (click)="selectColor(color)"
-            ></div>
-            }
-          </div>
-        </div>
-        }
-
-        <!-- Buttons Section -->
-        <div
-          class="flex flex-col w-full gap-3 lg:gap-4 items-center lg:items-start"
-        >
-          <div
-            class="flex flex-wrap gap-3 lg:gap-4 w-full sm:w-auto items-center"
-          >
-            <!-- Quantity Selector -->
-            <div
-              class="flex max-w-[150px] w-full sm:w-[150px] p-2.5 items-center justify-between border rounded-lg"
-            >
-              <button
-                class="w-8 hover:bg-gray-100 rounded text-l font-bold"
-                (click)="decrease()"
-              >
-                -
-              </button>
-              <span class="text-sm font-semibold">{{ count }}</span>
-              <button
-                class="w-8 hover:bg-gray-100 rounded text-l font-bold"
-                (click)="increase()"
-              >
-                +
-              </button>
-            </div>
-            <!-- Action Buttons -->
-            <app-button
-              (click)="toggleCart()"
-              btnWidth="180px"
-              btnPadding="10px"
-              [type]="'black-outline'"
-              >{{ isInCartState ? "Remove From" : "Add To" }} Cart</app-button
-            >
-            <app-button
-              [btnWidth]="btnWidth"
-              [type]="'black-outline'"
-              [routerLink]="['/comparison']"
-              (click)="onAddToComparison()"
-            >
-              <span class="flex items-center justify-center gap-2">
-                Comparison
-              </span>
-            </app-button>
-          </div>
-
-          <!-- Warning Message (Now Aligned) -->
-          @if(warningMessage){
-          <p
-            class="text-red-600 text-sm bg-red-100 p-2 rounded-lg border border-red-400 sm:w-auto text-center flex items-center justify-center gap-2"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="w-5 h-5 text-red-600"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <circle cx="12" cy="12" r="10"></circle>
-              <line x1="12" y1="8" x2="12" y2="12"></line>
-              <line x1="12" y1="16" x2="12" y2="16"></line>
-            </svg>
-            {{ warningMessage }}
+          <p class="text-sm text-[var(--color-black)] lg:text-base">
+            {{ (product$ | async)?.subtitle }}
           </p>
+
+          <p
+            class="font-meduim text-lg text-[var(--color-gray-dark)] lg:text-xl"
+          >
+            Brand: {{ (product$ | async)?.brand }}
+          </p>
+          <!-- Prices -->
+          <p
+            class="text-lg font-medium text-[var(--color-gray-dark)] lg:text-xl"
+          >
+            Price: {{ salePrice | currency }}
+          </p>
+
+          <p
+            class="text-sm font-semibold text-[var(--color-gray)] lg:text-base"
+          >
+            Previous price:
+            <span class="text-[var(--color-gray)] line-through">{{
+              originalPrice | currency
+            }}</span>
+          </p>
+          <p
+            class="text-sm font-semibold lg:text-base"
+            [class.text-[var(--color-green-light)]]="stockStatus === 'In Stock'"
+            [class.text-[var(--color-red-light)]]="
+              stockStatus === 'Out of Stock'
+            "
+          >
+            {{ stockStatus }}
+          </p>
+
+          <!-- Color Selection -->
+          @if ((product$ | async)?.colors?.length ?? 0 > 0) {
+            <div class="space-y-2">
+              <p class="text-sm text-gray">Color</p>
+              <div class="flex gap-3">
+                @for (color of (product$ | async)?.colors; track color) {
+                  <div
+                    class="h-8 w-8 cursor-pointer rounded-full border border-gray-300 hover:shadow"
+                    [ngStyle]="{ 'background-color': color.hex }"
+                    [ngClass]="{
+                      shadow: color.name == selectedColor?.name,
+                      '': color.name != selectedColor?.name,
+                    }"
+                    [title]="color.name"
+                    (click)="selectColor(color)"
+                  ></div>
+                }
+              </div>
+            </div>
           }
+
+          <!-- Buttons Section -->
+          <div
+            class="flex w-full flex-col items-center gap-3 lg:items-start lg:gap-4"
+          >
+            <div
+              class="flex w-full flex-wrap items-center gap-3 sm:w-auto lg:gap-4"
+            >
+              <!-- Quantity Selector -->
+              <div
+                class="flex w-full max-w-[150px] items-center justify-between rounded-lg border p-2.5 sm:w-[150px]"
+              >
+                <button
+                  class="text-l w-8 rounded font-bold hover:bg-gray-100"
+                  (click)="decrease()"
+                >
+                  -
+                </button>
+                <span class="text-sm font-semibold">{{ count }}</span>
+                <button
+                  class="text-l w-8 rounded font-bold hover:bg-gray-100"
+                  (click)="increase()"
+                >
+                  +
+                </button>
+              </div>
+              <!-- Action Buttons -->
+              <app-button
+                (click)="toggleCart()"
+                btnWidth="180px"
+                btnPadding="10px"
+                [type]="'black-outline'"
+                >{{ isInCartState ? "Remove From" : "Add To" }} Cart</app-button
+              >
+              <app-button
+                [btnWidth]="btnWidth"
+                [type]="'black-outline'"
+                [routerLink]="['/comparison']"
+                (click)="onAddToComparison()"
+              >
+                <span class="flex items-center justify-center gap-2">
+                  Comparison
+                </span>
+              </app-button>
+            </div>
+
+            <!-- Warning Message (Now Aligned) -->
+            @if (warningMessage) {
+              <p
+                class="flex items-center justify-center gap-2 rounded-lg border border-red-400 bg-red-100 p-2 text-center text-sm text-red-600 sm:w-auto"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5 text-red-600"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="8" x2="12" y2="12"></line>
+                  <line x1="12" y1="16" x2="12" y2="16"></line>
+                </svg>
+                {{ warningMessage }}
+              </p>
+            }
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- End product -->
+    <!-- End product -->
 
-  <!-- About the product  -->
-  <app-product-description
-    [description]="(product$ | async)?.description"
-    [additionalInfo]="(product$ | async)?.additionalInformation"
-    [imageUrls]="selectedColor?.galleryImages"
-  >
-  </app-product-description>
-  <!-- end product-description -->
+    <!-- About the product  -->
+    <app-product-description
+      [description]="(product$ | async)?.description"
+      [additionalInfo]="(product$ | async)?.additionalInformation"
+      [imageUrls]="selectedColor?.galleryImages"
+    >
+    </app-product-description>
+    <!-- end product-description -->
 
-  <!-- related products .. -->
+    <!-- related products .. -->
   }
   <div class="flex flex-col items-center justify-center p-10">
-    <h2 class="text-2xl lg:text-4xl font-bold">Related Products</h2>
+    <h2 class="text-2xl font-bold lg:text-4xl">Related Products</h2>
     <div
-      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 my-10 w-full"
+      class="my-10 grid w-full grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
     >
-      @if(productsLoading){
-
-      <div *ngFor="let item of skeletonArr">
-        <app-product-item-skeleton></app-product-item-skeleton>
-      </div>
-      }@else { @for (item of relatedProducts$|async; track item.id) {
-      <app-product-item [product]="item"> </app-product-item>
-      } }
+      @if (productsLoading) {
+        <div *ngFor="let item of skeletonArr">
+          <app-product-item-skeleton></app-product-item-skeleton>
+        </div>
+      } @else {
+        @for (item of relatedProducts$ | async; track item.id) {
+          <app-product-item [product]="item"> </app-product-item>
+        }
+      }
     </div>
 
     <app-button type="primary-outline" routerLink="/shop">Show More</app-button>

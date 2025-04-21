@@ -9,7 +9,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
       count="1"
       [theme]="{
         'height.px': 300,
-        'margin-bottom': 0
+        'margin-bottom': 0,
       }"
     />
     <div class="flex flex-col gap-0.5 pb-3">

@@ -71,13 +71,13 @@ export class ComparisonService {
   }
 
   // Remove a product from the comparison (by ID)
-  removeFromComparison(id: string, name: string): void {
+  removeFromComparison(productId: string, name: string): void {
     let comparison = JSON.parse(
       localStorage.getItem(this.comparisonKey) || '[]'
     );
 
     // Remove the product ID from the comparison list
-    comparison = comparison.filter((id: string) => id !== id);
+    comparison = comparison.filter((id: string) => id !== productId);
 
     // Update LocalStorage with the new list
     localStorage.setItem(this.comparisonKey, JSON.stringify(comparison));

@@ -6,7 +6,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
   imports: [NgxSkeletonLoaderModule],
   template: `
     <div
-      class="flex items-center gap-4 px-4 py-2 rounded-lg border border-gray-medium "
+      class="flex items-center gap-4 rounded-lg border border-gray-medium px-4 py-2"
     >
       <!-- Skeleton Loader for the Image -->
       <ngx-skeleton-loader
@@ -14,10 +14,10 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
         [theme]="{
           'width.px': 120,
           'height.px': 112,
-          'margin-bottom': 0
+          'margin-bottom': 0,
         }"
       />
-      <div class="flex flex-col items-start w-full">
+      <div class="flex w-full flex-col items-start">
         <!-- Skeleton Loader for Title -->
         <ngx-skeleton-loader
           count="1"

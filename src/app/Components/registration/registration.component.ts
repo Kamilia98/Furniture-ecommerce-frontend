@@ -19,7 +19,7 @@ export class RegistrationComponent {
       startWith(this.router),
       map(() => {
         return this.router.url.endsWith('/signup');
-      })
+      }),
     );
   }
 }

@@ -46,7 +46,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   constructor(
     private productService: ProductService,
     private categoriesService: CategoriesService,
-    public router: Router
+    public router: Router,
   ) {}
 
   ngOnInit(): void {

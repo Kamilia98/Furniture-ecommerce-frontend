@@ -14,54 +14,54 @@ import { ButtonComponent } from '../button/button.component';
   template: `
     <div class="flex justify-center gap-2 py-5">
       <!-- Previous Button -->
-      @if(currentPage>1){
-      <app-button
-        type="secondary-fill"
-        btnWidth="60px"
-        (click)="goToPage(currentPage - 1)"
-      >
-        <
-      </app-button>
+      @if (currentPage > 1) {
+        <app-button
+          type="secondary-fill"
+          btnWidth="60px"
+          (click)="goToPage(currentPage - 1)"
+        >
+          <
+        </app-button>
       }
 
       <!-- Page Numbers -->
-      @if(pagesCount!=1 && currentPage!=1){
-      <app-button
-        type="secondary-fill"
-        btnWidth="60px"
-        (click)="goToPage(currentPage - 1)"
-      >
-        {{ currentPage - 1 }}
-      </app-button>
+      @if (pagesCount != 1 && currentPage != 1) {
+        <app-button
+          type="secondary-fill"
+          btnWidth="60px"
+          (click)="goToPage(currentPage - 1)"
+        >
+          {{ currentPage - 1 }}
+        </app-button>
       }
-
-      <app-button
-        type="primary-fill"
-        btnWidth="60px"
-        (click)="goToPage(currentPage)"
-      >
-        {{ currentPage }}
-      </app-button>
-
-      @if(pagesCount!=1&&pagesCount!=currentPage){
-      <app-button
-        type="secondary-fill"
-        btnWidth="60px"
-        (click)="goToPage(currentPage + 1)"
-      >
-        {{ currentPage + 1 }}
-      </app-button>
+      @if (pagesCount != 1) {
+        <app-button
+          type="primary-fill"
+          btnWidth="60px"
+          (click)="goToPage(currentPage)"
+        >
+          {{ currentPage }}
+        </app-button>
+      }
+      @if (pagesCount != 1 && pagesCount != currentPage) {
+        <app-button
+          type="secondary-fill"
+          btnWidth="60px"
+          (click)="goToPage(currentPage + 1)"
+        >
+          {{ currentPage + 1 }}
+        </app-button>
       }
 
       <!-- Next Button -->
-      @if(currentPage < pagesCount){
-      <app-button
-        type="secondary-fill"
-        btnWidth="60px"
-        (click)="goToPage(currentPage + 1)"
-      >
+      @if (currentPage < pagesCount) {
+        <app-button
+          type="secondary-fill"
+          btnWidth="60px"
+          (click)="goToPage(currentPage + 1)"
         >
-      </app-button>
+          >
+        </app-button>
       }
     </div>
   `,

@@ -15,6 +15,6 @@ export const checkoutGuard: CanActivateFn = (route, state) => {
         router.navigate(['/']);
         return false;
       }
-    })
+    }),
   );
 };

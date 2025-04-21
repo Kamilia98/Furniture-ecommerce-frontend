@@ -1,21 +1,21 @@
 <div class="accordion-item mb-4">
   <div
-    class="accordion-header flex justify-between items-center py-3 px-4 bg-gray-100 cursor-pointer rounded-lg hover:bg-gray-200"
+    class="accordion-header flex cursor-pointer items-center justify-between rounded-lg bg-gray-100 px-4 py-3 hover:bg-gray-200"
     (click)="toggle()"
   >
     <h3 class="text-lg font-semibold">{{ title }}</h3>
     <span class="text-xl">
       <img
         src="/icons/arrow.svg"
-        class="rotate-[90deg] duration-300 ease"
+        class="ease rotate-[90deg] duration-300"
         [ngClass]="{ 'rotate-[270deg]': isOpen }"
         alt=""
       />
     </span>
   </div>
-  @if(isOpen){
-  <div class="accordion-content mt-2">
-    <ng-content></ng-content>
-  </div>
+  @if (isOpen) {
+    <div class="accordion-content mt-2">
+      <ng-content></ng-content>
+    </div>
   }
 </div>

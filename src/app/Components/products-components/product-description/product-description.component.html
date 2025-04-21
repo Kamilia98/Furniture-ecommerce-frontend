@@ -1,100 +1,126 @@
 @if (additionalInfo && description) {
-<div class="w-full bg-white flex flex-col items-center py-8 lg:py-12">
-  <!-- Upper Border -->
-  <div class="w-full border-t border-gray-medium"></div>
+  <div class="flex w-full flex-col items-center bg-white py-8 lg:py-12">
+    <!-- Upper Border -->
+    <div class="w-full border-t border-gray-medium"></div>
 
-  <!-- Options (Tabs) -->
-  <div
-    class="w-full max-w-2xl px-4 flex sm:flex-row gap-4 sm:gap-6 lg:gap-8 mt-6 sm:mt-8 lg:mt-10 lg:text-2xl font-poppins justify-center">
-    <span (click)="activeTab = 'description'" [class.text-black]="activeTab === 'description'"
-      [class.text-gray-medium]="activeTab !== 'description'" class="font-medium text-center cursor-pointer">
-      Description
-    </span>
-    <span (click)="activeTab = 'additionalInfo'" [class.text-black]="activeTab === 'additionalInfo'"
-      [class.text-gray-medium]="activeTab !== 'additionalInfo'" class="hover:text-gray-dark text-center cursor-pointer">
-      Additional Information
-    </span>
-  </div>
-
-  <!-- Description Section -->
-  @if (activeTab === 'description') {
-  <div class="w-full max-w-3xl px-4 sm:px-6 text-center font-poppins text-gray mt-4 sm:mt-6">
-    <p class="text-sm sm:text-base leading-relaxed">{{ description }}</p>
-  </div>
-  }
-
-  <!-- Additional Information Section -->
-  <!-- Additional Information Section -->
-  @if (activeTab === 'additionalInfo') {
-  <div class="w-full max-w-3xl px-4 sm:px-6 text-center font-poppins text-gray mt-4 sm:mt-6">
-    <!-- General Information -->
-    @if (additionalInfo.general) {
-    <app-accordion title="General Information">
-      <table class="w-full border-collapse mt-2">
-        @for (key of getObjectKeys(additionalInfo.general); track key) {
-        <tr class="border-b">
-          <td class="py-2 font-medium">{{ key | titlecase }}</td>
-          <td class="py-2">{{ additionalInfo.general[key] }}</td>
-        </tr>
-        }
-      </table>
-    </app-accordion>
-    }
-
-    <!-- Product Details -->
-    @if (additionalInfo.productDetails) {
-    <app-accordion title="Product Details">
-      <table class="w-full border-collapse mt-2">
-        @for (key of getObjectKeys(additionalInfo.productDetails); track key) {
-        <tr class="border-b">
-          <td class="py-2 font-medium">{{ key | titlecase }}</td>
-          <td class="py-2">{{ additionalInfo.productDetails[key] }}</td>
-        </tr>
-        }
-      </table>
-    </app-accordion>
-    }
-
-    <!-- Dimensions -->
-    @if (additionalInfo.dimensions) {
-    <app-accordion title="Dimensions (cm)">
-      <table class="w-full border-collapse mt-2">
-        @for (key of getObjectKeys(additionalInfo.dimensions); track key) {
-        <tr class="border-b">
-          <td class="py-2 font-medium">{{ key | titlecase }}</td>
-          <td class="py-2">{{ additionalInfo.dimensions[key] }} cm</td>
-        </tr>
-        }
-      </table>
-    </app-accordion>
-    }
-
-    <!-- Warranty Information -->
-    @if (additionalInfo.warranty) {
-    <app-accordion title="Warranty">
-      <table class="w-full border-collapse mt-2">
-        @for (key of getObjectKeys(additionalInfo.warranty); track key) {
-        <tr class="border-b">
-          <td class="py-2 font-medium">{{ key | titlecase }}</td>
-          <td class="py-2">{{ additionalInfo.warranty[key] }}</td>
-        </tr>
-        }
-      </table>
-    </app-accordion>
-    }
-  </div>
-  }
-
-  <!-- Image Grid (Always Visible) -->
-  <div class="w-full max-w-6xl px-4 sm:px-6 mt-6 sm:mt-8 flex flex-col sm:flex-row gap-6 sm:gap-8">
-    @for (imageUrl of (imageUrls ?? []).slice(0, 2); track imageUrl) {
+    <!-- Options (Tabs) -->
     <div
-      class="w-full sm:w-1/2 h-auto aspect-square sm:aspect-video bg-secondary rounded-lg flex justify-center items-center overflow-hidden">
-      <img [src]="imageUrl" class="w-full object-cover" alt="Product Image" />
+      class="mt-6 flex w-full max-w-2xl justify-center gap-4 px-4 font-poppins sm:mt-8 sm:flex-row sm:gap-6 lg:mt-10 lg:gap-8 lg:text-2xl"
+    >
+      <span
+        (click)="activeTab = 'description'"
+        [class.text-black]="activeTab === 'description'"
+        [class.text-gray-medium]="activeTab !== 'description'"
+        class="cursor-pointer text-center font-medium"
+      >
+        Description
+      </span>
+      <span
+        (click)="activeTab = 'additionalInfo'"
+        [class.text-black]="activeTab === 'additionalInfo'"
+        [class.text-gray-medium]="activeTab !== 'additionalInfo'"
+        class="cursor-pointer text-center hover:text-gray-dark"
+      >
+        Additional Information
+      </span>
     </div>
+
+    <!-- Description Section -->
+    @if (activeTab === "description") {
+      <div
+        class="mt-4 w-full max-w-3xl px-4 text-center font-poppins text-gray sm:mt-6 sm:px-6"
+      >
+        <p class="text-sm leading-relaxed sm:text-base">{{ description }}</p>
+      </div>
     }
+
+    <!-- Additional Information Section -->
+    <!-- Additional Information Section -->
+    @if (activeTab === "additionalInfo") {
+      <div
+        class="mt-4 w-full max-w-3xl px-4 text-center font-poppins text-gray sm:mt-6 sm:px-6"
+      >
+        <!-- General Information -->
+        @if (additionalInfo.general) {
+          <app-accordion title="General Information">
+            <table class="mt-2 w-full border-collapse">
+              @for (key of getObjectKeys(additionalInfo.general); track key) {
+                <tr class="border-b">
+                  <td class="py-2 font-medium">{{ key | titlecase }}</td>
+                  <td class="py-2">{{ additionalInfo.general[key] }}</td>
+                </tr>
+              }
+            </table>
+          </app-accordion>
+        }
+
+        <!-- Product Details -->
+        @if (additionalInfo.productDetails) {
+          <app-accordion title="Product Details">
+            <table class="mt-2 w-full border-collapse">
+              @for (
+                key of getObjectKeys(additionalInfo.productDetails);
+                track key
+              ) {
+                <tr class="border-b">
+                  <td class="py-2 font-medium">{{ key | titlecase }}</td>
+                  <td class="py-2">{{ additionalInfo.productDetails[key] }}</td>
+                </tr>
+              }
+            </table>
+          </app-accordion>
+        }
+
+        <!-- Dimensions -->
+        @if (additionalInfo.dimensions) {
+          <app-accordion title="Dimensions (cm)">
+            <table class="mt-2 w-full border-collapse">
+              @for (
+                key of getObjectKeys(additionalInfo.dimensions);
+                track key
+              ) {
+                <tr class="border-b">
+                  <td class="py-2 font-medium">{{ key | titlecase }}</td>
+                  <td class="py-2">{{ additionalInfo.dimensions[key] }} cm</td>
+                </tr>
+              }
+            </table>
+          </app-accordion>
+        }
+
+        <!-- Warranty Information -->
+        @if (additionalInfo.warranty) {
+          <app-accordion title="Warranty">
+            <table class="mt-2 w-full border-collapse">
+              @for (key of getObjectKeys(additionalInfo.warranty); track key) {
+                <tr class="border-b">
+                  <td class="py-2 font-medium">{{ key | titlecase }}</td>
+                  <td class="py-2">{{ additionalInfo.warranty[key] }}</td>
+                </tr>
+              }
+            </table>
+          </app-accordion>
+        }
+      </div>
+    }
+
+    <!-- Image Grid (Always Visible) -->
+    <div
+      class="mt-6 flex w-full max-w-6xl flex-col gap-6 px-4 sm:mt-8 sm:flex-row sm:gap-8 sm:px-6"
+    >
+      @for (imageUrl of (imageUrls ?? []).slice(0, 2); track imageUrl) {
+        <div
+          class="flex aspect-square h-auto w-full items-center justify-center overflow-hidden rounded-lg bg-secondary sm:aspect-video sm:w-1/2"
+        >
+          <img
+            [src]="imageUrl"
+            class="w-full object-cover"
+            alt="Product Image"
+          />
+        </div>
+      }
+    </div>
   </div>
-</div>
-}@else {
-<app-product-description-skeleton />
+} @else {
+  <app-product-description-skeleton />
 }

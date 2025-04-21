@@ -45,7 +45,7 @@ export class BlogsComponent implements OnInit {
 
   constructor(
     private readonly route: ActivatedRoute,
-    private blogService: BlogService
+    private blogService: BlogService,
   ) {}
 
   ngOnInit() {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -9,7 +9,6 @@ import { InputComponent } from '../../shared/input/input.component';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ButtonComponent } from '../../shared/button/button.component';
 import { AuthService } from '../../../Services/auth.service';
-import { jwtDecode } from 'jwt-decode';
 import {
   trigger,
   transition,
@@ -44,7 +43,7 @@ export class LoginComponent {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) {
     // Handle Google login token from query params
     this.route.queryParams.subscribe((params) => {

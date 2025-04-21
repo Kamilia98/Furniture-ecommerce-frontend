@@ -1,28 +1,28 @@
-<div class="p-6 bg-white shadow rounded-lg text-sm lg:text-lg">
-  <h2 class="text-lg lg:text-xl font-bold text-black mb-4">Cart Totals</h2>
-  
-  <div class="flex justify-between mb-2 text-gray font-semibold">
+<div class="rounded-lg bg-white p-6 text-sm shadow lg:text-lg">
+  <h2 class="mb-4 text-lg font-bold text-black lg:text-xl">Cart Totals</h2>
+
+  <div class="mb-2 flex justify-between font-semibold text-gray">
     <span>Product</span>
     <span>Price</span>
   </div>
   @for (item of cartItems; track item.id) {
-  <div class="flex justify-between mb-2 text-black text-[14px] font-bold ">
-    <span>{{item.name}} x {{item.quantity}}  </span>
-    <span>  {{ item.price * item.quantity | currency }}</span>
-  </div>
-   }
+    <div class="mb-2 flex justify-between text-[14px] font-bold text-black">
+      <span>{{ item.name }} x {{ item.quantity }} </span>
+      <span> {{ item.price * item.quantity | currency }}</span>
+    </div>
+  }
   <div class="flex justify-between text-lg font-bold text-primary">
     <span>Total:</span>
     <span>{{ (subtotal$ | async) ?? 0 | currency }}</span>
   </div>
 
   @if ((subtotal$ | async) ?? 0 > 0) {
-  <app-button
-    class="flex justify-center items-center mx-auto mt-8"
-    type="primary-fill"
-    (click)="goToCheckout()"
-  >
-    Check Out
-  </app-button>
+    <app-button
+      class="mx-auto mt-8 flex items-center justify-center"
+      type="primary-fill"
+      (click)="goToCheckout()"
+    >
+      Check Out
+    </app-button>
   }
 </div>

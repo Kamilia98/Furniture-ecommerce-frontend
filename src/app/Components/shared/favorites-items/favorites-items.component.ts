@@ -17,13 +17,13 @@ export class FavoritesItemsComponent implements OnInit {
 
   constructor(
     private cdr: ChangeDetectorRef,
-    private favoriteService: FavoriteService
+    private favoriteService: FavoriteService,
   ) {}
 
   ngOnInit(): void {
     this.favorites$ = this.favoriteService.favorites$;
     this.favoritesLength$ = this.favoriteService.favorites$.pipe(
-      map((favorites) => favorites.length)
+      map((favorites) => favorites.length),
     );
   }
 

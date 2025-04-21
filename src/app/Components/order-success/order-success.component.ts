@@ -7,7 +7,7 @@ import { StepperComponent } from '../shared/stepper/stepper.component';
 @Component({
   selector: 'app-order-success',
   standalone: true,
-  imports: [CommonModule, RouterModule, ButtonComponent, StepperComponent,],
+  imports: [CommonModule, RouterModule, ButtonComponent, StepperComponent],
   templateUrl: './order-success.component.html',
 })
 export class OrderSuccessComponent {}

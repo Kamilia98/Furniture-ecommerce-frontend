@@ -8,12 +8,12 @@ import { RouterModule } from '@angular/router';
   standalone: true,
   imports: [MatDialogClose, ButtonComponent, RouterModule],
   template: `
-    <div class="flex flex-col items-center text-center p-6 space-y-4">
-      <div class="flex flex-col items-center text-center p-6 space-y-4">
-        <div class="rounded-full h-10 w-10">
+    <div class="flex flex-col items-center space-y-4 p-6 text-center">
+      <div class="flex flex-col items-center space-y-4 p-6 text-center">
+        <div class="h-10 w-10 rounded-full">
           <img
             [src]="data?.isSuccess ? 'icons/check.svg' : 'icons/warning.svg'"
-            [alt]="data?.isSuccess ? 'success' : 'error'"
+            [alt]="data?.isSuccess ? 'successs' : 'error'"
           />
         </div>
         <p class="text-lg font-medium text-gray-800">

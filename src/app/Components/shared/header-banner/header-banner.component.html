@@ -1,10 +1,10 @@
 <div
-  class="bg-[url('/images/header-banner-background.jpg')] bg-cover aspect-[4.5] w-full bg-no-repeat"
+  class="aspect-[4.5] w-full bg-[url('/images/header-banner-background.jpg')] bg-cover bg-no-repeat"
 >
   <div
-    class="flex flex-col justify-center items-center h-full gap-[10px] text-white"
+    class="flex h-full flex-col items-center justify-center gap-[10px] text-white"
   >
-    <h3 class="text-xl md:text-4xl lg:text-5xl font-medium lg:leading-[72px]">
+    <h3 class="text-xl font-medium md:text-4xl lg:text-5xl lg:leading-[72px]">
       {{ bannerTitle | titlecase }}
     </h3>
     <nav class="flex items-center gap-[10px]">
@@ -13,7 +13,7 @@
       </div>
       <div *ngFor="let item of bannerPath" class="flex gap-[10px]">
         <div class="">></div>
-        <a class="hover:underline cursor-pointer" [routerLink]="item.path">{{
+        <a class="cursor-pointer hover:underline" [routerLink]="item.path">{{
           item.title | titlecase
         }}</a>
       </div>

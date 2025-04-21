@@ -34,7 +34,7 @@ export class CartComponent implements OnInit {
     private cartService: CartService,
     private router: Router,
     private productService: ProductService,
-    private toast: NgToastService
+    private toast: NgToastService,
   ) {}
 
   ngOnInit(): void {
@@ -59,19 +59,19 @@ export class CartComponent implements OnInit {
           if (productDetails && productDetails.colors) {
             const totalAvailableStock = productDetails.colors.reduce(
               (sum, color) => sum + color.quantity,
-              0
+              0,
             );
             if (item.quantity < totalAvailableStock) {
               this.cartService.increaseQuantity(item.id);
             } else {
               this.toast.danger(
-                `you have reached to available quantity for ${item.name}`
+                `you have reached to available quantity for ${item.name}`,
               );
               // console.log(`Maximum quantity available for ${item.name}`);
             }
           }
           return of(null);
-        })
+        }),
       )
       .subscribe();
   }

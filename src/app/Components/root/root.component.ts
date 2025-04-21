@@ -32,13 +32,13 @@ import { ProductFavorite } from '../../Models/productFavorite.model';
         style({ transform: 'translateX(100%)' }),
         animate(
           '0.5s cubic-bezier(.4,0,.2,1)',
-          style({ transform: 'translateX(0%)' })
+          style({ transform: 'translateX(0%)' }),
         ),
       ]),
       transition(':leave', [
         animate(
           '0.5s cubic-bezier(.4,0,.2,1)',
-          style({ transform: 'translateX(100%)' })
+          style({ transform: 'translateX(100%)' }),
         ),
       ]),
     ]),
@@ -61,7 +61,7 @@ export class RootComponent {
     private cartService: CartService,
     private authService: AuthService,
     private userService: UserService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -73,7 +73,7 @@ export class RootComponent {
       this.user$ = this.userService.getUser();
       this.favorites$ = this.favoriteService.favorites$;
       this.favoritesLength$ = this.favoriteService.favorites$.pipe(
-        map((favorites) => favorites.length)
+        map((favorites) => favorites.length),
       );
     }
 

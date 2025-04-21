@@ -23,7 +23,7 @@ export class ComparisonComponent implements OnInit {
   loading: boolean = false;
   constructor(
     public comparisonService: ComparisonService,
-    private router: Router
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -37,7 +37,7 @@ export class ComparisonComponent implements OnInit {
         // Filter out null products and duplicates
         this.comparisonProducts = products.filter(
           (p, index, self) =>
-            p && index === self.findIndex((t) => t.id === p.id)
+            p && index === self.findIndex((t) => t.id === p.id),
         );
         this.loading = false;
       },

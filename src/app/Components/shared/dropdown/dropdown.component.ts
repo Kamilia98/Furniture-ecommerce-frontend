@@ -7,13 +7,13 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule],
   template: `
     <div
-      class="absolute w-full top-full right-0 bg-white min-w-max rounded-md p-2 mt-2 z-10 shadow"
+      class="absolute top-full right-0 z-10 mt-2 w-full min-w-max rounded-md bg-white p-2 shadow"
     >
       <ul class="flex flex-col">
         <li
           *ngFor="let item of normalizedItems"
           (click)="selectItem(item)"
-          class="p-2 duration-300 ease-in-out cursor-pointer rounded-md hover:bg-secondary"
+          class="cursor-pointer rounded-md p-2 duration-300 ease-in-out hover:bg-secondary"
         >
           {{ item.value }}
         </li>
@@ -31,7 +31,7 @@ export class DropdownComponent implements OnInit {
 
   ngOnInit(): void {
     this.normalizedItems = this.items.map((item, index) =>
-      typeof item === 'string' ? { id: String(index), value: item } : item
+      typeof item === 'string' ? { id: String(index), value: item } : item,
     );
   }
 

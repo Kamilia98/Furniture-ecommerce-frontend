@@ -8,31 +8,31 @@ import { CommonModule } from '@angular/common';
   imports: [NgxSkeletonLoaderModule, CommonModule],
   template: `
     <div
-      class="w-full min-h-screen bg-white flex flex-col items-center py-8 lg:py-12"
+      class="flex min-h-screen w-full flex-col items-center bg-white py-8 lg:py-12"
     >
       <!-- Upper Border -->
       <div class="w-full border-t border-gray-medium"></div>
 
       <!-- Tabs Skeleton -->
-      <div class="w-full max-w-2xl px-4 flex gap-6 mt-8 justify-center">
+      <div class="mt-8 flex w-full max-w-2xl justify-center gap-6 px-4">
         <ngx-skeleton-loader
           [theme]="{
             'width.px': 100,
             'height.px': 32,
-            'border-radius': '4px'
+            'border-radius': '4px',
           }"
         />
         <ngx-skeleton-loader
           [theme]="{
             'width.px': 140,
             'height.px': 32,
-            'border-radius': '4px'
+            'border-radius': '4px',
           }"
         />
       </div>
 
       <!-- Content Section -->
-      <div class="w-full max-w-3xl px-4 sm:px-6 mt-8">
+      <div class="mt-8 w-full max-w-3xl px-4 sm:px-6">
         <!-- Main Content -->
         <div class="space-y-6">
           <!-- Dynamic Content Area -->
@@ -40,35 +40,35 @@ import { CommonModule } from '@angular/common';
             [theme]="{
               'width.%': 100,
               'height.px': 180,
-              'border-radius': '8px'
+              'border-radius': '8px',
             }"
           />
 
           <!-- Accordion Section -->
           <div class="space-y-4">
-            <div *ngFor="let _ of [1, 2, 3, 4]" class="border rounded-lg p-4">
+            <div *ngFor="let _ of [1, 2, 3, 4]" class="rounded-lg border p-4">
               <ngx-skeleton-loader
                 [theme]="{
                   'width.px': 160,
                   'height.px': 28,
-                  'margin-bottom': '16px'
+                  'margin-bottom': '16px',
                 }"
               />
               <div class="space-y-3">
                 <div
                   *ngFor="let _ of [1, 2, 3]"
-                  class="flex justify-between items-center"
+                  class="flex items-center justify-between"
                 >
                   <ngx-skeleton-loader
                     [theme]="{
                       'width.px': 120,
-                      'height.px': 20
+                      'height.px': 20,
                     }"
                   />
                   <ngx-skeleton-loader
                     [theme]="{
                       'width.px': 80,
-                      'height.px': 20
+                      'height.px': 20,
                     }"
                   />
                 </div>
@@ -80,14 +80,14 @@ import { CommonModule } from '@angular/common';
 
       <!-- Image Grid -->
       <div
-        class="w-full max-w-6xl px-4 sm:px-6 mt-8 grid grid-cols-1 sm:grid-cols-2 gap-6"
+        class="mt-8 grid w-full max-w-6xl grid-cols-1 gap-6 px-4 sm:grid-cols-2 sm:px-6"
       >
         <ngx-skeleton-loader
           *ngFor="let _ of [1, 2]"
           [theme]="{
             'width.%': 100,
             'height.px': 300,
-            'border-radius': '8px'
+            'border-radius': '8px',
           }"
         />
       </div>
